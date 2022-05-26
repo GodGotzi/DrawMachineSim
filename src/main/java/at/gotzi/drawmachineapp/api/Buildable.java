@@ -1,4 +1,4 @@
-package at.gotzi.karodesigner.api;
+package at.gotzi.drawmachineapp.api;
 
 public interface Buildable {
 

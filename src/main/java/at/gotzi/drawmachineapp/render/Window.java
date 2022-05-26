@@ -1,6 +1,6 @@
-package at.gotzi.karodesigner.render;
+package at.gotzi.drawmachineapp.render;
 
-import at.gotzi.karodesigner.control.ControlComponent;
+import at.gotzi.drawmachineapp.control.ControlComponent;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package at.gotzi.karodesigner.view.menubar;
+package at.gotzi.drawmachineapp.view.menubar;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

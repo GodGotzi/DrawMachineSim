@@ -1,4 +1,4 @@
-package at.gotzi.karodesigner.builder;
+package at.gotzi.drawmachineapp.builder;
 
 public abstract class IBuilder<T> {
 

@@ -1,6 +1,6 @@
-package at.gotzi.karodesigner.control;
+package at.gotzi.drawmachineapp.control;
 
-import at.gotzi.karodesigner.api.MouseAction;
+import at.gotzi.drawmachineapp.api.MouseAction;
 
 import javax.swing.*;
 import java.awt.*;

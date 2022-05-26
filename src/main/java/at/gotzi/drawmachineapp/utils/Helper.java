@@ -1,4 +1,4 @@
-package at.gotzi.karodesigner.utils;
+package at.gotzi.drawmachineapp.utils;
 
 import javax.swing.*;
 

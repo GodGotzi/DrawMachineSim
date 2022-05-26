@@ -1,7 +1,7 @@
-package at.gotzi.karodesigner.builder;
+package at.gotzi.drawmachineapp.builder;
 
-import at.gotzi.karodesigner.control.ButtonMouseAdapter;
-import at.gotzi.karodesigner.control.ControlComponent;
+import at.gotzi.drawmachineapp.control.ButtonMouseAdapter;
+import at.gotzi.drawmachineapp.control.ControlComponent;
 
 import javax.swing.*;
 import java.awt.*;

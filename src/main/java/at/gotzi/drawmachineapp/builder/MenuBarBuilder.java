@@ -1,8 +1,8 @@
-package at.gotzi.karodesigner.builder;
+package at.gotzi.drawmachineapp.builder;
 
-import at.gotzi.karodesigner.DrawMachineApp;
-import at.gotzi.karodesigner.api.Buildable;
-import at.gotzi.karodesigner.view.menubar.*;
+import at.gotzi.drawmachineapp.DrawMachineApp;
+import at.gotzi.drawmachineapp.api.Buildable;
+import at.gotzi.drawmachineapp.view.menubar.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

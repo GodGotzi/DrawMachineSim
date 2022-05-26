@@ -1,6 +1,6 @@
-package at.gotzi.karodesigner.view.menubar;
+package at.gotzi.drawmachineapp.view.menubar;
 
-import at.gotzi.karodesigner.control.ControlComponent;
+import at.gotzi.drawmachineapp.control.ControlComponent;
 
 import javax.swing.*;
 import java.awt.*;

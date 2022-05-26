@@ -1,14 +1,13 @@
-package at.gotzi.karodesigner;
+package at.gotzi.drawmachineapp;
 
-import at.gotzi.karodesigner.api.Application;
-import at.gotzi.karodesigner.builder.MenuBarBuilder;
-import at.gotzi.karodesigner.view.menubar.GMenuBar;
-import at.gotzi.karodesigner.render.Window;
-import at.gotzi.karodesigner.view.paint.PaintPanel;
+import at.gotzi.drawmachineapp.api.Application;
+import at.gotzi.drawmachineapp.builder.MenuBarBuilder;
+import at.gotzi.drawmachineapp.view.menubar.GMenuBar;
+import at.gotzi.drawmachineapp.render.Window;
+import at.gotzi.drawmachineapp.view.paint.PaintPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.util.logging.*;
 
 

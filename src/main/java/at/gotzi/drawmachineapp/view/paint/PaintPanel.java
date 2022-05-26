@@ -1,6 +1,6 @@
-package at.gotzi.karodesigner.view.paint;
+package at.gotzi.drawmachineapp.view.paint;
 
-import at.gotzi.karodesigner.DrawMachineApp;
+import at.gotzi.drawmachineapp.DrawMachineApp;
 
 import javax.swing.*;
 import java.awt.*;

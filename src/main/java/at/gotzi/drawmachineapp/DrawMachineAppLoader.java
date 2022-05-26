@@ -1,6 +1,6 @@
-package at.gotzi.karodesigner;
+package at.gotzi.drawmachineapp;
 
-import at.gotzi.karodesigner.api.Application;
+import at.gotzi.drawmachineapp.api.Application;
 
 import java.io.IOException;
 
