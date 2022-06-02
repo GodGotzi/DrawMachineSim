@@ -1,22 +1,17 @@
-package at.gotzi.drawmachine.view.paint;
+package at.gotzi.drawmachine.view.file;
 
 import at.gotzi.drawmachine.DrawMachineCA;
+import at.gotzi.drawmachine.view.Resizeable;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class PaintPanel extends JPanel {
+public class EditorPanel extends JPanel implements Resizeable {
 
-    private DrawMachineCA drawMachineCA;
-
-    public PaintPanel(DrawMachineCA drawMachineCA) {
-        this.drawMachineCA = drawMachineCA;
-
+    public EditorPanel() {
         setBackground(Color.BLACK);
         setVisible(true);
-        setSize(500, 500);
     }
-
 
     public void off() {
         DrawMachineCA.LOGGER.info("disabled");
@@ -27,5 +22,10 @@ public class PaintPanel extends JPanel {
     public void on() {
         DrawMachineCA.LOGGER.info("enabled");
         setVisible(true);
+    }
+
+    @Override
+    public void updateBounds(int width, int height) {
+        setBounds(0, 0, width > 500 ? width/3 : getWidth(), height);
     }
 }

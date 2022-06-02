@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.builder;
+package at.gotzi.drawmachine.api;
 
 public abstract class IBuilder<T> {
 

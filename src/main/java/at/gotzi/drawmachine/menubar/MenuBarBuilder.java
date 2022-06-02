@@ -1,11 +1,11 @@
-package at.gotzi.drawmachine.builder;
+package at.gotzi.drawmachine.menubar;
 
 import at.gotzi.drawmachine.DrawMachineCA;
 import at.gotzi.drawmachine.api.Buildable;
+import at.gotzi.drawmachine.api.IBuilder;
 import at.gotzi.drawmachine.view.menubar.*;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 
 public class MenuBarBuilder extends IBuilder<GMenuBar> implements Buildable {
 
@@ -22,16 +22,15 @@ public class MenuBarBuilder extends IBuilder<GMenuBar> implements Buildable {
     @Override
     public void build() {
         GMenuBar menuBar = new GMenuBar();
+        /*
         Logo logo = new Logo();
-        logo.setUnClickable();
-
+        logo.setUnClickable()
         menuBar.add(logo);
+         */
 
         this.buildMenu00(menuBar);
 
         this.buildMenu01(menuBar);
-
-        this.buildMenu02(menuBar);
 
         this.buildMenu04(menuBar);
 
@@ -50,6 +49,7 @@ public class MenuBarBuilder extends IBuilder<GMenuBar> implements Buildable {
     private void buildMenu00(GMenuBar menuBar) {
         GMenu menu00 = new GMenu("File");
         JMenuItem item00 = new JMenuItem("New");
+        item00.addActionListener(new NewFileAction());
         JMenuItem item01 = new JMenuItem("Open");
         JMenuItem item02 = new JMenuItem("Open Recent");
         JMenuItem item03 = new JMenuItem("Save");
@@ -77,53 +77,6 @@ public class MenuBarBuilder extends IBuilder<GMenuBar> implements Buildable {
         menu01.add(item01);
         menu01.add(ItemDivider.getDefaultItemDivider());
         menuBar.add(menu01);
-    }
-
-    /**
-     * "Builds the second menu, which is called 'View', and adds it to the menu bar."
-     *
-     * The first line of the function is a comment. The second line creates a new GMenu object, which is a menu. The third
-     * line creates a new JMenuItem object, which is a menu item. The fourth line sets the action of the menu item. The
-     * fifth line creates another menu item. The sixth line sets the action of the second menu item. The seventh line
-     * creates a third menu item. The eighth line adds the first menu item to the menu. The ninth line adds the second menu
-     * item to the menu. The tenth line adds the third menu item to the menu. The eleventh line adds the menu to the menu
-     * bar
-     *
-     * @param menuBar The GMenuBar object that you want to add the menu to.
-     */
-    private void buildMenu02(GMenuBar menuBar) {
-        GMenu menu02 = new GMenu("View");
-        JMenuItem item00 = new GMenuItem("Shadows x", true) {
-            @Override
-            public void performAction(ActionEvent actionEvent) {
-
-                if (isActivated()) {
-                    setText("Shadows");
-                } else {
-                    setText("Shadows x");
-                }
-
-            }
-        };
-
-        JMenuItem item01 = new GMenuItem("Paint-View x", true) {
-            @Override
-            public void performAction(ActionEvent actionEvent) {
-
-                if (isActivated()) {
-                    drawMachineCA.getPaintPanel().off();
-                    setText("Paint-View");
-                } else {
-                    drawMachineCA.getPaintPanel().on();
-                    setText("Paint-View x");
-                }
-            }
-        };
-
-        menu02.add(item00);
-        menu02.add(item01);
-        menu02.add(ItemDivider.getDefaultItemDivider());
-        menuBar.add(menu02);
     }
 
     private void buildMenu04(GMenuBar menuBar) {

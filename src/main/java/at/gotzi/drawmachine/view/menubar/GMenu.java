@@ -11,8 +11,6 @@ public class GMenu extends JMenu {
 
     @Override
     public JMenuItem add(JMenuItem jMenuItem) {
-        jMenuItem.setBackground(Color.BLACK);
-        jMenuItem.setForeground(Color.WHITE);
         return super.add(jMenuItem);
     }
 }
