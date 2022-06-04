@@ -26,7 +26,7 @@ public class SimView extends JSplitPane implements Simulation {
 
     private void build() {
         ResizeHandler resizeHandler = new ResizeHandler(this, (width, height) -> {
-            renderer.setBounds(0, 0, width, (int) (height*0.98));
+            setDividerLocation(height-100);
         });
 
         setTopComponent(renderer);

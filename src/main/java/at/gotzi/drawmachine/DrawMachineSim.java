@@ -4,15 +4,12 @@ import at.gotzi.drawmachine.api.Application;
 import at.gotzi.drawmachine.data.ConfigLoader;
 import at.gotzi.drawmachine.menubar.MenuBarBuilder;
 import at.gotzi.drawmachine.view.NullTextArea;
-import at.gotzi.drawmachine.view.Resizeable;
 import at.gotzi.drawmachine.view.file.FileHub;
 import at.gotzi.drawmachine.view.menubar.GMenuBar;
 import at.gotzi.drawmachine.render.Window;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
@@ -54,24 +51,13 @@ public class DrawMachineSim implements Application {
         window.setVisible(true);
         window.setMenuBar(menuBar);
         window.getFrame().add(fileHub);
-        window.getFrame().setMinimumSize(new Dimension(1200, 675));
-
-        window.getFrame().addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                ((Resizeable) fileHub).updateBounds(window.getFrame().getWidth(), window.getFrame().getHeight());
-                super.componentResized(e);
-            }
-        });
+        window.getFrame().setMinimumSize(new Dimension(900, 450));
 
         window.getFrame().pack();
         window.getFrame().setSize(dimension);
         window.centerOnScreen();
 
         window.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-        //ImageIcon imageIcon = new ImageIcon("resource/logo.png");
-        //window.getFrame().setIconImage(imageIcon.getImage());
 
         window.start();
     }

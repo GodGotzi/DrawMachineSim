@@ -1,12 +1,12 @@
 package at.gotzi.drawmachine.view.file;
 
 import at.gotzi.drawmachine.sim.SimView;
-import at.gotzi.drawmachine.view.Resizeable;
+import at.gotzi.drawmachine.view.ResizeHandler;
 
 import javax.swing.*;
 import java.io.InputStream;
 
-public class FileView extends JSplitPane implements Resizeable {
+public class FileView extends JSplitPane {
 
     private String name;
 
@@ -21,12 +21,18 @@ public class FileView extends JSplitPane implements Resizeable {
         this.editorPanel = new EditorPanel();
         this.simView = new SimView();
         this.name = name;
+
+        ResizeHandler resizeHandler = new ResizeHandler(this, this::resizeAction);
+        addComponentListener(resizeHandler);
         setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         setTopComponent(editorPanel);
         setBottomComponent(simView);
         setDividerSize(1);
-        setResizeWeight(0.5);
         setEnabled(false);
+    }
+
+    private void resizeAction(int width, int height) {
+        setDividerLocation(325);
     }
 
     //existing
@@ -42,11 +48,5 @@ public class FileView extends JSplitPane implements Resizeable {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public void updateBounds(int width, int height) {
-        setBounds(0, 50, width, height-50);
-        editorPanel.updateBounds(width, height-50);
     }
 }

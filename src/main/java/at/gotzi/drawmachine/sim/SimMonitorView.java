@@ -72,7 +72,10 @@ public class SimMonitorView implements SimMonitor {
         int value;
 
         value = Integer.parseInt(simStepSpinner.getValue().toString());
-        if (maxAllowed < value) throw new UnsupportedValue("Value is too high Max: " + nf.format(maxAllowed));
+        if (maxAllowed < value) {
+            simStepSpinner.setValue(maxAllowed);
+            throw new UnsupportedValue(DrawMachineSim.getInstance().getWindow().getFrame(), "Value is too high Max: " + nf.format(maxAllowed));
+        }
 
         atomicSimSteps.set(value);
     }
