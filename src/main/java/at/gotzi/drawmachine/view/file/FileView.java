@@ -45,6 +45,5 @@ public class FileView extends JSplitPane implements Resizeable {
     public void updateBounds(int width, int height) {
         setBounds(0, 50, width, height-50);
         editorPanel.updateBounds(width, height-50);
-        simView.updateBounds(width, height-50);
     }
 }
