@@ -13,6 +13,9 @@ public class FileView extends JSplitPane implements Resizeable {
     private EditorPanel editorPanel;
     private SimView simView;
 
+
+    //test commit
+
     //new
     public FileView(String name) {
         this.editorPanel = new EditorPanel();
