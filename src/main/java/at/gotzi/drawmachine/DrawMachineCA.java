@@ -117,3 +117,5 @@ public class DrawMachineCA implements Application {
         return Collections.unmodifiableMap(config);
     }
 }
+
+//yoyo checkcheck jan war hier
