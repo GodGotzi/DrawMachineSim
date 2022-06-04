@@ -3,7 +3,7 @@ package at.gotzi.drawmachine.error;
 import javax.swing.*;
 import java.awt.*;
 
-public class UnsupportedValue extends Throwable {
+public class UnsupportedValue extends RuntimeException {
 
     static final long serialVersionUID = -3387516993124229948L;
 

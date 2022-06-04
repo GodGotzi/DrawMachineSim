@@ -4,10 +4,10 @@ import at.gotzi.drawmachine.api.Application;
 
 import java.io.IOException;
 
-public class DrawMachineCALoader {
+public class DrawMachineSimLoader {
 
     public static void main(String[] args) throws IOException {
-        Application application = new DrawMachineCA();
+        Application application = new DrawMachineSim();
         application.start();
     }
 

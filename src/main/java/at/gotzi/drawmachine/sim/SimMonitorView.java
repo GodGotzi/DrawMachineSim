@@ -1,20 +1,19 @@
 package at.gotzi.drawmachine.sim;
 
-import at.gotzi.drawmachine.DrawMachineCA;
+import at.gotzi.drawmachine.DrawMachineSim;
 import at.gotzi.drawmachine.error.UnsupportedValue;
-import at.gotzi.drawmachine.sim.SimMonitor;
-import at.gotzi.drawmachine.sim.Simulation;
 import at.gotzi.drawmachine.utils.Helper;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SimConfigView implements SimMonitor {
+public class SimMonitorView implements SimMonitor {
 
     private Simulation simulation;
 
@@ -30,7 +29,7 @@ public class SimConfigView implements SimMonitor {
     private final AtomicInteger atomicSimSpeed;
     private final AtomicInteger atomicSimSteps;
 
-    public SimConfigView(Simulation simulation) {
+    public SimMonitorView(Simulation simulation) {
         this.simulation = simulation;
         this.atomicSimSpeed = new AtomicInteger();
         this.atomicSimSteps = new AtomicInteger();
@@ -38,6 +37,10 @@ public class SimConfigView implements SimMonitor {
         runButton.setText("Run");
         speedLabel.setText("Simulation Speed");
         stepLabel.setText("Simulation Steps");
+
+        simSpeedValueLabel.setHorizontalAlignment(JLabel.CENTER);
+        simSpeedValueLabel.setVerticalAlignment(JLabel.CENTER);
+        simSpeedValueLabel.setPreferredSize(new Dimension(60, 0));
 
         simSpeedSlider.setMinimum(10);
         simSpeedSlider.setValue(10);
@@ -51,7 +54,7 @@ public class SimConfigView implements SimMonitor {
         progressBar.setValue(50);
         progressBar.setMaximum(100);
 
-        simSpeedValueLabel.setText(Helper.swingFormat(8, 1.0f, 1) + "x");
+        simSpeedValueLabel.setText(String.format("%.2f", this.simSpeedSlider.getValue() * Math.pow(10, -1)) + "x");
         addListeners();
     }
 
@@ -60,18 +63,12 @@ public class SimConfigView implements SimMonitor {
 
         runButton.addActionListener(this::run);
 
-        simStepSpinner.addChangeListener(cl -> {
-            try {
-                updateSimSteps(cl);
-            } catch (UnsupportedValue e) {
-                e.showErrorInfo(DrawMachineCA.getInstance().getWindow().getFrame());
-            }
-        });
+        simStepSpinner.addChangeListener(this::updateSimSteps);
     }
 
     private void updateSimSteps(ChangeEvent ignored) throws UnsupportedValue {
         NumberFormat nf = DecimalFormat.getInstance(new Locale("en", "US"));
-        int maxAllowed = Integer.parseInt(DrawMachineCA.getInstance().getConfig().get("max_simulation_steps"));
+        int maxAllowed = Integer.parseInt(DrawMachineSim.getInstance().getConfig().get("max_simulation_steps"));
         int value;
 
         value = Integer.parseInt(simStepSpinner.getValue().toString());
@@ -81,10 +78,10 @@ public class SimConfigView implements SimMonitor {
     }
 
     private void updateSimSpeed(ChangeEvent changeEvent) {
-        String formattedValue = Helper.swingFormat(8, this.simSpeedSlider.getValue() * Math.pow(10, -1), 1) + "x";
+        //String formattedValue = Helper.swingFormat(8, this.simSpeedSlider.getValue() * Math.pow(10, -1), 1) + "x";
 
         atomicSimSpeed.set(this.simSpeedSlider.getValue());
-        simSpeedValueLabel.setText(formattedValue);
+        simSpeedValueLabel.setText(String.format("%.2f", this.simSpeedSlider.getValue() * Math.pow(10, -1)) + "x");
     }
 
     private synchronized JProgressBar getProgressBar() {

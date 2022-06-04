@@ -1,6 +1,6 @@
 package at.gotzi.drawmachine.menubar;
 
-import at.gotzi.drawmachine.DrawMachineCA;
+import at.gotzi.drawmachine.DrawMachineSim;
 import at.gotzi.drawmachine.api.Buildable;
 import at.gotzi.drawmachine.api.IBuilder;
 import at.gotzi.drawmachine.view.menubar.*;
@@ -9,11 +9,11 @@ import javax.swing.*;
 
 public class MenuBarBuilder extends IBuilder<GMenuBar> implements Buildable {
 
-    private final DrawMachineCA drawMachineCA;
+    private final DrawMachineSim drawMachineSim;
     private GMenuBar menuBar;
 
-    public MenuBarBuilder(DrawMachineCA drawMachineCA) {
-        this.drawMachineCA = drawMachineCA;
+    public MenuBarBuilder(DrawMachineSim drawMachineSim) {
+        this.drawMachineSim = drawMachineSim;
     }
 
     /**

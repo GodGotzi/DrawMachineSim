@@ -1,6 +1,6 @@
 package at.gotzi.drawmachine.view.file;
 
-import at.gotzi.drawmachine.DrawMachineCA;
+import at.gotzi.drawmachine.DrawMachineSim;
 import at.gotzi.drawmachine.view.Resizeable;
 
 import javax.swing.*;
@@ -14,13 +14,13 @@ public class EditorPanel extends JPanel implements Resizeable {
     }
 
     public void off() {
-        DrawMachineCA.LOGGER.info("disabled");
+        DrawMachineSim.LOGGER.info("disabled");
         setVisible(false);
     }
 
 
     public void on() {
-        DrawMachineCA.LOGGER.info("enabled");
+        DrawMachineSim.LOGGER.info("enabled");
         setVisible(true);
     }
 

@@ -1,42 +1,41 @@
 package at.gotzi.drawmachine.sim;
 
-import at.gotzi.drawmachine.view.Resizeable;
+import at.gotzi.drawmachine.view.ResizeHandler;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 public class SimView extends JSplitPane implements Simulation {
 
-    private SimRenderer renderer;
-    private SimMonitor simMonitor;
+    private final SimRenderer renderer;
+    private final SimMonitor simMonitor;
 
     private boolean running = false;
 
     public SimView() {
-        try {
-            buildImageHolder();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.renderer = new SimRenderer();
+        this.simMonitor = new SimMonitorView(this);
+
+        build();
+
         setBackground(Color.GRAY);
         setOrientation(JSplitPane.VERTICAL_SPLIT);
         setDividerSize(1);
+        setResizeWeight(1);
     }
 
-    private void buildImageHolder() throws IOException {
+    private void build() {
+        ResizeHandler resizeHandler = new ResizeHandler(this, (width, height) -> {
+            renderer.setBounds(0, 0, width, (int) (height*0.98));
+        });
 
-
-        SimDrawer simDrawer = new SimDrawer();
-        this.renderer = new SimRenderer();
-        this.simMonitor = new SimConfigView(this);
-
-        setTopComponent(renderer.getPanel());
-        setBottomComponent(((SimConfigView) simMonitor).getView());
+        setTopComponent(renderer);
+        setBottomComponent(((SimMonitorView) simMonitor).getView());
         setEnabled(false);
+        addComponentListener(resizeHandler);
     }
 
-    public SimMonitor getSimulationSettings() {
+    public SimMonitor getSimulationMonitor() {
         return simMonitor;
     }
 

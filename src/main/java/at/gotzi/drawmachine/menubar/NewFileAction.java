@@ -1,6 +1,6 @@
 package at.gotzi.drawmachine.menubar;
 
-import at.gotzi.drawmachine.DrawMachineCA;
+import at.gotzi.drawmachine.DrawMachineSim;
 import at.gotzi.drawmachine.view.file.FileView;
 
 import javax.swing.*;
@@ -14,7 +14,7 @@ public class NewFileAction extends AbstractAction {
         if (!str.contains(".mdm")) str += ".mdm";
 
         FileView fileView = new FileView(str);
-        DrawMachineCA.getInstance().getFileHub().openNewFilePage(fileView);
+        DrawMachineSim.getInstance().getFileHub().openNewFilePage(fileView);
     }
 
     private String getName() {

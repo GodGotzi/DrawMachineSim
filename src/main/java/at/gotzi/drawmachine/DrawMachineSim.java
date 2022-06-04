@@ -13,16 +13,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.WindowListener;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
 import java.util.logging.*;
 
-public class DrawMachineCA implements Application {
-    private static DrawMachineCA instance;
+public class DrawMachineSim implements Application {
+    private static DrawMachineSim instance;
 
-    public static DrawMachineCA getInstance() {
+    public static DrawMachineSim getInstance() {
         return instance;
     }
 
@@ -35,7 +34,7 @@ public class DrawMachineCA implements Application {
 
     private Window window;
 
-    public DrawMachineCA() {
+    public DrawMachineSim() {
         LOGGER = Logger.getLogger("main-logger");
         instance = this;
         this.loadConfig();
@@ -117,5 +116,3 @@ public class DrawMachineCA implements Application {
         return Collections.unmodifiableMap(config);
     }
 }
-
-//yoyo checkcheck jan war hier
