@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class SimView extends JSplitPane implements Simulation {
 
-    private SimRender imageHolder;
+    private SimRenderer renderer;
     private SimMonitor simMonitor;
 
     private boolean running = false;
@@ -28,10 +28,10 @@ public class SimView extends JSplitPane implements Simulation {
 
 
         SimDrawer simDrawer = new SimDrawer();
-        this.imageHolder = new ImageHolder(simDrawer.getResult());
+        this.renderer = new SimRenderer();
         this.simMonitor = new SimConfigView(this);
 
-        setTopComponent(imageHolder);
+        setTopComponent(renderer.getPanel());
         setBottomComponent(((SimConfigView) simMonitor).getView());
         setEnabled(false);
     }
