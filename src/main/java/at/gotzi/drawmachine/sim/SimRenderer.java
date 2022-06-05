@@ -19,11 +19,11 @@ public class SimRenderer extends JPanel implements Renderer {
 
     private void resizeAction(int width, int height) {
         if (width > height) {
-            int newSize = height-10;
-            panel.setBounds((width - newSize) / 2, 5, newSize, newSize);
+            int newSize = height-8;
+            panel.setBounds((width - newSize) / 2, 4, newSize, newSize);
         } else {
-            int newSize = width-10;
-            panel.setBounds(5, (height - newSize) / 2, newSize, newSize);
+            int newSize = width-8;
+            panel.setBounds(4, (height - newSize) / 2, newSize, newSize);
         }
     }
 
