@@ -7,13 +7,13 @@ import java.awt.*;
 
 public class SimView extends JSplitPane implements Simulation {
 
-    private final SimRenderer renderer;
+    private final SimViewMain renderer;
     private final SimMonitor simMonitor;
 
     private boolean running = false;
 
     public SimView() {
-        this.renderer = new SimRenderer();
+        this.renderer = new SimViewMain();
         this.simMonitor = new SimMonitorView(this);
 
         build();
