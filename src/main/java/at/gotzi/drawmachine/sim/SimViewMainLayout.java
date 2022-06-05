@@ -5,8 +5,8 @@ import java.awt.*;
 
 public class SimViewMainLayout implements LayoutManager2 {
 
-    private int min;
-    private int l1;
+    private final int min;
+    private final int l1;
 
     private static final int CENTER = 0;
     private static final int TOP = 1;
@@ -101,8 +101,7 @@ public class SimViewMainLayout implements LayoutManager2 {
         synchronized (parent.getTreeLock()) {
             Dimension dim = new Dimension(0, 0);
 
-            boolean ltr = parent.getComponentOrientation().isLeftToRight();
-            Component c = null;
+            Component c;
 
             if ((c=getChild(RIGHT)) != null) {
                 Dimension d = c.getPreferredSize();
@@ -155,40 +154,34 @@ public class SimViewMainLayout implements LayoutManager2 {
         return dimension;
     }
 
+    /**
+     * > If the width is greater than the height, then the center is a square in the middle of the screen, and the top,
+     * bottom, left, and right are rectangles that fill the rest of the screen. If the height is greater than the width,
+     * then the center is a square in the middle of the screen, and the top, bottom, left, and right are rectangles that
+     * fill the rest of the screen
+     *
+     * @param parent The container that is being laid out.
+     */
     @Override
     public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
-            Component c;
-
             int width = parent.getWidth();
             int height = parent.getHeight();
 
             if (width >= height) {
-                if ((c=getChild(TOP)) != null) {
-                    Dimension d = c.getMinimumSize();
-                    c.setSize(width, d.height);
-                    c.setBounds(0, 0, width, d.height);
-                }
-                if ((c=getChild(BOTTOM)) != null) {
-                    Dimension d = c.getMinimumSize();
-                    c.setSize(width, d.height);
-                    c.setBounds(0, height-d.height, width, d.height);
-                }
-                if ((c=getChild(RIGHT)) != null) {
-                    Dimension d = c.getMinimumSize();
-                    c.setSize(width, d.height);
-                    c.setBounds(0, this.top.getHeight(), (width-height)/2, height-(this.top.getHeight()*2));
-                }
-                if ((c=getChild(LEFT)) != null) {
-                    Dimension d = c.getMinimumSize();
-                    c.setSize(width, d.height);
-                    c.setBounds(width-this.right.getWidth(), this.top.getHeight(), (width-height)/2, height-(this.top.getHeight()*2));
-                }
-                if ((c=getChild(CENTER)) != null) {
-                    c.setBounds(this.left.getWidth(), this.top.getHeight(), width-this.left.getWidth()-this.right.getWidth(), left.getHeight());
-                }
-            } else {
+                center.setBounds(Math.max((width-height)/2, l1), l1, height-l1*2, height-l1*2);
 
+                top.setBounds(0, 0, width, l1);
+                bottom.setBounds(0, height-l1, width, l1);
+                left.setBounds(0, l1, center.getX(), center.getHeight());
+                right.setBounds(width-center.getX(), l1, center.getX(), center.getHeight());
+            } else {
+                center.setBounds(l1, Math.max((height-width)/2, l1), width-(l1*2), width-(l1*2));
+
+                left.setBounds(0, center.getY(), l1, height-(l1*2));
+                right.setBounds(width-center.getX(), center.getY(), l1, height-(l1*2));
+                top.setBounds(0, 0, width, center.getY());
+                bottom.setBounds(0, height-center.getY(), width, center.getY());
             }
         }
     }

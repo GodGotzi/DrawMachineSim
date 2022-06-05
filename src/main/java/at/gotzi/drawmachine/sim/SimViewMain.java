@@ -10,6 +10,9 @@ public class SimViewMain extends JPanel implements Renderer {
         this.drawPanel = new JPanel();
         this.drawPanel.setBackground(Color.WHITE);
 
+
+        setBackground(Color.BLACK);
+        setForeground(Color.WHITE);
         buildBorderLayout();
     }
 
