@@ -1,27 +1,31 @@
 package at.gotzi.drawmachine;
 
+import at.gotzi.drawmachine.control.HotKeyHandler;
+import at.gotzi.drawmachine.control.IHotKeyHandler;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 
 public class Window extends Canvas implements Runnable {
     private static boolean running = false;
-
     private Thread thread;
     private JFrame frame;
 
     private final String title;
 
-    public Window(String title) {
+    public Window(String title, KeyListener keyListener) {
         this.title = title;
-        this.init();
+        this.init(keyListener);
     }
 
-    private void init() {
+    private void init(KeyListener keyListener) {
         this.frame = new JFrame();
         this.frame.setTitle(title);
         this.frame.add(this);
         this.frame.pack();
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.addKeyListener(keyListener);
     }
 
     public void setResizeable(boolean b) {
@@ -49,6 +53,10 @@ public class Window extends Canvas implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isRunning() {
+        return running;
     }
 
     public void centerOnScreen() {

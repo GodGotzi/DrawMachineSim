@@ -8,10 +8,10 @@ import java.io.InputStream;
 
 public class FileView extends JSplitPane {
 
-    private String name;
+    private final String name;
 
-    private EditorPanel editorPanel;
-    private SimView simView;
+    private final EditorPanel editorPanel;
+    private final SimView simView;
 
 
     //test commit
@@ -48,5 +48,13 @@ public class FileView extends JSplitPane {
     @Override
     public String getName() {
         return name;
+    }
+
+    public EditorPanel getEditorPanel() {
+        return editorPanel;
+    }
+
+    public SimView getSimView() {
+        return simView;
     }
 }

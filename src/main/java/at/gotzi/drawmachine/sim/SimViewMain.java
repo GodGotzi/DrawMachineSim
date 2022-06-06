@@ -14,7 +14,7 @@ public class SimViewMain extends JPanel {
         Dimension paperDimension = Helper.getPaperDimension();
         this.renderer = new SimRenderer(paperDimension);
         this.renderer.setPreferredSize(paperDimension);
-        this.mapControlPanel = new MapControlPanel<>(paperDimension);
+        this.mapControlPanel = new MapControlPanel<>(paperDimension, 10);
         this.mapControlPanel.setComponent(renderer);
 
         setBackground(Color.LIGHT_GRAY);
@@ -28,5 +28,9 @@ public class SimViewMain extends JPanel {
 
     public Renderer getRenderer() {
         return renderer;
+    }
+
+    public MapControlPanel<SimRenderer> getMapControlPanel() {
+        return mapControlPanel;
     }
 }

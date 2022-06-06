@@ -1,11 +1,8 @@
 package at.gotzi.drawmachine.sim;
 
-import at.gotzi.drawmachine.control.ReLayout;
-
-import javax.swing.*;
 import java.awt.*;
 
-public class SimViewMainLayout implements LayoutManager2, ReLayout {
+public class SimViewMainLayout implements LayoutManager2 {
 
     private final int min;
     private final int l1;
@@ -99,10 +96,5 @@ public class SimViewMainLayout implements LayoutManager2, ReLayout {
             else
                 center.setBounds(l1, (height-width+l1*2)/2, width-(l1*2), width-(l1*2));
         }
-    }
-
-    @Override
-    public void reLay() {
-
     }
 }

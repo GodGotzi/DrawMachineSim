@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.menubar;
+package at.gotzi.drawmachine.view.file;
 
 import at.gotzi.drawmachine.DrawMachineSim;
 import at.gotzi.drawmachine.view.file.FileView;

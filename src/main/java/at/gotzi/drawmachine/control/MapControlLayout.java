@@ -6,18 +6,21 @@ import at.gotzi.drawmachine.utils.Helper;
 import java.awt.*;
 import java.awt.event.*;
 
-public class MapControlLayout implements MouseListener, MouseWheelListener, LayoutManager2 {
+public class MapControlLayout implements MouseListener, MouseWheelListener, LayoutManager2, MapLayout {
 
     private Component component;
 
     private int x;
     private int y;
+
+    private int border;
     private final MapControlPanel<? extends Component> mapControlPanel;
 
-    public MapControlLayout(MapControlPanel<? extends Component>  mapControlPanel) {
+    public MapControlLayout(MapControlPanel<? extends Component>  mapControlPanel, int border) {
         this.mapControlPanel = mapControlPanel;
         this.x = 0;
         this.y = 0;
+        this.border = border;
     }
 
     @SuppressWarnings("empty")
@@ -73,12 +76,11 @@ public class MapControlLayout implements MouseListener, MouseWheelListener, Layo
 
     @Override
     public void layoutContainer(Container parent) {
-        Component component = mapControlPanel.getComponent();
         Dimension parentDimension = mapControlPanel.getSize();
         Dimension dimension = component.getPreferredSize();
 
         int x = this.x + (parentDimension.width/2) - (dimension.width/2);
-        int y = this.y + (parentDimension.height/2) - (dimension.width/2);
+        int y = this.y + (parentDimension.height/2) - (dimension.height/2);
         component.setBounds(x, y, dimension.width, dimension.height);
         Helper.printClassMethodName();
     }
@@ -98,12 +100,13 @@ public class MapControlLayout implements MouseListener, MouseWheelListener, Layo
     @Override
     public void mouseReleased(MouseEvent e) {
         Point point = e.getPoint();
-        x -= previousMousePoint.x - point.x;
-        y -= previousMousePoint.y - point.y;
 
-        System.out.println("X: " + x + " Y:" + y);
+        this.x -= previousMousePoint.x - point.x;
+        this.y -= previousMousePoint.y - point.y;
+
         layoutContainer(mapControlPanel);
     }
+
 
     @Override
     public void mouseEntered(MouseEvent e) {
@@ -122,5 +125,12 @@ public class MapControlLayout implements MouseListener, MouseWheelListener, Layo
 
     public void setComponent(Component component) {
         this.component = component;
+    }
+
+    @Override
+    public void resetView() {
+        this.x = 0;
+        this.y = 0;
+        layoutContainer(mapControlPanel);
     }
 }

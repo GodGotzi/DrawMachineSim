@@ -6,8 +6,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class ButtonMouseListener implements MouseListener {
-
+public class HorizontalSliderMouseHandler implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
     }
@@ -22,7 +21,7 @@ public class ButtonMouseListener implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        DrawMachineSim.getInstance().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        DrawMachineSim.getInstance().setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
     }
 
     @Override

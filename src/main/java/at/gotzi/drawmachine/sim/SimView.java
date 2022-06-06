@@ -45,6 +45,11 @@ public class SimView extends JSplitPane implements Simulation {
     }
 
     @Override
+    public void resetView() {
+        this.renderer.getMapControlPanel().getMapControlLayout().resetView();
+    }
+
+    @Override
     public int getCurrentSteps() {
         return 0;
     }

@@ -1,16 +1,8 @@
 package at.gotzi.drawmachine.api;
 
-public abstract class IBuilder<T> {
+import at.gotzi.drawmachine.data.ILoader;
 
-    private boolean successful = false;
+public abstract class IBuilder<T> extends ILoader<T> implements Buildable {
 
-    public abstract T getResult();
 
-    public void setSuccessful(boolean successful) {
-        this.successful = successful;
-    }
-
-    public boolean isSuccessful() {
-        return successful;
-    }
 }

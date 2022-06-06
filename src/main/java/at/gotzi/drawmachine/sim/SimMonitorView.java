@@ -1,10 +1,9 @@
 package at.gotzi.drawmachine.sim;
 
 import at.gotzi.drawmachine.DrawMachineSim;
-import at.gotzi.drawmachine.control.ButtonMouseListener;
-import at.gotzi.drawmachine.control.HorizontalSliderMouseListener;
+import at.gotzi.drawmachine.control.ButtonMouseHandler;
+import at.gotzi.drawmachine.control.HorizontalSliderMouseHandler;
 import at.gotzi.drawmachine.error.UnsupportedValue;
-import at.gotzi.drawmachine.utils.Helper;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -62,10 +61,10 @@ public class SimMonitorView implements SimMonitor {
 
     private void addListeners() {
         simSpeedSlider.addChangeListener(this::updateSimSpeed);
-        simSpeedSlider.addMouseListener(new HorizontalSliderMouseListener());
+        simSpeedSlider.addMouseListener(new HorizontalSliderMouseHandler());
 
         runButton.addActionListener(this::run);
-        runButton.addMouseListener(new ButtonMouseListener());
+        runButton.addMouseListener(new ButtonMouseHandler());
 
         simStepSpinner.addChangeListener(this::updateSimSteps);
     }

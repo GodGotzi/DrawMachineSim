@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConfigLoader extends ILoader<Map<String, String>>{
+public class ConfigLoader extends ILoader<Map<String, String>> {
 
     private final InputStream inputStream;
 

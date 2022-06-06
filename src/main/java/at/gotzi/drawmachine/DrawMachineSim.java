@@ -1,14 +1,18 @@
 package at.gotzi.drawmachine;
 
 import at.gotzi.drawmachine.api.Application;
+import at.gotzi.drawmachine.builder.HotKeyBuilder;
+import at.gotzi.drawmachine.control.HotKeyHandler;
+import at.gotzi.drawmachine.control.IHotKeyHandler;
 import at.gotzi.drawmachine.data.ConfigLoader;
-import at.gotzi.drawmachine.menubar.MenuBarBuilder;
+import at.gotzi.drawmachine.builder.MenuBarBuilder;
 import at.gotzi.drawmachine.view.NullTextArea;
 import at.gotzi.drawmachine.view.file.FileHub;
 import at.gotzi.drawmachine.view.menubar.GMenuBar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
@@ -30,12 +34,17 @@ public class DrawMachineSim implements Application {
 
     private Window window;
 
+    private IHotKeyHandler hotKeyHandler;
+
     public DrawMachineSim() {
         LOGGER = Logger.getLogger("main-logger");
         instance = this;
         this.loadConfig();
+
+
         this.buildMenuBar();
         this.buildTabbedPane();
+        this.buildHotKeyHandler();
     }
 
     /**
@@ -44,7 +53,7 @@ public class DrawMachineSim implements Application {
     @Override
     public void start() {
         Dimension dimension = new Dimension(1200, 675);
-        this.window = new Window("DrawMachine - CA");
+        this.window = new Window("DrawMachine - CA", (KeyListener) hotKeyHandler);
 
         window.setResizeable(true);
         window.setVisible(true);
@@ -75,6 +84,12 @@ public class DrawMachineSim implements Application {
         this.menuBar = menuBarBuilder.getResult();
     }
 
+    private void buildHotKeyHandler() {
+        HotKeyBuilder hotKeyBuilder = new HotKeyBuilder(this);
+        hotKeyBuilder.build();
+        this.hotKeyHandler = hotKeyBuilder.getResult();
+    }
+
     private void loadConfig() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
         this.config = new ConfigLoader(inputStream).getResult();
@@ -103,5 +118,9 @@ public class DrawMachineSim implements Application {
 
     public Map<String, String> getConfig() {
         return Collections.unmodifiableMap(config);
+    }
+
+    public IHotKeyHandler getHotKeyHandler() {
+        return hotKeyHandler;
     }
 }
