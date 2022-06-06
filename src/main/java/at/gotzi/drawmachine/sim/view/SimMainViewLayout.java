@@ -1,13 +1,13 @@
-package at.gotzi.drawmachine.sim;
+package at.gotzi.drawmachine.sim.view;
 
 import java.awt.*;
 
-public class SimViewMainLayout implements LayoutManager2 {
+public class SimMainViewLayout implements LayoutManager2 {
     private final int l1;
 
     private final Component center;
 
-    public SimViewMainLayout(Component center, int l1) {
+    public SimMainViewLayout(Component center, int l1) {
         this.l1 = l1;
         this.center = center;
     }

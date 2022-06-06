@@ -174,6 +174,11 @@ public class MapLayout implements MouseListener, MouseWheelListener, LayoutManag
         layoutContainer(mapPanel);
     }
 
+    @Override
+    public void repaint() {
+        this.mapCopyPanel.repaint();
+    }
+
     private BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
         BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics2D = resizedImage.createGraphics();

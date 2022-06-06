@@ -1,34 +1,37 @@
-package at.gotzi.drawmachine.sim;
+package at.gotzi.drawmachine.sim.view;
 
 import at.gotzi.drawmachine.handler.ResizeHandler;
+import at.gotzi.drawmachine.sim.editor.SimEditor;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class SimView extends JSplitPane implements Simulation {
 
-    private final SimViewMain renderer;
+    private final SimMainView simMainView;
     private final SimMonitor simMonitor;
+
+    private final SimEditor simEditor;
 
     private boolean running = false;
 
-    public SimView() {
-        this.renderer = new SimViewMain();
+    public SimView(SimEditor simEditor) {
+        this.simEditor = simEditor;
         this.simMonitor = new SimMonitorView(this);
+        this.simMainView = new SimMainView(this);
 
         build();
         setBackground(Color.GRAY);
         setOrientation(JSplitPane.VERTICAL_SPLIT);
         setDividerSize(1);
-        setResizeWeight(1);
     }
 
     private void build() {
         ResizeHandler resizeHandler = new ResizeHandler(this, (width, height) -> {
-            setDividerLocation(height-100);
+            setDividerLocation(height-110);
         });
 
-        setTopComponent(renderer);
+        setTopComponent(simMainView);
         setBottomComponent(((SimMonitorView) simMonitor).getView());
         setEnabled(false);
         addComponentListener(resizeHandler);
@@ -39,18 +42,31 @@ public class SimView extends JSplitPane implements Simulation {
     }
 
     @Override
-    public void run(SimMonitor simMonitor) {
+    public void run() {
         this.running = true;
+        this.simMainView.getRenderer().render(this.simMonitor, this.simEditor);
+    }
+
+    @Override
+    public void stop() {
+        this.running = false;
+        this.simMainView.getRenderer().stop();
+        this.simMonitor.updateSteps(0);
+    }
+
+    @Override
+    public void updateSteps(int steps) {
+        this.simMonitor.updateSteps(steps);
     }
 
     @Override
     public void resetView() {
-        this.renderer.getMapControlPanel().getMapControlLayout().resetView();
+        this.simMainView.getMapPanel().getMapLayout().resetView();
     }
 
     @Override
     public int getCurrentSteps() {
-        return 0;
+        return this.simMainView.getRenderer().getCurrentSteps();
     }
 
     @Override

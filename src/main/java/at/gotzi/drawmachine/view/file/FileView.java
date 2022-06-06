@@ -1,6 +1,7 @@
 package at.gotzi.drawmachine.view.file;
 
-import at.gotzi.drawmachine.sim.SimView;
+import at.gotzi.drawmachine.sim.editor.SimEditorView;
+import at.gotzi.drawmachine.sim.view.SimView;
 import at.gotzi.drawmachine.handler.ResizeHandler;
 
 import javax.swing.*;
@@ -10,22 +11,18 @@ public class FileView extends JSplitPane {
 
     private final String name;
 
-    private final EditorPanel editorPanel;
+    private final SimEditorView simEditorView;
     private final SimView simView;
 
-
-    //test commit
-
-    //new
     public FileView(String name) {
-        this.editorPanel = new EditorPanel();
-        this.simView = new SimView();
+        this.simEditorView = new SimEditorView();
+        this.simView = new SimView(simEditorView);
         this.name = name;
 
         ResizeHandler resizeHandler = new ResizeHandler(this, this::resizeAction);
         addComponentListener(resizeHandler);
         setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        setTopComponent(editorPanel);
+        setTopComponent(simEditorView.getPanel());
         setBottomComponent(simView);
         setDividerSize(1);
         setEnabled(false);
@@ -50,8 +47,8 @@ public class FileView extends JSplitPane {
         return name;
     }
 
-    public EditorPanel getEditorPanel() {
-        return editorPanel;
+    public SimEditorView getEditorPanel() {
+        return simEditorView;
     }
 
     public SimView getSimView() {

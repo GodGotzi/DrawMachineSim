@@ -20,12 +20,12 @@ public class HotKeyBuilder extends IBuilder<HotKeyHandler> {
     public void build() {
         this.hotKeyHandler = new HotKeyHandler();
 
-        //reset View
         String keyStrokeStr = drawMachineSim.getConfig().get("reset_view_hotkey");
         KeyStroke keyStroke = KeyStroke.getKeyStroke(keyStrokeStr);
         hotKeyHandler.addHotKey(keyStroke, keyEvent -> {
             FileView fileView = (FileView) drawMachineSim.getFileHub().getSelectedComponent();
             fileView.getSimView().resetView();
+            System.out.println(":D");
         });
 
         setSuccessful(true);

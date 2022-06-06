@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.sim;
+package at.gotzi.drawmachine.sim.view;
 
 import at.gotzi.drawmachine.DrawMachineSim;
 import at.gotzi.drawmachine.control.MouseHandler;
@@ -21,11 +21,13 @@ public class SimMonitorView implements SimMonitor {
     private JSlider simSpeedSlider;
     private JLabel simSpeedValueLabel;
     private JProgressBar progressBar;
+    private JButton stopButton;
     private JButton runButton;
     private JLabel speedLabel;
     private JLabel stepLabel;
     private JSpinner simStepSpinner;
-
+    private JLabel stepProgress;
+    private JButton resetViewButton;
     private final AtomicInteger atomicSimSpeed;
     private final AtomicInteger atomicSimSteps;
 
@@ -35,12 +37,19 @@ public class SimMonitorView implements SimMonitor {
         this.atomicSimSteps = new AtomicInteger();
 
         runButton.setText("Run");
+        stopButton.setText("Stop");
+        resetViewButton.setText("Reset View");
         speedLabel.setText("Simulation Speed");
         stepLabel.setText("Simulation Steps");
+        stepProgress.setText("0/10000");
+        simSpeedValueLabel.setText(String.format("%.2fx", 10 * Math.pow(10, -1)));
 
         simSpeedValueLabel.setHorizontalAlignment(JLabel.CENTER);
         simSpeedValueLabel.setVerticalAlignment(JLabel.CENTER);
-        simSpeedValueLabel.setPreferredSize(new Dimension(60, 0));
+        simSpeedValueLabel.setPreferredSize(new Dimension(150, 0));
+        stepProgress.setHorizontalAlignment(JLabel.CENTER);
+        stepProgress.setVerticalAlignment(JLabel.CENTER);
+        stepProgress.setPreferredSize(new Dimension(150, 0));
 
         simSpeedSlider.setMinimum(10);
         simSpeedSlider.setValue(10);
@@ -51,10 +60,10 @@ public class SimMonitorView implements SimMonitor {
         atomicSimSteps.set(10000);
 
         progressBar.setMinimum(0);
-        progressBar.setValue(50);
+        progressBar.setValue(0);
         progressBar.setMaximum(100);
 
-        simSpeedValueLabel.setText(String.format("%.2f", this.simSpeedSlider.getValue() * Math.pow(10, -1)) + "x");
+
         addListeners();
     }
 
@@ -64,6 +73,12 @@ public class SimMonitorView implements SimMonitor {
 
         runButton.addActionListener(this::run);
         runButton.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
+
+        stopButton.addActionListener(this::stop);
+        stopButton.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
+
+        resetViewButton.addActionListener(this::resetView);
+        resetViewButton.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
 
         simStepSpinner.addChangeListener(this::updateSimSteps);
     }
@@ -79,14 +94,16 @@ public class SimMonitorView implements SimMonitor {
             throw new UnsupportedValue(DrawMachineSim.getInstance().getWindow().getFrame(), "Value is too high Max: " + nf.format(maxAllowed));
         }
 
+        stepProgress.setText(simulation.getCurrentSteps() + "/" + value);
         atomicSimSteps.set(value);
     }
 
     private void updateSimSpeed(ChangeEvent changeEvent) {
-        //String formattedValue = Helper.swingFormat(8, this.simSpeedSlider.getValue() * Math.pow(10, -1), 1) + "x";
-
         atomicSimSpeed.set(this.simSpeedSlider.getValue());
-        simSpeedValueLabel.setText(String.format("%.2f", this.simSpeedSlider.getValue() * Math.pow(10, -1)) + "x");
+        if (this.simSpeedSlider.getValue() > 999)
+            simSpeedValueLabel.setText("Ꝏx");
+        else
+            simSpeedValueLabel.setText(String.format("%.2f", this.simSpeedSlider.getValue() * Math.pow(10, -1)) + "x");
     }
 
     private synchronized JProgressBar getProgressBar() {
@@ -95,32 +112,16 @@ public class SimMonitorView implements SimMonitor {
 
     private void run(ActionEvent actionEvent) {
         if (this.simulation.isRunning()) return;
-        this.simulation.run(this);
+        this.simulation.run();
+    }
 
-        Thread thread = new Thread(() -> {
-            while (true) {
-                for (int i = 0; i < atomicSimSteps.get(); i++) {
-                    getProgressBar().setValue((int) ((float)i/(float) atomicSimSteps.get() * 100));
+    private void stop(ActionEvent actionEvent) {
+        if (!this.simulation.isRunning()) return;
+        this.simulation.stop();
+    }
 
-                    try {
-                        Thread.sleep(100/simSpeedSlider.getValue());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                for (int i = atomicSimSteps.get(); i > 0; i--) {
-                    getProgressBar().setValue((int) ((float)i/(float) atomicSimSteps.get() * 100));
-                    try {
-                        Thread.sleep(100/simSpeedSlider.getValue());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        thread.start();
+    private void resetView(ActionEvent actionEvent) {
+        this.simulation.resetView();
     }
 
     public JPanel getView() {
@@ -140,5 +141,12 @@ public class SimMonitorView implements SimMonitor {
     @Override
     public void updateProgress(int progress) {
         this.progressBar.setValue(progress);
+    }
+
+    @Override
+    public void updateSteps(int steps) {
+        int progress = (int) ((float)steps/(float) atomicSimSteps.get() * 100);
+        stepProgress.setText(steps + "/" + atomicSimSteps.get());
+        updateProgress(progress);
     }
 }

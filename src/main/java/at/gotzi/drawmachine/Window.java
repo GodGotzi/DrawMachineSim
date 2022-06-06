@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
 
-public class Window extends Canvas implements Runnable {
+public class Window implements Runnable {
     private static boolean running = false;
     private Thread thread;
     private JFrame frame;
@@ -19,7 +19,6 @@ public class Window extends Canvas implements Runnable {
     private void init(KeyListener keyListener) {
         this.frame = new JFrame();
         this.frame.setTitle(title);
-        this.frame.add(this);
         this.frame.pack();
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.addKeyListener(keyListener);
@@ -35,12 +34,12 @@ public class Window extends Canvas implements Runnable {
 
     @Override
     public void run() {
+        this.frame.setVisible(false);
     }
 
     public synchronized void start() {
         running = true;
         this.thread = new Thread(this, "at.gotzi.gui.Window");
-
     }
 
     public synchronized void stop() {
@@ -50,6 +49,8 @@ public class Window extends Canvas implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        System.exit(0);
     }
 
     public static boolean isRunning() {
