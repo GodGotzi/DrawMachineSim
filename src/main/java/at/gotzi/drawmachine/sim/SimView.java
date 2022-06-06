@@ -1,6 +1,6 @@
 package at.gotzi.drawmachine.sim;
 
-import at.gotzi.drawmachine.view.ResizeHandler;
+import at.gotzi.drawmachine.handler.ResizeHandler;
 
 import javax.swing.*;
 import java.awt.*;

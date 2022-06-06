@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.view;
+package at.gotzi.drawmachine.handler;
 
 public interface ResizeAction {
 

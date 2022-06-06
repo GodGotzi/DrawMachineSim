@@ -2,13 +2,12 @@ package at.gotzi.drawmachine;
 
 import at.gotzi.drawmachine.api.Application;
 import at.gotzi.drawmachine.builder.HotKeyBuilder;
-import at.gotzi.drawmachine.control.HotKeyHandler;
-import at.gotzi.drawmachine.control.IHotKeyHandler;
+import at.gotzi.drawmachine.handler.IHotKeyHandler;
 import at.gotzi.drawmachine.data.ConfigLoader;
 import at.gotzi.drawmachine.builder.MenuBarBuilder;
-import at.gotzi.drawmachine.view.NullTextArea;
+import at.gotzi.drawmachine.view.NullView;
 import at.gotzi.drawmachine.view.file.FileHub;
-import at.gotzi.drawmachine.view.menubar.GMenuBar;
+import at.gotzi.drawmachine.menubar.GMenuBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,7 +71,7 @@ public class DrawMachineSim implements Application {
 
     private void buildTabbedPane() {
         this.fileHub = new FileHub();
-        fileHub.addTab("documentation.readme", new NullTextArea());
+        fileHub.addTab("documentation.readme", new NullView());
     }
 
     /**

@@ -3,22 +3,22 @@ package at.gotzi.drawmachine.control;
 import javax.swing.*;
 import java.awt.*;
 
-public class MapControlPanel<T extends Component> extends JPanel {
+public class MapPanel<T extends Component> extends JPanel {
 
     private T component;
     private final Dimension dimension;
-    private final MapLayout mapControlLayout;
+    private final IMapLayout mapControlLayout;
 
-    public MapControlPanel(Dimension dimension, int border) {
+    public MapPanel(Dimension dimension, int border) {
         this.dimension = dimension;
-        MapControlLayout mapControlLayout = new MapControlLayout(this, border);
+        MapLayout mapLayout = new MapLayout(this, border);
 
         setBackground(Color.BLACK);
-        setLayout(mapControlLayout);
-        addMouseListener(mapControlLayout);
-        addMouseWheelListener(mapControlLayout);
+        setLayout(mapLayout);
+        addMouseListener(mapLayout);
+        addMouseWheelListener(mapLayout);
 
-        this.mapControlLayout = mapControlLayout;
+        this.mapControlLayout = mapLayout;
     }
 
     public void setComponent(T t) {
@@ -35,7 +35,7 @@ public class MapControlPanel<T extends Component> extends JPanel {
         return component;
     }
 
-    public MapLayout getMapControlLayout() {
+    public IMapLayout getMapControlLayout() {
         return mapControlLayout;
     }
 }

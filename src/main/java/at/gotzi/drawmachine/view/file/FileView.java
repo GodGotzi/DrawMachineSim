@@ -1,7 +1,7 @@
 package at.gotzi.drawmachine.view.file;
 
 import at.gotzi.drawmachine.sim.SimView;
-import at.gotzi.drawmachine.view.ResizeHandler;
+import at.gotzi.drawmachine.handler.ResizeHandler;
 
 import javax.swing.*;
 import java.io.InputStream;

@@ -1,10 +1,9 @@
 package at.gotzi.drawmachine.builder;
 
 import at.gotzi.drawmachine.DrawMachineSim;
-import at.gotzi.drawmachine.api.Buildable;
 import at.gotzi.drawmachine.api.IBuilder;
 import at.gotzi.drawmachine.view.file.NewFileAction;
-import at.gotzi.drawmachine.view.menubar.*;
+import at.gotzi.drawmachine.menubar.*;
 
 import javax.swing.*;
 

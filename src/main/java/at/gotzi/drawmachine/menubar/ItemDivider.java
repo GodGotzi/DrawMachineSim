@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.view.menubar;
+package at.gotzi.drawmachine.menubar;
 
 import javax.swing.*;
 

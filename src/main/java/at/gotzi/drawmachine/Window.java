@@ -1,8 +1,5 @@
 package at.gotzi.drawmachine;
 
-import at.gotzi.drawmachine.control.HotKeyHandler;
-import at.gotzi.drawmachine.control.IHotKeyHandler;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;

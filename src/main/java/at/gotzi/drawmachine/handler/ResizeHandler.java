@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.view;
+package at.gotzi.drawmachine.handler;
 
 import java.awt.*;
 import java.awt.event.ComponentAdapter;

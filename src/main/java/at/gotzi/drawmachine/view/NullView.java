@@ -2,9 +2,9 @@ package at.gotzi.drawmachine.view;
 
 import javax.swing.*;
 
-public class NullTextArea extends JTextArea {
+public class NullView extends JTextArea {
 
-    public NullTextArea() {
+    public NullView() {
         setEditable(false);
         setDoc(new String[]{
                 "",
