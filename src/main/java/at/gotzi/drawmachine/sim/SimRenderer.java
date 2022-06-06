@@ -1,27 +1,35 @@
 package at.gotzi.drawmachine.sim;
 
-import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
-public class SimRenderer extends JPanel implements Renderer {
+public class SimRenderer implements Renderer {
 
     private final Dimension paperDimension;
+
+    private final BufferedImage paper;
+
     public SimRenderer(Dimension dimension) {
-        setBackground(Color.WHITE);
         this.paperDimension = dimension;
+        this.paper = new BufferedImage(paperDimension.width, paperDimension.height, BufferedImage.TYPE_INT_RGB);
+        paintPaper();
     }
 
-    @Override
-    public void paint(Graphics g) {
-        Graphics2D graphics2D = (Graphics2D) g;
+    public void paintPaper() {
+        Graphics2D graphics2D = paper.createGraphics();
         createCanvas(graphics2D);
         graphics2D.setColor(Color.BLACK);
-        graphics2D.drawRect(1050, 1050, 500, 500);
+        graphics2D.fillOval(1050, 1050, 50, 50);
+        graphics2D.dispose();
     }
 
     private void createCanvas(Graphics2D graphics2D) {
         graphics2D.setColor(Color.WHITE);
         graphics2D.fillRect(0, 0, paperDimension.width, paperDimension.height);
+    }
+
+    public BufferedImage getPaper() {
+        return paper;
     }
 
     @Override

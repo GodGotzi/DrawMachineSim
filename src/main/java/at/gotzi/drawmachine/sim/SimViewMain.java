@@ -7,22 +7,21 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SimViewMain extends JPanel {
-    private final MapPanel<SimRenderer> mapPanel;
+    private final MapPanel mapPanel;
     private final SimRenderer renderer;
 
     public SimViewMain() {
         Dimension paperDimension = Helper.getPaperDimension();
-        this.renderer = new SimRenderer(paperDimension);
-        this.renderer.setPreferredSize(paperDimension);
-        this.mapPanel = new MapPanel<>(paperDimension, 10);
-        this.mapPanel.setComponent(renderer);
+        this.mapPanel = new MapPanel(paperDimension, 3000, 100, 2100);
+        this.renderer = mapPanel.getSimRenderer();
 
+        add(mapPanel);
         setBackground(Color.LIGHT_GRAY);
         buildBorderLayout();
     }
 
     private void buildBorderLayout() {
-        SimViewMainLayout simViewMainLayout = new SimViewMainLayout(this, mapPanel,300, 5);
+        SimViewMainLayout simViewMainLayout = new SimViewMainLayout(mapPanel, 5);
         setLayout(simViewMainLayout);
     }
 
@@ -30,7 +29,7 @@ public class SimViewMain extends JPanel {
         return renderer;
     }
 
-    public MapPanel<SimRenderer> getMapControlPanel() {
+    public MapPanel getMapControlPanel() {
         return mapPanel;
     }
 }

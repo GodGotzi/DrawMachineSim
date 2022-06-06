@@ -3,19 +3,13 @@ package at.gotzi.drawmachine.sim;
 import java.awt.*;
 
 public class SimViewMainLayout implements LayoutManager2 {
-
-    private final int min;
     private final int l1;
-
-    private static final int CENTER = 0;
 
     private final Component center;
 
-    public SimViewMainLayout(Container parent, Component center, int min, int l1) {
-        this.min = min;
+    public SimViewMainLayout(Component center, int l1) {
         this.l1 = l1;
         this.center = center;
-        parent.add(center);
     }
 
     @Override

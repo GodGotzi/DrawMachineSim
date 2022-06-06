@@ -5,22 +5,42 @@ import at.gotzi.drawmachine.utils.Helper;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 public class MapLayout implements MouseListener, MouseWheelListener, LayoutManager2, IMapLayout {
 
-    private Component component;
-
     private int x;
     private int y;
+    private int scroll;
 
-    private int border;
-    private final MapPanel<? extends Component> mapPanel;
+    private MapCopyPanel mapCopyPanel;
 
-    public MapLayout(MapPanel<? extends Component> mapPanel, int border) {
+    private final int maxScrollSize;
+
+    private final int minScrollSize;
+
+    private final BufferedImage paper;
+
+    private final MapPanel mapPanel;
+
+    public MapLayout(MapPanel mapPanel, BufferedImage paper, int maxScrollSize, int minScrollSize, int startScroll) {
         this.mapPanel = mapPanel;
+        this.paper = paper;
         this.x = 0;
         this.y = 0;
-        this.border = border;
+        this.maxScrollSize = maxScrollSize;
+        this.minScrollSize = minScrollSize;
+        this.scroll = startScroll;
+
+        this.buildMapCopyPanel();
+        this.updateScroll();
+    }
+
+    private void buildMapCopyPanel() {
+        this.mapCopyPanel = new MapCopyPanel();
+        this.mapCopyPanel.setPreferredSize(new Dimension(this.scroll, this.scroll));
+        this.mapCopyPanel.setPaintAction(this::repaintPanel);
+        this.mapPanel.add(mapCopyPanel);
     }
 
     @SuppressWarnings("empty")
@@ -77,12 +97,11 @@ public class MapLayout implements MouseListener, MouseWheelListener, LayoutManag
     @Override
     public void layoutContainer(Container parent) {
         Dimension parentDimension = mapPanel.getSize();
-        Dimension dimension = component.getPreferredSize();
+        Dimension dimension = mapCopyPanel.getPreferredSize();
 
         int x = this.x + (parentDimension.width/2) - (dimension.width/2);
         int y = this.y + (parentDimension.height/2) - (dimension.height/2);
-        component.setBounds(x, y, dimension.width, dimension.height);
-        Helper.printClassMethodName();
+        mapCopyPanel.setBounds(x, y, dimension.width, dimension.height);
     }
 
     private Point previousMousePoint;
@@ -107,7 +126,6 @@ public class MapLayout implements MouseListener, MouseWheelListener, LayoutManag
         layoutContainer(mapPanel);
     }
 
-
     @Override
     public void mouseEntered(MouseEvent e) {
         DrawMachineSim.getInstance().getWindow().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
@@ -120,17 +138,47 @@ public class MapLayout implements MouseListener, MouseWheelListener, LayoutManag
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        int scroll = this.scroll;
+        scroll += e.getPreciseWheelRotation() * 100;
 
+        System.out.println("Change: " + e.getPreciseWheelRotation() + " Calculated: "+ scroll);
+
+        if (scroll < minScrollSize) scroll = minScrollSize;
+        else if (scroll > maxScrollSize) scroll = maxScrollSize;
+
+
+        if (this.scroll != scroll) {
+            this.scroll = scroll;
+            updateScroll();
+        }
     }
 
-    public void setComponent(Component component) {
-        this.component = component;
+    private void repaintPanel(Graphics graphics) {
+        BufferedImage resizedImage = resizeImage(paper, scroll, scroll);
+        Graphics2D graphics2D = (Graphics2D) graphics;
+        graphics2D.drawImage(resizedImage, 0, 0, scroll,scroll, null);
+    }
+
+    private void updateScroll() {
+        this.mapCopyPanel.setPreferredSize(new Dimension(scroll, scroll));
+        this.mapCopyPanel.repaint();
+
+        layoutContainer(mapPanel);
     }
 
     @Override
     public void resetView() {
         this.x = 0;
         this.y = 0;
+
         layoutContainer(mapPanel);
+    }
+
+    private BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
+        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = resizedImage.createGraphics();
+        graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
+        graphics2D.dispose();
+        return resizedImage;
     }
 }

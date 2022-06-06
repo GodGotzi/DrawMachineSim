@@ -17,7 +17,6 @@ public class SimView extends JSplitPane implements Simulation {
         this.simMonitor = new SimMonitorView(this);
 
         build();
-
         setBackground(Color.GRAY);
         setOrientation(JSplitPane.VERTICAL_SPLIT);
         setDividerSize(1);

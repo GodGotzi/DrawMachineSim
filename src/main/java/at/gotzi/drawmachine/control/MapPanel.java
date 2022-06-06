@@ -1,19 +1,24 @@
 package at.gotzi.drawmachine.control;
 
+import at.gotzi.drawmachine.sim.SimRenderer;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
-public class MapPanel<T extends Component> extends JPanel {
-
-    private T component;
+public class MapPanel extends JPanel {
     private final Dimension dimension;
     private final IMapLayout mapControlLayout;
 
-    public MapPanel(Dimension dimension, int border) {
-        this.dimension = dimension;
-        MapLayout mapLayout = new MapLayout(this, border);
+    private final SimRenderer simRenderer;
 
-        setBackground(Color.BLACK);
+    public MapPanel(Dimension dimension, int maxScrollSize, int minScrollSize, int startScroll) {
+        this.dimension = dimension;
+        this.simRenderer = new SimRenderer(dimension);
+        MapLayout mapLayout = new MapLayout(this, simRenderer.getPaper(), maxScrollSize, minScrollSize, startScroll);
+
+
+        setBackground(Color.DARK_GRAY);
         setLayout(mapLayout);
         addMouseListener(mapLayout);
         addMouseWheelListener(mapLayout);
@@ -21,18 +26,12 @@ public class MapPanel<T extends Component> extends JPanel {
         this.mapControlLayout = mapLayout;
     }
 
-    public void setComponent(T t) {
-        add(t);
-        mapControlLayout.setComponent(t);
-        this.component = t;
+    public SimRenderer getSimRenderer() {
+        return simRenderer;
     }
 
     public Dimension getDimension() {
         return dimension;
-    }
-
-    public T getComponent() {
-        return component;
     }
 
     public IMapLayout getMapControlLayout() {
