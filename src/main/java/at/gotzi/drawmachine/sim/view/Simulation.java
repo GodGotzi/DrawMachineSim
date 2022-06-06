@@ -8,6 +8,8 @@ public interface Simulation {
 
     void resetView();
 
+    void resetCanvas();
+
     int getCurrentSteps();
 
     boolean isRunning();

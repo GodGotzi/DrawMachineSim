@@ -4,8 +4,6 @@ import at.gotzi.drawmachine.api.Action;
 import at.gotzi.drawmachine.sim.editor.SimEditor;
 import at.gotzi.drawmachine.sim.view.SimMonitor;
 
-import java.awt.image.BufferedImage;
-
 public class SimRenderer implements Renderer {
 
     private final Canvas paper;
@@ -53,15 +51,16 @@ public class SimRenderer implements Renderer {
         this.update.run(step);
     }
 
-    public BufferedImage getPaper() {
-        return paper;
-    }
-
     protected void setCurrentSteps(int currentSteps) {
         this.currentSteps = currentSteps;
     }
 
     public int getCurrentSteps() {
         return this.currentSteps;
+    }
+
+    public void resetCanvas() {
+        this.paper.reset();
+        update.run(0);
     }
 }

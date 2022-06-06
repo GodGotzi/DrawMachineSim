@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimMonitorView implements SimMonitor {
 
-    private Simulation simulation;
+    private final Simulation simulation;
 
     private JPanel view;
     private JSlider simSpeedSlider;
@@ -27,6 +27,7 @@ public class SimMonitorView implements SimMonitor {
     private JLabel stepLabel;
     private JSpinner simStepSpinner;
     private JLabel stepProgress;
+    private JButton resetCanvasButton;
     private JButton resetViewButton;
     private final AtomicInteger atomicSimSpeed;
     private final AtomicInteger atomicSimSteps;
@@ -39,6 +40,7 @@ public class SimMonitorView implements SimMonitor {
         runButton.setText("Run");
         stopButton.setText("Stop");
         resetViewButton.setText("Reset View");
+        resetCanvasButton.setText("Reset Canvas");
         speedLabel.setText("Simulation Speed");
         stepLabel.setText("Simulation Steps");
         stepProgress.setText("0/10000");
@@ -79,6 +81,9 @@ public class SimMonitorView implements SimMonitor {
 
         resetViewButton.addActionListener(this::resetView);
         resetViewButton.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
+
+        resetCanvasButton.addActionListener(this::resetCanvas);
+        resetCanvasButton.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
 
         simStepSpinner.addChangeListener(this::updateSimSteps);
     }
@@ -122,6 +127,11 @@ public class SimMonitorView implements SimMonitor {
 
     private void resetView(ActionEvent actionEvent) {
         this.simulation.resetView();
+    }
+
+    private void resetCanvas(ActionEvent actionEvent) {
+        if (this.simulation.isRunning()) return;
+        this.simulation.resetCanvas();
     }
 
     public JPanel getView() {

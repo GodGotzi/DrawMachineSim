@@ -8,6 +8,7 @@ import at.gotzi.drawmachine.sim.view.Simulation;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
 
 public class MapPanel extends JPanel {
@@ -31,6 +32,7 @@ public class MapPanel extends JPanel {
         setBackground(Color.DARK_GRAY);
         setLayout((LayoutManager) mapLayout);
         addMouseListener((MouseListener) mapLayout);
+        addMouseMotionListener((MouseMotionListener) mapLayout);
         addMouseWheelListener((MouseWheelListener) mapLayout);
     }
 

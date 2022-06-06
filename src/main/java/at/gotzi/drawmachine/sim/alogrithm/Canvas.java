@@ -14,10 +14,10 @@ public class Canvas extends BufferedImage {
         super(width, height, BufferedImage.TYPE_INT_RGB);
         this.rgb = rgb;
 
-        this.init();
+        this.reset();
     }
 
-    private void init() {
+    public void reset() {
         for (int i = 0; i < getWidth(); i++) {
             for (int j = 0; j < getHeight(); j++) {
                 setRGB(i, j, Color.WHITE.getRGB());

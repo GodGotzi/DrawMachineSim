@@ -27,9 +27,8 @@ public class SimView extends JSplitPane implements Simulation {
     }
 
     private void build() {
-        ResizeHandler resizeHandler = new ResizeHandler(this, (width, height) -> {
-            setDividerLocation(height-110);
-        });
+        ResizeHandler resizeHandler =
+                new ResizeHandler(this, (width, height) -> setDividerLocation(height-110));
 
         setTopComponent(simMainView);
         setBottomComponent(((SimMonitorView) simMonitor).getView());
@@ -62,6 +61,11 @@ public class SimView extends JSplitPane implements Simulation {
     @Override
     public void resetView() {
         this.simMainView.getMapPanel().getMapLayout().resetView();
+    }
+
+    @Override
+    public void resetCanvas() {
+        this.simMainView.getMapPanel().getSimRenderer().resetCanvas();
     }
 
     @Override

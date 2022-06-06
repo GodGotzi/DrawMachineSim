@@ -7,7 +7,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-public class MapLayout implements MouseListener, MouseWheelListener, LayoutManager2, IMapLayout {
+public class MapLayout implements MouseListener, MouseMotionListener, MouseWheelListener, LayoutManager2, IMapLayout {
+
+    static final int maxCord = 5000;
+    static final int scrollMultiplier = 70;
 
     private int x;
     private int y;
@@ -52,26 +55,21 @@ public class MapLayout implements MouseListener, MouseWheelListener, LayoutManag
     @SuppressWarnings("empty")
     @Deprecated
     @Override
+    public void invalidateLayout(Container target) {}
+
+    @SuppressWarnings("empty")
+    @Deprecated
+    @Override
+    public void addLayoutComponent(String name, Component comp) {}
+
+    @SuppressWarnings("empty")
+    @Deprecated
+    @Override
+    public void removeLayoutComponent(Component comp) {}
+
+    @Override
     public Dimension maximumLayoutSize(Container target) {
         return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
-    }
-
-    @SuppressWarnings("empty")
-    @Deprecated
-    @Override
-    public void invalidateLayout(Container target) {
-    }
-
-    @SuppressWarnings("empty")
-    @Deprecated
-    @Override
-    public void addLayoutComponent(String name, Component comp) {
-    }
-
-    @SuppressWarnings("empty")
-    @Deprecated
-    @Override
-    public void removeLayoutComponent(Component comp) {
     }
 
     @Override
@@ -107,24 +105,17 @@ public class MapLayout implements MouseListener, MouseWheelListener, LayoutManag
     private Point previousMousePoint;
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-        Helper.printClassMethodName();
-    }
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
     public void mousePressed(MouseEvent e) {
         previousMousePoint = e.getPoint();
     }
 
+    @SuppressWarnings("empty")
+    @Deprecated
     @Override
-    public void mouseReleased(MouseEvent e) {
-        Point point = e.getPoint();
-
-        this.x -= previousMousePoint.x - point.x;
-        this.y -= previousMousePoint.y - point.y;
-
-        layoutContainer(mapPanel);
-    }
+    public void mouseReleased(MouseEvent e) {}
 
     @Override
     public void mouseEntered(MouseEvent e) {
@@ -137,11 +128,33 @@ public class MapLayout implements MouseListener, MouseWheelListener, LayoutManag
     }
 
     @Override
+    public void mouseDragged(MouseEvent e) {
+        Point point = e.getPoint();
+
+        this.x -= previousMousePoint.x - point.x;
+        this.y -= previousMousePoint.y - point.y;
+
+        if (this.x > 0) this.x = Math.min(MapLayout.maxCord, this.x);
+        else this.x = Math.max(-MapLayout.maxCord, this.x);
+
+        if (this.y > 0) this.y = Math.min(MapLayout.maxCord, this.y);
+        else this.y = Math.max(-MapLayout.maxCord, this.y);
+
+        System.out.println("X: " + this.x + " Y: " + this.y);
+
+        previousMousePoint = point;
+        layoutContainer(mapPanel);
+    }
+
+    @SuppressWarnings("empty")
+    @Deprecated
+    @Override
+    public void mouseMoved(MouseEvent e) {}
+
+    @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         int scroll = this.scroll;
-        scroll += e.getPreciseWheelRotation() * 100;
-
-        System.out.println("Change: " + e.getPreciseWheelRotation() + " Calculated: "+ scroll);
+        scroll += e.getPreciseWheelRotation() * MapLayout.scrollMultiplier;
 
         if (scroll < minScrollSize) scroll = minScrollSize;
         else if (scroll > maxScrollSize) scroll = maxScrollSize;
