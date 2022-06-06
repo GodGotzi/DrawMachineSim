@@ -4,6 +4,6 @@ public interface Renderer {
 
     void render();
 
-    void nextStep();
+    void stop();
 
 }

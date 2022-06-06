@@ -6,7 +6,6 @@ import at.gotzi.drawmachine.menubar.MenuBarBuilder;
 import at.gotzi.drawmachine.view.NullTextArea;
 import at.gotzi.drawmachine.view.file.FileHub;
 import at.gotzi.drawmachine.view.menubar.GMenuBar;
-import at.gotzi.drawmachine.render.Window;
 
 import javax.swing.*;
 import java.awt.*;
@@ -79,6 +78,10 @@ public class DrawMachineSim implements Application {
     private void loadConfig() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
         this.config = new ConfigLoader(inputStream).getResult();
+    }
+
+    public void setCursor(Cursor cursor) {
+        this.window.getFrame().setCursor(cursor);
     }
 
     @Override

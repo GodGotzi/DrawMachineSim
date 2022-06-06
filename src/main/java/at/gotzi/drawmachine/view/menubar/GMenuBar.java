@@ -1,11 +1,9 @@
 package at.gotzi.drawmachine.view.menubar;
 
-import at.gotzi.drawmachine.control.ControlComponent;
-
 import javax.swing.*;
 import java.awt.*;
 
-public class GMenuBar extends JMenuBar implements ControlComponent {
+public class GMenuBar extends JMenuBar {
 
     public GMenuBar() {
         setBackground(Color.LIGHT_GRAY);
@@ -19,8 +17,4 @@ public class GMenuBar extends JMenuBar implements ControlComponent {
         return super.add(c);
     }
 
-    @Override
-    public void sizing(GroupLayout groupLayout) {
-
-    }
 }

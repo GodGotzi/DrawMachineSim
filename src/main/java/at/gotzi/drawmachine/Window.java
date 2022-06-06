@@ -1,13 +1,7 @@
-package at.gotzi.drawmachine.render;
-
-import at.gotzi.drawmachine.control.ControlComponent;
-import at.gotzi.drawmachine.view.file.FileHub;
+package at.gotzi.drawmachine;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 public class Window extends Canvas implements Runnable {
     private static boolean running = false;
