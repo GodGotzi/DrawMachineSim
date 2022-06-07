@@ -14,7 +14,7 @@ public class SimMainView extends JPanel {
 
     public SimMainView(Simulation simulation) {
         Dimension paperDimension = Helper.getPaperDimension();
-        this.mapPanel = new MapPanel(paperDimension, simulation, 3000, 100, 2100);
+        this.mapPanel = new MapPanel(paperDimension, simulation, 3000, 100, 1000);
         this.renderer = mapPanel.getSimRenderer();
 
         add(mapPanel);

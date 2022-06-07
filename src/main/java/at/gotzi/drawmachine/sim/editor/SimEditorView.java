@@ -5,28 +5,22 @@ import javax.swing.*;
 public class SimEditorView implements SimEditor {
     private JPanel panel;
 
-
-
-
-
-
-
     public JPanel getPanel() {
         return panel;
     }
 
     @Override
     public double getSpeedMiddle() {
-        return 0.0001;
+        return 0.036;
     }
 
     @Override
     public double getSpeedM1() {
-        return 0.1;
+        return 0.9;
     }
 
     @Override
     public double getSpeedM2() {
-        return 0.1;
+        return 0.9;
     }
 }

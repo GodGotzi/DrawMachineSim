@@ -50,13 +50,13 @@ public class SimRenderer implements Renderer {
         }
     }
 
-    static Point paperMiddle = new Point(1050, 1050);
-    static Point m1 = new Point(200, 1050 - 1500 - 80);
-    static Point m2 = new Point( 1900, 1050 - 1500 - 80);
+    static Point middlePoint = new Point(1050, 1050);
+    static Point m1 = new Point(400, 1050 - 1500 - 80);
+    static Point m2 = new Point( 1700, 1050 - 1500 - 80);
     static double lm1 = 350.0;
     static double lm2 = 400.0;
-    static double ls1 = 1250.0;
-    static double ls2 = 1600.0;
+    static double ls1 = 1200.0;
+    static double ls2 = 1400.0;
     static double lp = 200.0;
 
     static double speedMiddle;
@@ -64,8 +64,8 @@ public class SimRenderer implements Renderer {
     static double speedM2;
 
     private void runStep(int step, SimMonitor simMonitor, SimEditor simEditor) {
-        double middleRadiant = Math.toRadians((step * speedMiddle) % 360);
-
+        double middleDegree = (step * speedMiddle) % 360;
+        System.out.println(middleDegree);
         double m1Degree = (step * speedM2) % 360;
         double m2Degree = (step * speedM1) % 360;
 
@@ -110,10 +110,19 @@ public class SimRenderer implements Renderer {
         System.out.println("Pencil X: " + pencilXOffset + " Pencil Y: " + pencilYOffset);
 
         Point pencil = new Point(C.x + pencilXOffset, C.y + pencilYOffset);
-        System.out.println(pencil);
+
+        double lr = Math.sqrt(Math.pow(pencil.x - middlePoint.x,2) + Math.pow(pencil.y - middlePoint.y,2));
+        System.out.println("LR: " + lr);
+
+        double newPXOffset = Math.cos(Math.toRadians(middleDegree)) * lr;
+        double newPYOffset = Math.sin(Math.toRadians(middleDegree)) * lr;
+
+        Point newPencil = new Point(middlePoint.x + newPXOffset, middlePoint.y + newPYOffset);
+
+        System.out.println(newPencil);
 
         try {
-            this.paper.setPixel((int) pencil.x, (int) pencil.y);
+            this.paper.setPoint((int) newPencil.x, (int) newPencil.y);
         } catch (PencilOutOfCanvas ex) {
             System.out.println("pencil out of canvas");
             throw new RuntimeException(ex);
