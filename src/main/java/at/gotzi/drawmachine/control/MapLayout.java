@@ -140,8 +140,6 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
         if (this.y > 0) this.y = Math.min(MapLayout.maxCord, this.y);
         else this.y = Math.max(-MapLayout.maxCord, this.y);
 
-        System.out.println("X: " + this.x + " Y: " + this.y);
-
         previousMousePoint = point;
         layoutContainer(mapPanel);
     }

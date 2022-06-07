@@ -38,9 +38,8 @@ public class DrawMachineSim implements Application {
     public DrawMachineSim() {
         LOGGER = Logger.getLogger("main-logger");
         instance = this;
+
         this.loadConfig();
-
-
         this.buildMenuBar();
         this.buildTabbedPane();
         this.buildHotKeyHandler();

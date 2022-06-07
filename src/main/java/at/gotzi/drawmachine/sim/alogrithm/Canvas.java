@@ -25,7 +25,7 @@ public class Canvas extends BufferedImage {
         }
     }
 
-    public void setPixel(int x, int y) throws PencilOutOfCanvas {
+    public synchronized void setPixel(int x, int y) throws PencilOutOfCanvas {
         if (x > getWidth() || x < 0 || y > getHeight() || y < 0)
             throw new PencilOutOfCanvas(DrawMachineSim.getInstance().getWindow().getFrame());
 
