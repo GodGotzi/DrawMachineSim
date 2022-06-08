@@ -1,8 +1,7 @@
 package at.gotzi.drawmachine.control;
 
-import at.gotzi.drawmachine.sim.view.SimMonitor;
-import at.gotzi.drawmachine.sim.alogrithm.SimRenderer;
-import at.gotzi.drawmachine.sim.alogrithm.Canvas;
+import at.gotzi.drawmachine.sim.algorithm.SimRenderer;
+import at.gotzi.drawmachine.sim.algorithm.Canvas;
 import at.gotzi.drawmachine.sim.view.Simulation;
 
 import javax.swing.*;

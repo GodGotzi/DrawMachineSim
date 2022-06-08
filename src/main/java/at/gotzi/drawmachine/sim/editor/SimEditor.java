@@ -1,12 +1,14 @@
 package at.gotzi.drawmachine.sim.editor;
 
+import at.gotzi.drawmachine.sim.SimValues;
+
 public interface SimEditor {
 
-    double getSpeedMiddle();
+    SimValues getTestSimValues();
 
-    double getSpeedM1();
+    SimValues getSimValues();
 
-    double getSpeedM2();
+    int getBaseSteps();
 
 
 }

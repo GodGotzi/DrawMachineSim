@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.sim.alogrithm;
+package at.gotzi.drawmachine.sim.algorithm;
 
 import at.gotzi.drawmachine.DrawMachineSim;
 import at.gotzi.drawmachine.error.PencilOutOfCanvas;
@@ -26,12 +26,16 @@ public class Canvas extends BufferedImage {
     }
 
     public synchronized void setPoint(int x, int y) throws PencilOutOfCanvas {
-        setPixel(getWidth() - x, getHeight() - y);
+        try {
+            setPixelPoint(getWidth() - x, getHeight() - y, rgb);
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+            throw new PencilOutOfCanvas(DrawMachineSim.getInstance().getWindow().getFrame());
+        }
     }
 
-    private void setPixel(int x, int y) {
+    private void setPixelPoint(int x, int y, int rgb) {
         setRGB(x, y, rgb);
-        if (x > 0)
+        if (x < getHeight())
             setRGB(x+1, y, rgb);
         if (x > 0)
             setRGB(x-1, y, rgb);

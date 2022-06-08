@@ -1,6 +1,7 @@
 package at.gotzi.drawmachine.sim.view;
 
 import at.gotzi.drawmachine.handler.ResizeHandler;
+import at.gotzi.drawmachine.sim.SimInfo;
 import at.gotzi.drawmachine.sim.editor.SimEditor;
 
 import javax.swing.*;
@@ -43,7 +44,9 @@ public class SimView extends JSplitPane implements Simulation {
     @Override
     public void run() {
         this.running = true;
-        this.simMainView.getRenderer().render(this.simMonitor, this.simEditor);
+        this.simMainView.getRenderer().render(
+                new SimInfo(this.simEditor.getTestSimValues(), this.simMonitor)
+        );
     }
 
     @Override
