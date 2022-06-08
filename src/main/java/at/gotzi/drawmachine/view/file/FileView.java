@@ -1,13 +1,13 @@
 package at.gotzi.drawmachine.view.file;
 
+import at.gotzi.drawmachine.control.layout.VerticalSplitLayout;
 import at.gotzi.drawmachine.sim.editor.SimEditorView;
-import at.gotzi.drawmachine.sim.view.SimView;
-import at.gotzi.drawmachine.handler.ResizeHandler;
+import at.gotzi.drawmachine.sim.SimView;
 
 import javax.swing.*;
 import java.io.InputStream;
 
-public class FileView extends JSplitPane {
+public class FileView extends JPanel {
 
     private final String name;
 
@@ -19,17 +19,16 @@ public class FileView extends JSplitPane {
         this.simView = new SimView(simEditorView);
         this.name = name;
 
-        ResizeHandler resizeHandler = new ResizeHandler(this, this::resizeAction);
-        addComponentListener(resizeHandler);
-        setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        setTopComponent(simEditorView.getPanel());
-        setBottomComponent(simView);
-        setDividerSize(1);
-        setEnabled(false);
+
+        add(simEditorView.getPanel());
+        add(simView);
+        this.buildLayout();
     }
 
-    private void resizeAction(int width, int height) {
-        setDividerLocation(325);
+    private void buildLayout() {
+        VerticalSplitLayout verticalSplitLayout = new VerticalSplitLayout(this.simEditorView.getPanel(), this.simView);
+        verticalSplitLayout.setComponent1Size(325);
+        setLayout(verticalSplitLayout);
     }
 
     //existing

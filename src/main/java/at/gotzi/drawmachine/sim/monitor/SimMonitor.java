@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.sim.view;
+package at.gotzi.drawmachine.sim.monitor;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

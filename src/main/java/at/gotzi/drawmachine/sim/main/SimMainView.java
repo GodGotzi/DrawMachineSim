@@ -1,6 +1,7 @@
-package at.gotzi.drawmachine.sim.view;
+package at.gotzi.drawmachine.sim.main;
 
-import at.gotzi.drawmachine.control.MapPanel;
+import at.gotzi.drawmachine.control.map.MapPanel;
+import at.gotzi.drawmachine.sim.Simulation;
 import at.gotzi.drawmachine.sim.algorithm.Renderer;
 import at.gotzi.drawmachine.sim.algorithm.SimRenderer;
 import at.gotzi.drawmachine.utils.Helper;

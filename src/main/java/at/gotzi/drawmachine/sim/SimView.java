@@ -1,19 +1,19 @@
-package at.gotzi.drawmachine.sim.view;
+package at.gotzi.drawmachine.sim;
 
-import at.gotzi.drawmachine.handler.ResizeHandler;
-import at.gotzi.drawmachine.sim.SimInfo;
+import at.gotzi.drawmachine.control.layout.HorizontalSplitLayout;
 import at.gotzi.drawmachine.sim.editor.SimEditor;
+import at.gotzi.drawmachine.sim.monitor.SimMonitor;
+import at.gotzi.drawmachine.sim.monitor.SimMonitorView;
+import at.gotzi.drawmachine.sim.main.SimMainView;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class SimView extends JSplitPane implements Simulation {
+public class SimView extends JPanel implements Simulation {
 
     private final SimMainView simMainView;
-    private final SimMonitor simMonitor;
-
+    private final SimMonitorView simMonitor;
     private final SimEditor simEditor;
-
     private boolean running = false;
 
     public SimView(SimEditor simEditor) {
@@ -21,24 +21,15 @@ public class SimView extends JSplitPane implements Simulation {
         this.simMonitor = new SimMonitorView(this);
         this.simMainView = new SimMainView(this);
 
-        build();
-        setBackground(Color.GRAY);
-        setOrientation(JSplitPane.VERTICAL_SPLIT);
-        setDividerSize(1);
+        add(simMainView);
+        add(simMonitor.getView());
+        buildLayout();
     }
 
-    private void build() {
-        ResizeHandler resizeHandler =
-                new ResizeHandler(this, (width, height) -> setDividerLocation(height-110));
-
-        setTopComponent(simMainView);
-        setBottomComponent(((SimMonitorView) simMonitor).getView());
-        setEnabled(false);
-        addComponentListener(resizeHandler);
-    }
-
-    public SimMonitor getSimulationMonitor() {
-        return simMonitor;
+    private void buildLayout() {
+        HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(simMainView, simMonitor.getView());
+        horizontalSplitLayout.setComponent2Size(120);
+        setLayout(horizontalSplitLayout);
     }
 
     @Override

@@ -5,9 +5,11 @@ import at.gotzi.drawmachine.builder.HotKeyBuilder;
 import at.gotzi.drawmachine.handler.IHotKeyHandler;
 import at.gotzi.drawmachine.data.ConfigLoader;
 import at.gotzi.drawmachine.builder.MenuBarBuilder;
-import at.gotzi.drawmachine.view.NullView;
+import at.gotzi.drawmachine.view.View;
+import at.gotzi.drawmachine.view.file.NullFile;
 import at.gotzi.drawmachine.view.file.FileHub;
 import at.gotzi.drawmachine.menubar.GMenuBar;
+import at.gotzi.drawmachine.view.workspace.WorkspaceView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +33,10 @@ public class DrawMachineSim implements Application {
 
     private FileHub fileHub;
 
+    private WorkspaceView workspaceView;
+
+    private View view;
+
     private Window window;
 
     private IHotKeyHandler hotKeyHandler;
@@ -41,7 +47,7 @@ public class DrawMachineSim implements Application {
 
         this.loadConfig();
         this.buildMenuBar();
-        this.buildTabbedPane();
+        this.buildView();
         this.buildHotKeyHandler();
     }
 
@@ -56,7 +62,7 @@ public class DrawMachineSim implements Application {
         window.setResizeable(true);
         window.setVisible(true);
         window.setMenuBar(menuBar);
-        window.getFrame().add(fileHub);
+        window.getFrame().add(this.view);
         window.getFrame().setMinimumSize(new Dimension(900, 450));
 
         window.getFrame().pack();
@@ -68,9 +74,11 @@ public class DrawMachineSim implements Application {
         window.start();
     }
 
-    private void buildTabbedPane() {
-        this.fileHub = new FileHub();
-        fileHub.addTab("documentation.readme", new NullView());
+    private void buildView() {
+        this.view = new View();
+        this.fileHub = view.getFileHub();
+        this.workspaceView = view.getWorkspaceView();
+        fileHub.addTab("documentation.readme", new NullFile());
     }
 
     /**

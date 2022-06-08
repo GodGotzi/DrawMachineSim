@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.sim.view;
+package at.gotzi.drawmachine.sim.main;
 
 import java.awt.*;
 

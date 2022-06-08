@@ -1,7 +1,6 @@
-package at.gotzi.drawmachine.control;
+package at.gotzi.drawmachine.control.map;
 
 import at.gotzi.drawmachine.DrawMachineSim;
-import at.gotzi.drawmachine.utils.Helper;
 
 import java.awt.*;
 import java.awt.event.*;

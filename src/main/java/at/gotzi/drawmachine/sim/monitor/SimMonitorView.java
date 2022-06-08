@@ -1,8 +1,9 @@
-package at.gotzi.drawmachine.sim.view;
+package at.gotzi.drawmachine.sim.monitor;
 
 import at.gotzi.drawmachine.DrawMachineSim;
-import at.gotzi.drawmachine.control.MouseHandler;
+import at.gotzi.drawmachine.handler.MouseHandler;
 import at.gotzi.drawmachine.error.UnsupportedValue;
+import at.gotzi.drawmachine.sim.Simulation;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

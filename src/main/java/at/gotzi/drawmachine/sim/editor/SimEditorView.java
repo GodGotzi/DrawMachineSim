@@ -1,8 +1,8 @@
 package at.gotzi.drawmachine.sim.editor;
 
 import at.gotzi.drawmachine.DrawMachineSim;
-import at.gotzi.drawmachine.sim.SimPoint;
-import at.gotzi.drawmachine.sim.SimValues;
+import at.gotzi.drawmachine.sim.api.SimPoint;
+import at.gotzi.drawmachine.sim.api.SimValues;
 
 import javax.swing.*;
 
@@ -32,7 +32,7 @@ public class SimEditorView implements SimEditor {
                 1500,
                 200,
                 (double) 360/ (double) baseSteps,
-                7.5,
+                10,
                 0,
                 baseSteps);
     }

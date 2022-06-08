@@ -1,10 +1,10 @@
-package at.gotzi.drawmachine.view;
+package at.gotzi.drawmachine.view.file;
 
 import javax.swing.*;
 
-public class NullView extends JTextArea {
+public class NullFile extends JTextArea {
 
-    public NullView() {
+    public NullFile() {
         setEditable(false);
         setDoc(new String[]{
                 "",

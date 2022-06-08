@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.control;
+package at.gotzi.drawmachine.control.map;
 
 import at.gotzi.drawmachine.api.Action;
 

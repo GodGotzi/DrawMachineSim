@@ -1,7 +1,7 @@
 package at.gotzi.drawmachine.sim.algorithm.logic;
 
 import at.gotzi.drawmachine.sim.SimInfo;
-import at.gotzi.drawmachine.sim.SimPoint;
+import at.gotzi.drawmachine.sim.api.SimPoint;
 
 public class MathLogic {
 
@@ -72,6 +72,7 @@ public class MathLogic {
 
         double hypo = Math.sqrt(absX * absX + absY * absY);
         double radiantOffset1 = Math.atan(absX/absY);
+
         double newPencil1X = Math.cos(Math.toRadians(middleDegree) + radiantOffset1) * hypo;
         double newPencil1Y = Math.sin(Math.toRadians(middleDegree) + radiantOffset1) * hypo;
 

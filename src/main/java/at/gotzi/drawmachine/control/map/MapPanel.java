@@ -1,8 +1,8 @@
-package at.gotzi.drawmachine.control;
+package at.gotzi.drawmachine.control.map;
 
 import at.gotzi.drawmachine.sim.algorithm.SimRenderer;
 import at.gotzi.drawmachine.sim.algorithm.Canvas;
-import at.gotzi.drawmachine.sim.view.Simulation;
+import at.gotzi.drawmachine.sim.Simulation;
 
 import javax.swing.*;
 import java.awt.*;

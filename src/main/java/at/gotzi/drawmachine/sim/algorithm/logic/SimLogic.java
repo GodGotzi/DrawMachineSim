@@ -4,7 +4,7 @@ import at.gotzi.drawmachine.DrawMachineSim;
 import at.gotzi.drawmachine.error.PencilOutOfCanvas;
 import at.gotzi.drawmachine.error.ThreadInterrupt;
 import at.gotzi.drawmachine.sim.SimInfo;
-import at.gotzi.drawmachine.sim.SimPoint;
+import at.gotzi.drawmachine.sim.api.SimPoint;
 import at.gotzi.drawmachine.sim.algorithm.Canvas;
 import at.gotzi.drawmachine.sim.algorithm.SimRenderer;
 

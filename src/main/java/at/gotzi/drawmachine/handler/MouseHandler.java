@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.control;
+package at.gotzi.drawmachine.handler;
 
 import at.gotzi.drawmachine.DrawMachineSim;
 
