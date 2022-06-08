@@ -17,6 +17,9 @@ public class Canvas extends BufferedImage {
         this.reset();
     }
 
+    /**
+     * For every pixel in the image, set the color to white.
+     */
     public void reset() {
         for (int i = 0; i < getWidth(); i++) {
             for (int j = 0; j < getHeight(); j++) {
@@ -25,6 +28,15 @@ public class Canvas extends BufferedImage {
         }
     }
 
+    /**
+     * "Set the pixel at the given coordinates to the current color."
+     *
+     * The first thing we do is check if the coordinates are within the bounds of the canvas. If they are, we set the pixel
+     * to the current color. If they aren't, we throw an exception
+     *
+     * @param x The x coordinate of the point to be set.
+     * @param y The y coordinate of the pixel.
+     */
     public synchronized void setPoint(int x, int y) throws PencilOutOfCanvas {
         try {
             setPixelPoint(getWidth() - x, getHeight() - y, rgb);
@@ -33,6 +45,13 @@ public class Canvas extends BufferedImage {
         }
     }
 
+    /**
+     * Set the pixel at (x,y) to the given color, and set the pixels around it to the same color.
+     *
+     * @param x The x coordinate of the pixel.
+     * @param y The y coordinate of the pixel.
+     * @param rgb the color of the pixel
+     */
     private void setPixelPoint(int x, int y, int rgb) {
         setRGB(x, y, rgb);
         if (x < getHeight())

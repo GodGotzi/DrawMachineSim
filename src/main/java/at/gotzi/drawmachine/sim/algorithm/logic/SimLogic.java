@@ -32,6 +32,10 @@ public class SimLogic implements Logic {
         this.buildMathLogic();
     }
     
+    /**
+     * The function calculates the real speeds of the motors by multiplying the base steps by the speed of the motor and
+     * dividing it by the amount of steps
+     */
     private void calculateRealSpeeds() {
         realSpeedMiddle = ((double) simInfo.getSimValues().baseSteps() / (double) 
                 simInfo.getStepAmount()) * simInfo.getSimValues().speedMiddle();
@@ -62,6 +66,7 @@ public class SimLogic implements Logic {
     }
 
     @Override
+    // It waits for the correct speed.
     public void awaitForSpeed() {
         try {
             Thread.sleep(999/simInfo.getSpeed());
@@ -74,6 +79,7 @@ public class SimLogic implements Logic {
     }
 
     @Override
+    // It checks if the Simulation is finished
     public boolean isFinished(int step) {
         return !((step <= simInfo.getStepAmount()
                 || 1 < mathLogic.speedToDegree(step, realSpeedM1)
@@ -81,6 +87,14 @@ public class SimLogic implements Logic {
                 && this.simRenderer.isRunning());
     }
 
+    /**
+     * "Calculate the next point, and if it's on the paper, draw it."
+     *
+     * The first line of the function is a call to the math logic. It's a call to the `calculatePencilPoint` function,
+     * which is defined in the `MathLogic` class
+     *
+     * @param step the current step of the simulation
+     */
     @Override
     public void runStep(int step) {
         SimPoint simPoint = this.mathLogic.calculatePencilPoint(step);

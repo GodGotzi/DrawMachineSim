@@ -19,6 +19,11 @@ public class SimRenderer implements Renderer {
         this.update = update;
     }
 
+    /**
+     * It creates a new thread that runs the simulation logic, and updates the UI every step
+     *
+     * @param simInfo The information about the simulation.
+     */
     @Override
     public void render(SimInfo simInfo) {
         if (!isRunning()) {
@@ -42,6 +47,9 @@ public class SimRenderer implements Renderer {
         }
     }
 
+    /**
+     * If the thread is running, set it to not running and set the current steps to 0.
+     */
     public synchronized void stop() {
         setRunning(false);
         setCurrentSteps(0);
@@ -68,6 +76,12 @@ public class SimRenderer implements Renderer {
         this.update.run(step);
     }
 
+    /**
+     * "Reset the canvas and update the display."
+     *
+     * The first line of the function is a call to the `reset()` function of the `paper` object. This function is defined
+     * in the `Paper` class, and it resets the canvas to its initial state
+     */
     public void resetCanvas() {
         this.paper.reset();
         update.run(0);

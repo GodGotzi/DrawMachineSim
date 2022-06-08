@@ -13,10 +13,23 @@ public class MathLogic {
         this.simInfo = simLogic.getSimInfo();
     }
 
+    /**
+     * Given a current step and a speed, return the degree of rotation.
+     *
+     * @param currentStep The current step of the animation.
+     * @param speed The speed of the rotation.
+     * @return The degree of the current step.
+     */
     protected double speedToDegree(int currentStep, double speed) {
         return (currentStep * speed) % 360;
     }
 
+    /**
+     * The function calculates the position of the pencil point based on the current position of the motors
+     *
+     * @param step The current step of the simulation
+     * @return The point where the pencil is.
+     */
     protected SimPoint calculatePencilPoint(int step) {
         double middleDegree = speedToDegree(step, simLogic.getRealSpeedMiddle());
         double m1Degree = speedToDegree(step, simLogic.getRealSpeedM1());
@@ -67,6 +80,5 @@ public class MathLogic {
     }
 
     record HelperPoint(double x, double y) {};
-
 
 }
