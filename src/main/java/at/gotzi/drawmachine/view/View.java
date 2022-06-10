@@ -19,7 +19,7 @@ public class View extends JSplitPane {
         setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         setRightComponent(fileHub);
         setLeftComponent(workspaceView.getPanel());
-        setResizeWeight(0.3);
+        setDividerLocation(25);
     }
 
     public FileHub getFileHub() {
