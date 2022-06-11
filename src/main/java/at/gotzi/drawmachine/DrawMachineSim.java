@@ -6,10 +6,9 @@ import at.gotzi.drawmachine.data.ConfigLoader;
 import at.gotzi.drawmachine.builder.MenuBarBuilder;
 import at.gotzi.drawmachine.view.View;
 import at.gotzi.drawmachine.view.file.NullFile;
-import at.gotzi.drawmachine.view.file.FileHub;
+import at.gotzi.drawmachine.view.file.FileHubView;
 import at.gotzi.drawmachine.menubar.GMenuBar;
 import at.gotzi.drawmachine.view.workspace.Workspace;
-import at.gotzi.drawmachine.view.workspace.WorkspaceView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +30,7 @@ public class DrawMachineSim implements Application {
     private Map<String, String> config;
     private GMenuBar menuBar;
 
-    private FileHub fileHub;
+    private FileHubView fileHubView;
 
     private Workspace workspace;
 
@@ -76,9 +75,9 @@ public class DrawMachineSim implements Application {
 
     private void buildView() {
         this.view = new View();
-        this.fileHub = view.getFileHub();
+        this.fileHubView = view.getFileHub();
         this.workspace = view.getWorkspace();
-        fileHub.addTab("documentation.readme", new NullFile());
+        fileHubView.addTab("documentation.readme", new NullFile());
     }
 
     /**
@@ -98,7 +97,9 @@ public class DrawMachineSim implements Application {
 
     private void loadConfig() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties");
-        this.config = new ConfigLoader(inputStream).getResult();
+        ConfigLoader configLoader = new ConfigLoader(inputStream);
+        configLoader.load();
+        this.config = configLoader.getResult();
     }
 
     public void setCursor(Cursor cursor) {
@@ -114,8 +115,8 @@ public class DrawMachineSim implements Application {
         return view;
     }
 
-    public FileHub getFileHub() {
-        return fileHub;
+    public FileHubView getFileHub() {
+        return fileHubView;
     }
 
     public GMenuBar getMenuBar() {

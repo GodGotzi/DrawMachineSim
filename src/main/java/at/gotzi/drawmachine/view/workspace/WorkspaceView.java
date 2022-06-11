@@ -1,5 +1,6 @@
 package at.gotzi.drawmachine.view.workspace;
 
+import at.gotzi.drawmachine.api.Action;
 import at.gotzi.drawmachine.api.FileUpdateScheduler;
 import at.gotzi.drawmachine.api.ThreadScheduler;
 import at.gotzi.drawmachine.control.layout.HorizontalSplitLayout;
@@ -16,6 +17,12 @@ import java.util.Objects;
 public class WorkspaceView extends JPanel implements Workspace {
     private final WorkspaceTree workspaceTree;
     private final JLabel title;
+
+    private String directory;
+
+    private Action<File> openFile;
+
+    private Action<File> closeFile;
 
     public WorkspaceView() {
         this.title = new JLabel();
@@ -39,14 +46,11 @@ public class WorkspaceView extends JPanel implements Workspace {
 
     @Override
     public synchronized void loadWorkspace(File file) {
-        System.out.println("Updating...");
+        this.directory = file.getAbsolutePath();
+
         this.workspaceTree.reset();
-
         this.workspaceTree.getRoot().setUserObject(file.getName());
-
-        if (file.listFiles() == null) {
-            return;
-        }
+        if (file.listFiles() == null) return;
 
         this.loopFiles(Objects.requireNonNull(file.listFiles()), this.workspaceTree.getRoot());
         this.workspaceTree.expandPath(new TreePath(this.workspaceTree.getRoot().getPath()));
@@ -55,7 +59,6 @@ public class WorkspaceView extends JPanel implements Workspace {
         this.updateThread = new FileUpdateScheduler(file.listFiles(), file.getAbsolutePath()) {
             @Override
             public void run() {
-                System.out.println("Try Update Scheduler: " + this.hashCode());
                 File newDir = new File(getPath());
                 List<File> fileCompare = new LinkedList<>();
 
@@ -65,16 +68,19 @@ public class WorkspaceView extends JPanel implements Workspace {
                     }
                 }
 
-                if (changed(fileCompare)) {
+                if (changed(fileCompare))
                     loadWorkspace(file);
-                    System.out.println("Update");
-                }
 
                 this.sleep(100);
             }
         };
 
         this.updateThread.start();
+    }
+
+    @Override
+    public String getDirectoryPath() {
+        return this.directory;
     }
 
     private void loopFiles(File[] files, DefaultMutableTreeNode treeNode) {
@@ -97,5 +103,14 @@ public class WorkspaceView extends JPanel implements Workspace {
         DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(file.getName());
         mutableTreeNode.add(treeNode);
         treeNode.setAllowsChildren(false);
+    }
+
+
+    public void setCloseFile(Action<File> closeFile) {
+        this.closeFile = closeFile;
+    }
+
+    public void setOpenFile(Action<File> openFile) {
+        this.openFile = openFile;
     }
 }

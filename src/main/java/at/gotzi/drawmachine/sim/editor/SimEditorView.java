@@ -1,6 +1,7 @@
 package at.gotzi.drawmachine.sim.editor;
 
 import at.gotzi.drawmachine.DrawMachineSim;
+import at.gotzi.drawmachine.api.sim.SimModeInfo;
 import at.gotzi.drawmachine.api.sim.SimPoint;
 import at.gotzi.drawmachine.api.sim.SimValues;
 
@@ -12,8 +13,10 @@ public class SimEditorView implements SimEditor {
 
     private JPanel panel;
 
-    public SimEditorView() {
+    public SimEditorView(SimModeInfo simModeInfo) {
         this.baseSteps = Integer.parseInt(DrawMachineSim.getInstance().getConfig().get("base_steps"));
+
+        //TODO init values with simModeInfo
     }
 
     public JPanel getPanel() {

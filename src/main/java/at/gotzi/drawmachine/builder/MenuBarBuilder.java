@@ -1,14 +1,13 @@
 package at.gotzi.drawmachine.builder;
 
 import at.gotzi.drawmachine.DrawMachineSim;
-import at.gotzi.drawmachine.api.IBuilder;
-import at.gotzi.drawmachine.menubar.actions.NewFileAction;
+import at.gotzi.drawmachine.menubar.actions.NewModeFileAction;
 import at.gotzi.drawmachine.menubar.*;
 import at.gotzi.drawmachine.menubar.actions.OpenWorkspaceAction;
 
 import javax.swing.*;
 
-public class MenuBarBuilder extends IBuilder<GMenuBar> {
+public class MenuBarBuilder extends Builder<GMenuBar> {
 
     private final DrawMachineSim drawMachineSim;
     private GMenuBar menuBar;
@@ -53,7 +52,7 @@ public class MenuBarBuilder extends IBuilder<GMenuBar> {
         item00.addActionListener(new OpenWorkspaceAction());
         JMenuItem item01 = new JMenuItem("Open recent Workspace");
         JMenuItem item02 = new JMenuItem("New");
-        item02.addActionListener(new NewFileAction());
+        item02.addActionListener(new NewModeFileAction());
         JMenuItem item03 = new JMenuItem("Save");
         JMenuItem item04 = new JMenuItem("Save as picture");
         menu00.add(item00);

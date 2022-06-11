@@ -1,13 +1,12 @@
 package at.gotzi.drawmachine.builder;
 
 import at.gotzi.drawmachine.DrawMachineSim;
-import at.gotzi.drawmachine.api.IBuilder;
 import at.gotzi.drawmachine.handler.HotKeyHandler;
-import at.gotzi.drawmachine.view.file.FileView;
+import at.gotzi.drawmachine.view.file.ModeFileView;
 
 import javax.swing.*;
 
-public class HotKeyBuilder extends IBuilder<HotKeyHandler> {
+public class HotKeyBuilder extends Builder<HotKeyHandler> {
 
     private HotKeyHandler hotKeyHandler;
 
@@ -23,8 +22,8 @@ public class HotKeyBuilder extends IBuilder<HotKeyHandler> {
         String keyStrokeStr = drawMachineSim.getConfig().get("reset_view_hotkey");
         KeyStroke keyStroke = KeyStroke.getKeyStroke(keyStrokeStr);
         hotKeyHandler.addHotKey(keyStroke, keyEvent -> {
-            FileView fileView = (FileView) drawMachineSim.getFileHub().getSelectedComponent();
-            fileView.getSimView().resetView();
+            ModeFileView modeFileView = (ModeFileView) drawMachineSim.getFileHub().getSelectedComponent();
+            modeFileView.getSimView().resetView();
             System.out.println(":D");
         });
 
