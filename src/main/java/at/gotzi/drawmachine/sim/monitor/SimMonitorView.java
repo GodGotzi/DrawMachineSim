@@ -135,7 +135,7 @@ public class SimMonitorView implements SimMonitor {
         this.simulation.resetCanvas();
     }
 
-    public JPanel getView() {
+    public JPanel getPanel() {
         return view;
     }
 

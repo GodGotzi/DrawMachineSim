@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.sim.api;
+package at.gotzi.drawmachine.api.sim;
 
 public record SimValues(SimPoint middlePoint,
                         SimPoint m1,

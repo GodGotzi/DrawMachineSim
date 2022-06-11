@@ -1,6 +1,5 @@
 package at.gotzi.drawmachine;
 
-import at.gotzi.drawmachine.api.Application;
 import at.gotzi.drawmachine.builder.HotKeyBuilder;
 import at.gotzi.drawmachine.handler.IHotKeyHandler;
 import at.gotzi.drawmachine.data.ConfigLoader;
@@ -9,6 +8,7 @@ import at.gotzi.drawmachine.view.View;
 import at.gotzi.drawmachine.view.file.NullFile;
 import at.gotzi.drawmachine.view.file.FileHub;
 import at.gotzi.drawmachine.menubar.GMenuBar;
+import at.gotzi.drawmachine.view.workspace.Workspace;
 import at.gotzi.drawmachine.view.workspace.WorkspaceView;
 
 import javax.swing.*;
@@ -33,7 +33,7 @@ public class DrawMachineSim implements Application {
 
     private FileHub fileHub;
 
-    private WorkspaceView workspaceView;
+    private Workspace workspace;
 
     private View view;
 
@@ -77,7 +77,7 @@ public class DrawMachineSim implements Application {
     private void buildView() {
         this.view = new View();
         this.fileHub = view.getFileHub();
-        this.workspaceView = view.getWorkspaceView();
+        this.workspace = view.getWorkspace();
         fileHub.addTab("documentation.readme", new NullFile());
     }
 
@@ -110,6 +110,10 @@ public class DrawMachineSim implements Application {
 
     }
 
+    public View getView() {
+        return view;
+    }
+
     public FileHub getFileHub() {
         return fileHub;
     }
@@ -128,5 +132,9 @@ public class DrawMachineSim implements Application {
 
     public IHotKeyHandler getHotKeyHandler() {
         return hotKeyHandler;
+    }
+
+    public Workspace getWorkspace() {
+        return workspace;
     }
 }

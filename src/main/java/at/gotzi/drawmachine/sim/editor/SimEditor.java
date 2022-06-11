@@ -1,6 +1,6 @@
 package at.gotzi.drawmachine.sim.editor;
 
-import at.gotzi.drawmachine.sim.api.SimValues;
+import at.gotzi.drawmachine.api.sim.SimValues;
 
 public interface SimEditor {
 

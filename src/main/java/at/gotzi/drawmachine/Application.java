@@ -1,4 +1,4 @@
-package at.gotzi.drawmachine.api;
+package at.gotzi.drawmachine;
 
 import java.io.IOException;
 

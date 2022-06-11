@@ -1,8 +1,8 @@
 package at.gotzi.drawmachine.sim.editor;
 
 import at.gotzi.drawmachine.DrawMachineSim;
-import at.gotzi.drawmachine.sim.api.SimPoint;
-import at.gotzi.drawmachine.sim.api.SimValues;
+import at.gotzi.drawmachine.api.sim.SimPoint;
+import at.gotzi.drawmachine.api.sim.SimValues;
 
 import javax.swing.*;
 

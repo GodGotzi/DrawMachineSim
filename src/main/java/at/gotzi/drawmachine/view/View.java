@@ -1,6 +1,7 @@
 package at.gotzi.drawmachine.view;
 
 import at.gotzi.drawmachine.view.file.FileHub;
+import at.gotzi.drawmachine.view.workspace.Workspace;
 import at.gotzi.drawmachine.view.workspace.WorkspaceView;
 
 import javax.swing.*;
@@ -18,15 +19,15 @@ public class View extends JSplitPane {
 
         setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         setRightComponent(fileHub);
-        setLeftComponent(workspaceView.getPanel());
-        setDividerLocation(25);
+        setLeftComponent(workspaceView);
+        setResizeWeight(0.01);
     }
 
     public FileHub getFileHub() {
         return fileHub;
     }
 
-    public WorkspaceView getWorkspaceView() {
+    public Workspace getWorkspace() {
         return workspaceView;
     }
 }

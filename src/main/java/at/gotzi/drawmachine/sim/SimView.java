@@ -2,12 +2,10 @@ package at.gotzi.drawmachine.sim;
 
 import at.gotzi.drawmachine.control.layout.HorizontalSplitLayout;
 import at.gotzi.drawmachine.sim.editor.SimEditor;
-import at.gotzi.drawmachine.sim.monitor.SimMonitor;
 import at.gotzi.drawmachine.sim.monitor.SimMonitorView;
 import at.gotzi.drawmachine.sim.main.SimMainView;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class SimView extends JPanel implements Simulation {
 
@@ -22,12 +20,12 @@ public class SimView extends JPanel implements Simulation {
         this.simMainView = new SimMainView(this);
 
         add(simMainView);
-        add(simMonitor.getView());
+        add(simMonitor.getPanel());
         buildLayout();
     }
 
     private void buildLayout() {
-        HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(simMainView, simMonitor.getView());
+        HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(simMainView, simMonitor.getPanel());
         horizontalSplitLayout.setComponent2Size(120);
         setLayout(horizontalSplitLayout);
     }

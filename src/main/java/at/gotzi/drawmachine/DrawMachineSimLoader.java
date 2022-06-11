@@ -1,7 +1,5 @@
 package at.gotzi.drawmachine;
 
-import at.gotzi.drawmachine.api.Application;
-
 import java.io.IOException;
 
 public class DrawMachineSimLoader {

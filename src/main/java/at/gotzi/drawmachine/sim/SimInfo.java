@@ -1,6 +1,6 @@
 package at.gotzi.drawmachine.sim;
 
-import at.gotzi.drawmachine.sim.api.SimValues;
+import at.gotzi.drawmachine.api.sim.SimValues;
 import at.gotzi.drawmachine.sim.monitor.SimMonitor;
 
 import java.util.concurrent.atomic.AtomicInteger;

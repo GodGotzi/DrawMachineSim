@@ -2,8 +2,9 @@ package at.gotzi.drawmachine.builder;
 
 import at.gotzi.drawmachine.DrawMachineSim;
 import at.gotzi.drawmachine.api.IBuilder;
-import at.gotzi.drawmachine.view.file.NewFileAction;
+import at.gotzi.drawmachine.menubar.actions.NewFileAction;
 import at.gotzi.drawmachine.menubar.*;
+import at.gotzi.drawmachine.menubar.actions.OpenWorkspaceAction;
 
 import javax.swing.*;
 
@@ -48,12 +49,13 @@ public class MenuBarBuilder extends IBuilder<GMenuBar> {
      */
     private void buildMenu00(GMenuBar menuBar) {
         GMenu menu00 = new GMenu("File");
-        JMenuItem item00 = new JMenuItem("New");
-        item00.addActionListener(new NewFileAction());
-        JMenuItem item01 = new JMenuItem("Open");
-        JMenuItem item02 = new JMenuItem("Open Recent");
+        JMenuItem item00 = new JMenuItem("Open Workspace");
+        item00.addActionListener(new OpenWorkspaceAction());
+        JMenuItem item01 = new JMenuItem("Open recent Workspace");
+        JMenuItem item02 = new JMenuItem("New");
+        item02.addActionListener(new NewFileAction());
         JMenuItem item03 = new JMenuItem("Save");
-        JMenuItem item04 = new JMenuItem("Save as");
+        JMenuItem item04 = new JMenuItem("Save as picture");
         menu00.add(item00);
         menu00.add(item01);
         menu00.add(item02);

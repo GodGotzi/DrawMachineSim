@@ -1,7 +1,7 @@
 package at.gotzi.drawmachine.sim.algorithm.logic;
 
 import at.gotzi.drawmachine.sim.SimInfo;
-import at.gotzi.drawmachine.sim.api.SimPoint;
+import at.gotzi.drawmachine.api.sim.SimPoint;
 
 public class MathLogic {
 
