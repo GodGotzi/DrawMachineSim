@@ -51,7 +51,7 @@ public class MenuBarBuilder extends Builder<GMenuBar> {
         JMenuItem item00 = new JMenuItem("Open Workspace");
         item00.addActionListener(new OpenWorkspaceAction());
         JMenuItem item01 = new JMenuItem("Open recent Workspace");
-        JMenuItem item02 = new JMenuItem("New");
+        JMenuItem item02 = new JMenuItem("New Mode/File");
         item02.addActionListener(new NewModeFileAction());
         JMenuItem item03 = new JMenuItem("Save");
         JMenuItem item04 = new JMenuItem("Save as picture");

@@ -44,6 +44,11 @@ public class WorkspaceView extends JPanel implements Workspace {
 
     private ThreadScheduler updateThread = null;
 
+    /**
+     * It loads the workspace and starts a thread that checks for changes in the workspace
+     *
+     * @param file The file to load the workspace from
+     */
     @Override
     public synchronized void loadWorkspace(File file) {
         this.directory = file.getAbsolutePath();
@@ -83,6 +88,12 @@ public class WorkspaceView extends JPanel implements Workspace {
         return this.directory;
     }
 
+    /**
+     * For each file in the array of files, if the file is a directory, load the directory, otherwise load the file.
+     *
+     * @param files The files to loop through
+     * @param treeNode The node to add the files to.
+     */
     private void loopFiles(File[] files, DefaultMutableTreeNode treeNode) {
         for (File f : files) {
             if (f.isDirectory()) loadDirectory(f, treeNode);
@@ -90,6 +101,14 @@ public class WorkspaceView extends JPanel implements Workspace {
         }
     }
 
+    /**
+     * It takes a file and a mutable tree node, creates a new mutable tree node with the file's name, adds it to the
+     * mutable tree node, sets it to allow children, and if the file has children, loops through them and adds them to the
+     * tree node
+     *
+     * @param file The file to be loaded
+     * @param mutableTreeNode The node that will be added to the tree.
+     */
     private void loadDirectory(File file, DefaultMutableTreeNode mutableTreeNode) {
         DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(file.getName());
         mutableTreeNode.add(treeNode);
@@ -99,6 +118,13 @@ public class WorkspaceView extends JPanel implements Workspace {
         loopFiles(Objects.requireNonNull(file.listFiles()), treeNode);
     }
 
+    /**
+     * If the file is a directory, then add a new node to the tree, and recursively call this function on all the files in
+     * the directory.
+     *
+     * @param file The file to be added to the tree.
+     * @param mutableTreeNode The parent node to which the new node will be added.
+     */
     private void loadFile(File file, DefaultMutableTreeNode mutableTreeNode) {
         DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(file.getName());
         mutableTreeNode.add(treeNode);

@@ -12,6 +12,11 @@ import java.io.*;
 
 public class NewModeFileAction extends AbstractAction {
 
+    /**
+     * The function creates a new file with the name specified by the user, and then opens the file in a new tab
+     *
+     * @param e The ActionEvent that triggered the action.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String str = getName();
@@ -38,14 +43,20 @@ public class NewModeFileAction extends AbstractAction {
         return modeStringBuilder.getResult();
     }
 
+    /**
+     * It creates a new file in the workspace directory with the name of the first parameter and the contents of the second
+     * parameter
+     *
+     * @param str The name of the file to be created.
+     * @param data The data to be written to the file.
+     */
     private void createFile(String str, Object data) throws IOException {
         Workspace workspace = DrawMachineSim.getInstance().getWorkspace();
         File newFile = new File(workspace.getDirectoryPath() + "\\" + str);
         boolean ret = newFile.createNewFile();
 
         if (!ret) {
-            JOptionPane.showMessageDialog(DrawMachineSim.getInstance().getWindow().getFrame(), "File/Mode already exists");
-            return;
+            throw new IOException("File/Mode already Exists");
         }
 
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newFile));

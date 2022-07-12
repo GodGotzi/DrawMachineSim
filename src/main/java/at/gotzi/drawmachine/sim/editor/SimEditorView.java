@@ -39,6 +39,7 @@ public class SimEditorView implements SimEditor {
                 0,
                 baseSteps);
     }
+
     @Override
     public SimValues getSimValues() {
         return null;

@@ -62,7 +62,7 @@ public class DrawMachineSim implements Application {
         window.setVisible(true);
         window.setMenuBar(menuBar);
         window.getFrame().add(this.view);
-        window.getFrame().setMinimumSize(new Dimension(900, 450));
+        window.getFrame().setMinimumSize(new Dimension(1000, 450));
 
         window.getFrame().pack();
         window.getFrame().setSize(dimension);

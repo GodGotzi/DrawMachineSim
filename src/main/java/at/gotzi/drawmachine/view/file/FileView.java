@@ -8,4 +8,9 @@ public class FileView extends JPanel {
     public FileView(String name) {
         this.name = name;
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }
