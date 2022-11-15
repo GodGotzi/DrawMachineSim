@@ -1,34 +1,37 @@
 package at.gotzi.drawmachine.view.workspace;
 
-import at.gotzi.drawmachine.api.Action;
 import at.gotzi.drawmachine.api.FileUpdateScheduler;
 import at.gotzi.drawmachine.api.ThreadScheduler;
 import at.gotzi.drawmachine.control.layout.HorizontalSplitLayout;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 public class WorkspaceView extends JPanel implements Workspace {
+
     private final WorkspaceTree workspaceTree;
     private final JLabel title;
+    private final Map<File, WorkspaceElement> fileMap;
 
     private String directory;
-
-    private Action<File> openFile;
-
-    private Action<File> closeFile;
 
     public WorkspaceView() {
         this.title = new JLabel();
         title.setText("Workspace");
         this.workspaceTree = new WorkspaceTree(new DefaultMutableTreeNode("..."));
         this.workspaceTree.getRoot().setAllowsChildren(true);
+        this.fileMap = new HashMap<>();
 
         buildLayout();
     }
@@ -64,8 +67,7 @@ public class WorkspaceView extends JPanel implements Workspace {
         this.updateThread = new FileUpdateScheduler(file.listFiles(), file.getAbsolutePath()) {
             @Override
             public void run() {
-                File newDir = new File(getPath());
-                List<File> fileCompare = new LinkedList<>();
+                File newDir = new File(getPath());                List<File> fileCompare = new LinkedList<>();
 
                 if (file.exists()) {
                     if (newDir.listFiles() != null && Objects.requireNonNull(newDir.listFiles()).length != 0) {
@@ -110,12 +112,14 @@ public class WorkspaceView extends JPanel implements Workspace {
      * @param mutableTreeNode The node that will be added to the tree.
      */
     private void loadDirectory(File file, DefaultMutableTreeNode mutableTreeNode) {
-        DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(file.getName());
-        mutableTreeNode.add(treeNode);
-        treeNode.setAllowsChildren(true);
+        WorkspaceDir workspaceDir = new WorkspaceDir(false, file.getName());
+
+        //DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(file.getName());
+        mutableTreeNode.add(workspaceDir);
+        workspaceDir.setAllowsChildren(true);
         if (file.listFiles() == null) return;
 
-        loopFiles(Objects.requireNonNull(file.listFiles()), treeNode);
+        loopFiles(Objects.requireNonNull(file.listFiles()), workspaceDir);
     }
 
     /**
@@ -126,17 +130,10 @@ public class WorkspaceView extends JPanel implements Workspace {
      * @param mutableTreeNode The parent node to which the new node will be added.
      */
     private void loadFile(File file, DefaultMutableTreeNode mutableTreeNode) {
-        DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(file.getName());
-        mutableTreeNode.add(treeNode);
-        treeNode.setAllowsChildren(false);
-    }
+        WorkspaceFile workspaceFile = new WorkspaceFile(true, file.getName());
+        //DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(file.getName());
 
-
-    public void setCloseFile(Action<File> closeFile) {
-        this.closeFile = closeFile;
-    }
-
-    public void setOpenFile(Action<File> openFile) {
-        this.openFile = openFile;
+        mutableTreeNode.add(workspaceFile);
+        workspaceFile.setAllowsChildren(false);
     }
 }

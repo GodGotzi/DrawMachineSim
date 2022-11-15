@@ -27,15 +27,15 @@ public class SimEditorView implements SimEditor {
     public SimValues getTestSimValues() {
         return new SimValues(
                 new SimPoint(1050, 1050),
-                new SimPoint(100, 1050-1580),
-                new SimPoint(2000, 1050-1580),
-                350,
-                100,
-                1600,
-                1500,
-                200,
+                new SimPoint(1050-700, 1050-2400),
+                new SimPoint(1050+700, 1050-2400),
+                300,
+                300,
+                2000,
+                1200,
+                1150,
                 (double) 360/ (double) baseSteps,
-                10,
+                1,
                 0,
                 baseSteps);
     }
