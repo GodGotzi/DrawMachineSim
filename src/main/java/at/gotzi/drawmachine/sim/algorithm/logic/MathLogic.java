@@ -45,23 +45,39 @@ public class MathLogic {
         HelperPoint m2PositionOut = new HelperPoint(simInfo.getSimValues().m2().x() + m2exOffset, simInfo.getSimValues().m2().y() + m2eyOffset);
 
         double c = Math.sqrt(Math.pow(m1PositionOut.x-m2PositionOut.x,2) + Math.pow(m1PositionOut.y-m2PositionOut.y,2));
-
-        double xC = (Math.pow(simInfo.getSimValues().ls2(), 2) - Math.pow(simInfo.getSimValues().s1_2(), 2) + Math.pow(c, 2))/ (2.0 * c);
-        double yC = Math.sqrt(Math.pow(simInfo.getSimValues().ls2(), 2) - Math.pow(xC, 2));
-
-        System.out.println(" " + xC + " yC: " + yC + " c: " + c);
-
-        HelperPoint C = new HelperPoint(xC + m1PositionOut.x, yC + m2PositionOut.y);
+        double cx = m1PositionOut.x-m2PositionOut.x;
+        double cy = m1PositionOut.y-m2PositionOut.y;
 
         double s = 0.5 * (simInfo.getSimValues().s1_2() + simInfo.getSimValues().ls2() + c);
         double hc = (2.0/c) * Math.sqrt(s * (s - simInfo.getSimValues().s1_2()) * (s - simInfo.getSimValues().ls2()) * (s - c));
 
-        double beta = Math.asin(hc/simInfo.getSimValues().s1_2());
+        double alphaRadiant = Math.asin(hc/simInfo.getSimValues().ls2());
+        double c1 = Math.cos(alphaRadiant) * simInfo.getSimValues().ls2();
+        System.out.println( "c1: " + c1);
 
+        double rectangleLittleRadiant = Math.atan(cy/cx);
+        System.out.println(rectangleLittleRadiant);
+
+        double dx = Math.cos(rectangleLittleRadiant) * c1;
+        double dy = Math.sin(rectangleLittleRadiant) * c1;
+
+        System.out.println("dx: " + dx + " dy: " + dy);
+
+        HelperPoint D = new HelperPoint(dx + m1PositionOut.x, dy + m1PositionOut.y);
+
+        System.out.println("D: " + D);
+
+        double COffsetRadiant = Math.PI/2 - rectangleLittleRadiant;
+        double CxOffset = Math.cos(COffsetRadiant) * hc;
+        double CyOffset = Math.sin(COffsetRadiant) * hc;
+
+        HelperPoint C = new HelperPoint(CxOffset + D.x, CyOffset + D.y);
+
+        double beta = Math.asin(hc/simInfo.getSimValues().s1_2());
         double ls3 = simInfo.getSimValues().ls1()-simInfo.getSimValues().s1_2();
 
-        double pencilXOffset = Math.cos(beta) * ls3;
-        double pencilYOffset = Math.sin(beta) * simInfo.getSimValues().ls1();
+        double pencilXOffset = Math.cos(beta - rectangleLittleRadiant) * ls3;
+        double pencilYOffset = Math.sin(beta - rectangleLittleRadiant) * ls3;
         HelperPoint pencil = new HelperPoint(C.x + pencilXOffset, C.y + pencilYOffset);
 
         System.out.println(pencil);
@@ -71,6 +87,8 @@ public class MathLogic {
 
         double abs = Math.sqrt(absX * absX + absY * absY);
         double radiantOffset1 = Math.atan(absY/absX);
+
+        System.out.println(abs);
 
         double newPencil1X = Math.cos(Math.toRadians(middleDegree) + radiantOffset1) * abs;
         double newPencil1Y = Math.sin(Math.toRadians(middleDegree) + radiantOffset1) * abs;
