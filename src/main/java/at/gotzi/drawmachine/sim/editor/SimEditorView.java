@@ -29,14 +29,14 @@ public class SimEditorView implements SimEditor {
                 new SimPoint(1050, 1050),
                 new SimPoint(1050-700, 1050-2400),
                 new SimPoint(1050+700, 1050-2400),
-                280,
-                280,
-                2000,
-                1200,
-                1150,
+                200,
+                200,
+                2200,
+                1400,
+                1100,
                 (double) 360/ (double) baseSteps,
-                1,
-                30,
+                15,
+                8,
                 baseSteps);
     }
 
