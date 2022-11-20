@@ -67,6 +67,7 @@ public class DrawMachineSim implements Application {
         window.getFrame().pack();
         window.getFrame().setSize(dimension);
         window.centerOnScreen();
+        window.getFrame().setBackground(Color.LIGHT_GRAY);
 
         window.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -77,7 +78,7 @@ public class DrawMachineSim implements Application {
         this.view = new View();
         this.fileHubView = view.getFileHub();
         this.workspace = view.getWorkspace();
-        fileHubView.addTab("documentation.readme", new NullFile());
+        //fileHubView.addTab("documentation.readme", new NullFile());
     }
 
     /**

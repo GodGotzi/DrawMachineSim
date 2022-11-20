@@ -1,10 +1,15 @@
 package net.gotzi.drawmachine.sim.algorithm;
 
 import net.gotzi.drawmachine.api.Action;
+import net.gotzi.drawmachine.api.sim.SimCompletedInfo;
 import net.gotzi.drawmachine.sim.SimInfo;
 import net.gotzi.drawmachine.sim.algorithm.logic.FastLogic;
 import net.gotzi.drawmachine.sim.algorithm.logic.Logic;
 import net.gotzi.drawmachine.sim.algorithm.logic.SimLogic;
+import net.gotzi.drawmachine.utils.BenchmarkTimer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SimRenderer implements Renderer {
 
@@ -26,8 +31,11 @@ public class SimRenderer implements Renderer {
     @Override
     public void render(SimInfo simInfo) {
         if (!isRunning()) {
+            setRunning(true);
+
             if (!simInfo.isFastMode()) {
-                setRunning(true);
+                BenchmarkTimer timer = new BenchmarkTimer();
+                timer.start();
 
                 Logic logic = new SimLogic(simInfo, update, this.paper, this);
 
@@ -38,12 +46,13 @@ public class SimRenderer implements Renderer {
 
                     //TODO Sim Information output
 
+                    System.out.println("Timer ms: " + timer.stop());
                     System.out.println("Travel: " + (logic.getTravelDistance() / 100.0));
                 });
 
                 thread.start();
             } else {
-                FastLogic fastLogic = new FastLogic(simCompletedInfo -> {
+                FastLogic fastLogic = new FastLogic(simInfo, update, this.paper, this, simCompletedInfo -> {
                     setRunning(false);
 
                     //TODO Sim Information output

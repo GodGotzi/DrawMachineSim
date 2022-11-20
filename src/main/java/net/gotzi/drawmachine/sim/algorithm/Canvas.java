@@ -1,5 +1,6 @@
 package net.gotzi.drawmachine.sim.algorithm;
 
+import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.error.PencilOutOfCanvas;
 
 import java.awt.*;
@@ -12,7 +13,6 @@ public class Canvas extends BufferedImage {
     public Canvas(int width, int height, int rgb) {
         super(width, height, BufferedImage.TYPE_INT_RGB);
         this.rgb = rgb;
-
         this.reset();
     }
 
@@ -41,10 +41,10 @@ public class Canvas extends BufferedImage {
             //System.out.println("X: " + (getWidth() - x) + " Y:" + (getHeight() - y));
             setPixelPoint(getWidth() - x,getHeight() - y, rgb);
         } catch (ArrayIndexOutOfBoundsException ignored) {
-            //throw new PencilOutOfCanvas(DrawMachineSim.getInstance().getWindow().getFrame(), "X: " + (getWidth() - x) + " Y: " + (getHeight() - y));
+            throw new PencilOutOfCanvas(DrawMachineSim.getInstance().getWindow().getFrame(), "X: " + (getWidth() - x) + " Y: " + (getHeight() - y));
         }
     }
-
+  
     /**
      * Set the pixel at (x,y) to the given color, and set the pixels around it to the same color.
      *

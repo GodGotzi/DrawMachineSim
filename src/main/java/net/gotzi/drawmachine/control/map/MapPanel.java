@@ -16,11 +16,11 @@ public class MapPanel extends JPanel {
     private final SimRenderer simRenderer;
 
     private final Simulation simulation;
-    private final Canvas paper;
 
     public MapPanel(Dimension dimension, Simulation simulation, int maxScrollSize, int minScrollSize, int startScroll) {
         this.dimension = dimension;
-        this.paper = new Canvas(dimension.width, dimension.height, Color.BLACK.getRGB());
+        
+        Canvas paper = new Canvas(dimension.width, dimension.height, Color.BLACK.getRGB());
         this.simRenderer = new SimRenderer(paper, this::update);
         this.mapLayout = new MapLayout(this, paper, maxScrollSize, minScrollSize, startScroll);
         this.simulation = simulation;

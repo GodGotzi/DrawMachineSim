@@ -4,13 +4,10 @@ import net.gotzi.drawmachine.sim.SimInfo;
 import net.gotzi.drawmachine.api.sim.SimPoint;
 
 public class MathLogic {
-
-    private final SimLogic simLogic;
     private final SimInfo simInfo;
 
-    public MathLogic(SimLogic simLogic) {
-        this.simLogic = simLogic;
-        this.simInfo = simLogic.getSimInfo();
+    public MathLogic(SimInfo simInfo) {
+        this.simInfo = simInfo;
     }
 
     /**
@@ -31,9 +28,9 @@ public class MathLogic {
      * @return The point where the pencil is.
      */
     protected SimPoint calculatePencilPoint(int step) {
-        double middleDegree = speedToDegree(step, simLogic.getRealSpeedMiddle());
-        double m1Degree = speedToDegree(step, simLogic.getRealSpeedM1());
-        double m2Degree = speedToDegree(step, simLogic.getRealSpeedM2());
+        double middleDegree = speedToDegree(step, simInfo.getRealSpeedMiddle());
+        double m1Degree = speedToDegree(step, simInfo.getRealSpeedM1());
+        double m2Degree = speedToDegree(step, simInfo.getRealSpeedM2());
 
         double m1exOffset = Math.cos(Math.toRadians(m1Degree)) * simInfo.getSimValues().m1Horn();
         double m1eyOffset = Math.sin(Math.toRadians(m1Degree)) * simInfo.getSimValues().m1Horn();
@@ -44,8 +41,7 @@ public class MathLogic {
         HelperPoint m1PositionOut = new HelperPoint(simInfo.getSimValues().m1Point().x() + m1exOffset, simInfo.getSimValues().m1Point().y() + m1eyOffset);
         HelperPoint m2PositionOut = new HelperPoint(simInfo.getSimValues().m2Point().x() + m2exOffset, simInfo.getSimValues().m2Point().y() + m2eyOffset);
 
-        System.out.println("m1exOffset: " + m1exOffset + "m1eyOffset: " + m1eyOffset);
-        System.out.println("m2exOffset: " + m2exOffset + "m2eyOffset: " + m2eyOffset);
+        //System.out.println("m1exOffset: " + m1exOffset + "m1eyOffset: " + m1eyOffset)
 
         double c = Math.sqrt(Math.pow(m1PositionOut.x-m2PositionOut.x,2) + Math.pow(m1PositionOut.y-m2PositionOut.y,2));
 
@@ -57,23 +53,23 @@ public class MathLogic {
 
         double newRadiant = alphaRadiant + miniRadiant;
 
-        System.out.println("hc: " + hc);
-        System.out.println("Alpha: " + Math.toDegrees(alphaRadiant));
-        System.out.println("Mini: " + Math.toDegrees(miniRadiant));
-        System.out.println("New: " + Math.toDegrees(newRadiant));
+        //System.out.println("hc: " + hc);
+        //System.out.println("Alpha: " + Math.toDegrees(alphaRadiant));
+        //System.out.println("Mini: " + Math.toDegrees(miniRadiant));
+        //System.out.println("New: " + Math.toDegrees(newRadiant));
 
         double cxOffset = Math.cos(newRadiant) * simInfo.getSimValues().supportPole();
         double cyOffset = Math.sin(newRadiant) * simInfo.getSimValues().supportPole();
 
         HelperPoint C = new HelperPoint(m1PositionOut.x + cxOffset, m1PositionOut.y + cyOffset);
 
-        System.out.println("ABS C: " + Math.sqrt(Math.pow(C.x - simInfo.getSimValues().middlePoint().x(), 2) + Math.pow(C.y - simInfo.getSimValues().middlePoint().y(), 2)));
+        //System.out.println("ABS C: " + Math.sqrt(Math.pow(C.x - simInfo.getSimValues().middlePoint().x(), 2) + Math.pow(C.y - simInfo.getSimValues().middlePoint().y(), 2)));
 
         double beta = Math.asin(hc/simInfo.getSimValues().intersection());
         double ls3 = simInfo.getSimValues().mainPole()-simInfo.getSimValues().intersection();
-        System.out.println("Beta: " + Math.toDegrees(beta));
-        System.out.println("Miniradiant: " + Math.toDegrees(miniRadiant));
-        System.out.println("Dif: " + Math.toDegrees(beta-miniRadiant));
+        //System.out.println("Beta: " + Math.toDegrees(beta));
+        //System.out.println("Miniradiant: " + Math.toDegrees(miniRadiant));
+        //System.out.println("Dif: " + Math.toDegrees(beta-miniRadiant));
 
         double pencilXOffset = Math.cos( Math.abs((beta - miniRadiant - Math.PI)) ) * ls3;
         double pencilYOffset = Math.sin(Math.abs((beta - miniRadiant - Math.PI))) * ls3;
@@ -88,7 +84,7 @@ public class MathLogic {
         double abs = Math.sqrt(absX * absX + absY * absY);
         double radiantOffset1 = Math.atan(absY/absX);
 
-        System.out.println("ABS: " + abs);
+        //System.out.println("ABS: " + abs);
 
         double newPencil1X = Math.cos(Math.toRadians(middleDegree) + radiantOffset1) * abs;
         double newPencil1Y = Math.sin(Math.toRadians(middleDegree) + radiantOffset1) * abs;

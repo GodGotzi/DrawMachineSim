@@ -6,6 +6,7 @@ import net.gotzi.drawmachine.control.layout.HorizontalSplitLayout;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.io.File;
@@ -32,11 +33,36 @@ public class WorkspaceView extends JPanel implements Workspace {
 
     private void buildLayout() {
         this.setMinimumSize(new Dimension(200, 0));
-        HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(this.title, this.workspaceTree);
+
+        ScrollPane scrollPane = new ScrollPane();
+        HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(this.title, scrollPane);
         horizontalSplitLayout.setComponent1Size(25);
         setLayout(horizontalSplitLayout);
+
+        //scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBackground(Color.GRAY);
+        scrollPane.setForeground(Color.GRAY);
+
+        scrollPane.add(this.workspaceTree);
+        colorRise();
+
         add(this.title);
-        add(this.workspaceTree);
+        add(scrollPane);
+    }
+
+    private void colorRise() {
+        setBackground(new Color(126, 60, 183));
+
+        this.title.setForeground(Color.WHITE);
+        this.workspaceTree.setBackground(Color.GRAY);
+
+        DefaultTreeCellRenderer renderer =
+                (DefaultTreeCellRenderer) this.workspaceTree.getCellRenderer();
+        renderer.setBackgroundNonSelectionColor(Color.GRAY);
+        renderer.setTextNonSelectionColor(Color.WHITE);
+        renderer.setTextSelectionColor(Color.WHITE);
+        renderer.setBackgroundSelectionColor(Color.LIGHT_GRAY);
+        renderer.setBorderSelectionColor(Color.WHITE);
     }
 
     private ThreadScheduler updateThread = null;
@@ -61,7 +87,8 @@ public class WorkspaceView extends JPanel implements Workspace {
         this.updateThread = new FileUpdateScheduler(file.listFiles(), file.getAbsolutePath()) {
             @Override
             public void run() {
-                File newDir = new File(getPath());                List<File> fileCompare = new LinkedList<>();
+                File newDir = new File(getPath());
+                List<File> fileCompare = new LinkedList<>();
 
                 if (file.exists()) {
                     if (newDir.listFiles() != null && Objects.requireNonNull(newDir.listFiles()).length != 0) {

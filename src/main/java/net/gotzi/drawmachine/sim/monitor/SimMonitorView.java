@@ -7,6 +7,7 @@ import net.gotzi.drawmachine.sim.Simulation;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
@@ -94,10 +95,10 @@ public class SimMonitorView implements SimMonitor {
     }
 
     private void switchFastMode(ActionEvent event) {
-
+        //event.get
     }
 
-    private void updateSimSteps(ChangeEvent ignored) throws UnsupportedValue {
+    private void updateSimSteps(ChangeEvent ignored) {
         NumberFormat nf = DecimalFormat.getInstance(new Locale("en", "US"));
         int maxAllowed = Integer.parseInt(DrawMachineSim.getInstance().getConfig().get("max_simulation_steps"));
         int value;
@@ -105,7 +106,7 @@ public class SimMonitorView implements SimMonitor {
         value = Integer.parseInt(simStepSpinner.getValue().toString());
         if (maxAllowed < value) {
             simStepSpinner.setValue(maxAllowed);
-            throw new UnsupportedValue(DrawMachineSim.getInstance().getWindow().getFrame(), "Value is too high Max: " + nf.format(maxAllowed));
+            new UnsupportedValue(DrawMachineSim.getInstance().getWindow().getFrame(), "Value is too high Max: " + nf.format(maxAllowed));
         }
 
         stepProgress.setText(simulation.getCurrentSteps() + "/" + value);
@@ -159,9 +160,9 @@ public class SimMonitorView implements SimMonitor {
 
     @Override
     public boolean isFastMode() {
-        return fastMode.isEnabled();
+        //fastMode.addChangeListener(e -> System.out.println(e.getSource()));
+        return fastMode.isSelected();
     }
-
     @Override
     public void updateProgress(int progress) {
         this.progressBar.setValue(progress);

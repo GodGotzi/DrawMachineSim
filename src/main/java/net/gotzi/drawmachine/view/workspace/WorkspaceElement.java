@@ -8,7 +8,6 @@ public abstract class WorkspaceElement extends DefaultMutableTreeNode {
 
     public WorkspaceElement(boolean file, String s) {
         super(s);
-
         this.file = file;
     }
 
