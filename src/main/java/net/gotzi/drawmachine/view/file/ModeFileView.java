@@ -5,6 +5,8 @@ import net.gotzi.drawmachine.control.layout.VerticalSplitLayout;
 import net.gotzi.drawmachine.sim.editor.SimEditorView;
 import net.gotzi.drawmachine.sim.SimView;
 
+import java.awt.*;
+
 public class ModeFileView extends FileView {
 
     private final SimEditorView simEditorView;

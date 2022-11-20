@@ -10,9 +10,11 @@ import net.gotzi.drawmachine.view.file.FileHubView;
 import net.gotzi.drawmachine.menubar.GMenuBar;
 import net.gotzi.drawmachine.view.workspace.Workspace;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
@@ -54,24 +56,28 @@ public class DrawMachineSim implements Application {
      * It creates a new window, sets the size, centers it on the screen, maximizes it, and removes the title bar
      */
     @Override
-    public void start() {
+    public void start() throws IOException {
         Dimension dimension = new Dimension(1200, 675);
-        this.window = new Window("DrawMachine - CA", (KeyListener) hotKeyHandler);
+        this.window = new Window("DrawMachine - Simulation V1.0", (KeyListener) hotKeyHandler);
 
-        window.setResizeable(true);
+        window.setResizable(true);
         window.setVisible(true);
-        window.setMenuBar(menuBar);
-        window.getFrame().add(this.view);
-        window.getFrame().setMinimumSize(new Dimension(1000, 450));
+        window.setJMenuBar(menuBar);
+        window.add(this.view);
+        window.setMinimumSize(new Dimension(1000, 450));
 
-        window.getFrame().pack();
-        window.getFrame().setSize(dimension);
+        InputStream in = getClass().getClassLoader().getResourceAsStream("icon.PNG");
+        Image image = ImageIO.read(in);
+        window.setIconImage(image);
+
+        window.pack();
         window.centerOnScreen();
-        window.getFrame().setBackground(Color.LIGHT_GRAY);
-
-        window.getFrame().setExtendedState(JFrame.MAXIMIZED_BOTH);
+        window.setBackground(Color.LIGHT_GRAY);
+        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         window.start();
+
+        window.setSize(dimension);
     }
 
     private void buildView() {
@@ -104,7 +110,7 @@ public class DrawMachineSim implements Application {
     }
 
     public void setCursor(Cursor cursor) {
-        this.window.getFrame().setCursor(cursor);
+        this.window.setCursor(cursor);
     }
 
     @Override

@@ -4,11 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
 
-public class Window implements Runnable {
+public class Window extends JFrame implements Runnable {
     private static boolean running = false;
     private Thread thread;
-    private JFrame frame;
-
     private final String title;
 
     public Window(String title, KeyListener keyListener) {
@@ -17,29 +15,16 @@ public class Window implements Runnable {
     }
 
     private void init(KeyListener keyListener) {
-        this.frame = new JFrame();
-        this.frame.setTitle(title);
-        this.frame.pack();
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.addKeyListener(keyListener);
-    }
-
-    public void setResizeable(boolean b) {
-        this.frame.setResizable(b);
-    }
-
-    public void setVisible(boolean b) {
-        this.frame.setVisible(b);
-    }
-
-    @Override
-    public void run() {
-        this.frame.setVisible(false);
+        this.setTitle(title);
+        //this.setUndecorated(true);
+        this.pack();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.addKeyListener(keyListener);
     }
 
     public synchronized void start() {
         running = true;
-        this.thread = new Thread(this, "at.gotzi.gui.Window");
+        this.thread = new Thread(this, "net.gotzi.gui.Window");
     }
 
     public synchronized void stop() {
@@ -59,16 +44,13 @@ public class Window implements Runnable {
 
     public void centerOnScreen() {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
-        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
-        frame.setLocation(x, y);
+        int x = (int) ((dimension.getWidth() - getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - getHeight()) / 2);
+        setLocation(x, y);
     }
 
-    public void setMenuBar(JMenuBar menuBar) {
-        this.frame.setJMenuBar(menuBar);
-    }
-
-    public JFrame getFrame() {
-        return frame;
+    @Override
+    public void run() {
+        setVisible(true);
     }
 }

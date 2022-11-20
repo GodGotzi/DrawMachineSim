@@ -36,8 +36,8 @@ public class SimEditorView implements SimEditor {
                 1400,
                 1100,
                 (double) 360/ (double) baseSteps,
-                15,
-                8,
+                60,
+                32,
                 baseSteps);
     }
 

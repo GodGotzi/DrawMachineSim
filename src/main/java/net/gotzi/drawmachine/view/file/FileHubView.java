@@ -5,6 +5,10 @@ import java.awt.*;
 import java.awt.event.MouseListener;
 
 public class FileHubView extends JTabbedPane implements FileHub {
+
+    public FileHubView() {
+    }
+
     public void openFilePage(FileView fileView) {
         addTab(fileView.getName(), fileView);
     }
@@ -20,6 +24,7 @@ public class FileHubView extends JTabbedPane implements FileHub {
 
         ExitButton exitButton = new ExitButton(e -> {
             removeTabAt(indexOfTab(title));
+            System.gc();
         });
 
         exitButton.setPreferredSize(new Dimension(15, 15));
@@ -43,11 +48,16 @@ public class FileHubView extends JTabbedPane implements FileHub {
         gbc.weightx = 0;
         pnlTab.add(exitPanel, gbc);
 
+        lblTitle.setForeground(Color.WHITE);
         this.setTabComponentAt(index, pnlTab);
+        this.setForeground(Color.WHITE);
+        this.setBackgroundAt(index, new Color(161, 120, 196));
+        this.setForegroundAt(index, Color.WHITE);
+        this.setBackground(Color.WHITE);
     }
 
     @Override
     public synchronized void addMouseListener(MouseListener l) {
-        //super.addMouseListener(l);
+        super.addMouseListener(l);
     }
 }

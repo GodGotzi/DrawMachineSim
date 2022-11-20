@@ -3,11 +3,15 @@ package net.gotzi.drawmachine.view.file;
 
 import net.gotzi.drawmachine.api.Action;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.ImageObserver;
+import java.io.IOException;
+import java.util.Objects;
 
 public class ExitButton extends JPanel {
 
@@ -25,9 +29,14 @@ public class ExitButton extends JPanel {
         int width = getWidth();
         int height = getHeight();
 
-        graphics2D.setColor(Color.RED);
-        graphics2D.drawLine(3, 3, width-3, height-3);
-        graphics2D.drawLine(width-3, 3, 3, height-3);
+
+        try {
+            Image image = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("exitTabPanel.png")));
+            graphics2D.setColor(Color.RED);
+            graphics2D.drawImage(image, 0, 0, null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         //super.paint(g);
     }

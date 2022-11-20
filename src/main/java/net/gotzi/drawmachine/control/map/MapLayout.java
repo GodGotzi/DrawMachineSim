@@ -118,12 +118,12 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        DrawMachineSim.getInstance().getWindow().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+        DrawMachineSim.getInstance().getWindow().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        DrawMachineSim.getInstance().getWindow().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        DrawMachineSim.getInstance().getWindow().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
     @Override

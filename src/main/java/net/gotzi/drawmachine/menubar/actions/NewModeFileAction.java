@@ -29,7 +29,7 @@ public class NewModeFileAction extends AbstractAction {
         try {
             this.createFile(str, data);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(DrawMachineSim.getInstance().getWindow().getFrame(), "Problem while creating File: " + ex.getMessage());
+            JOptionPane.showMessageDialog(DrawMachineSim.getInstance().getWindow(), "Problem while creating File: " + ex.getMessage());
             return;
         }
 

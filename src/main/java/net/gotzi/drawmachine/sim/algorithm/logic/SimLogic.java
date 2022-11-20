@@ -39,8 +39,7 @@ public class SimLogic implements Logic {
         } catch (InterruptedException e) {
             throw new ThreadInterrupt(
                     DrawMachineSim.getInstance()
-                            .getWindow()
-                            .getFrame(), "Thread couldn't await for correct speed correctly");
+                            .getWindow(), "Thread couldn't await for correct speed correctly");
         }
     }
 
