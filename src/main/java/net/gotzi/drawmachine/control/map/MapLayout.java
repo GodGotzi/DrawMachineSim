@@ -1,6 +1,7 @@
 package net.gotzi.drawmachine.control.map;
 
 import net.gotzi.drawmachine.DrawMachineSim;
+import net.gotzi.drawmachine.utils.ImageUtils;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -54,17 +55,20 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
     @SuppressWarnings("empty")
     @Deprecated
     @Override
-    public void invalidateLayout(Container target) {}
+    public void invalidateLayout(Container target) {
+    }
 
     @SuppressWarnings("empty")
     @Deprecated
     @Override
-    public void addLayoutComponent(String name, Component comp) {}
+    public void addLayoutComponent(String name, Component comp) {
+    }
 
     @SuppressWarnings("empty")
     @Deprecated
     @Override
-    public void removeLayoutComponent(Component comp) {}
+    public void removeLayoutComponent(Component comp) {
+    }
 
     @Override
     public Dimension maximumLayoutSize(Container target) {
@@ -96,15 +100,16 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
         Dimension parentDimension = mapPanel.getSize();
         Dimension dimension = mapCopyPanel.getPreferredSize();
 
-        int x = this.x + (parentDimension.width/2) - (dimension.width/2);
-        int y = this.y + (parentDimension.height/2) - (dimension.height/2);
+        int x = this.x + (parentDimension.width / 2) - (dimension.width / 2);
+        int y = this.y + (parentDimension.height / 2) - (dimension.height / 2);
         mapCopyPanel.setBounds(x, y, dimension.width, dimension.height);
     }
 
     private Point previousMousePoint;
 
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -114,7 +119,8 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
     @SuppressWarnings("empty")
     @Deprecated
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+    }
 
     @Override
     public void mouseEntered(MouseEvent e) {
@@ -146,7 +152,8 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
     @SuppressWarnings("empty")
     @Deprecated
     @Override
-    public void mouseMoved(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {
+    }
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
@@ -164,9 +171,9 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
     }
 
     private void repaintPanel(Graphics graphics) {
-        BufferedImage resizedImage = resizeImage(paper, scroll, scroll);
+        BufferedImage resizedImage = ImageUtils.resizeImage(paper, scroll, scroll);
         Graphics2D graphics2D = (Graphics2D) graphics;
-        graphics2D.drawImage(resizedImage, 0, 0, scroll,scroll, null);
+        graphics2D.drawImage(resizedImage, 0, 0, scroll, scroll, null);
     }
 
     private void updateScroll() {
@@ -188,12 +195,5 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
     public void repaint() {
         this.mapCopyPanel.repaint();
     }
-
-    private BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
-        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics2D = resizedImage.createGraphics();
-        graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
-        graphics2D.dispose();
-        return resizedImage;
-    }
 }
+

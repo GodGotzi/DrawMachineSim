@@ -1,20 +1,28 @@
 package net.gotzi.drawmachine.menubar;
 
+import net.gotzi.drawmachine.DrawMachineSim;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.InputStream;
 
 public class Logo extends JMenu {
 
-    public Logo() {
-        setText("           ");
+    private final Image logo23x23;
+
+    public Logo(Image logo23x23) {
+        this.logo23x23 = logo23x23;
+
+        setText("      ");
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        ImageIcon imageIcon = new ImageIcon("resource/logo_low3_res.png");
-        g2.drawImage(imageIcon.getImage(), 15, 0, imageIcon.getImageObserver());
+        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.drawImage(logo23x23, 5, 1, null);
 
         super.paintComponent(g);
     }

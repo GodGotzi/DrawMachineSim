@@ -2,9 +2,9 @@ package net.gotzi.drawmachine.menubar;
 
 import javax.swing.*;
 
-public class GMenu extends JMenu {
+public class Menu extends JMenu {
 
-    public GMenu(String name) {
+    public Menu(String name) {
         super(name);
     }
 

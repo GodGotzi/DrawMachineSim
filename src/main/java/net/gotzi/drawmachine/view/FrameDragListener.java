@@ -1,25 +1,26 @@
 package net.gotzi.drawmachine.view;
 
-import net.gotzi.drawmachine.Window;
+import net.gotzi.drawmachine.MainWindow;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class FrameDragListener extends MouseAdapter {
-    private final Window window;
+    private final MainWindow mainWindow;
     private Point mouseDownCompCoords = null;
 
-    public FrameDragListener(Window frame) {
-        this.window = frame;
+    public FrameDragListener(MainWindow frame) {
+        this.mainWindow = frame;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         if(e.getClickCount()==2){
-            this.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            this.window.centerOnScreen();
+            int state = mainWindow.getExtendedState();
+            if (state == Frame.MAXIMIZED_BOTH)
+                mainWindow.setExtendedState(Frame.NORMAL);
+            else mainWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
         }
     }
 
@@ -33,6 +34,10 @@ public class FrameDragListener extends MouseAdapter {
 
     public void mouseDragged(MouseEvent e) {
         Point currCoords = e.getLocationOnScreen();
-        this.window.setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
+        if (currCoords != null) {
+            this.mainWindow.setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
+            mainWindow.setExtendedState(Frame.NORMAL);
+            mainWindow.shrink();
+        }
     }
 }

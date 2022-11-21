@@ -9,7 +9,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyListener;
 
-public class Window extends JFrame implements Runnable {
+public class MainWindow extends JFrame implements Runnable {
     private static boolean running = false;
     private Thread thread;
     private final String title;
@@ -18,7 +18,7 @@ public class Window extends JFrame implements Runnable {
 
     private int state = -1;
 
-    public Window(String title, KeyListener keyListener) {
+    public MainWindow(String title, KeyListener keyListener) {
         this.title = title;
         this.init(keyListener);
     }
@@ -26,11 +26,7 @@ public class Window extends JFrame implements Runnable {
     private void init(KeyListener keyListener) {
         this.setTitle(title);
 
-        this.setOpacity(0.02f);
         this.setUndecorated(true);
-        FrameDragListener frameDragListener = new FrameDragListener(this);
-        addMouseListener(frameDragListener);
-        addMouseMotionListener(frameDragListener);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.addKeyListener(keyListener);
@@ -92,5 +88,9 @@ public class Window extends JFrame implements Runnable {
     @Override
     public void run() {
         setVisible(true);
+    }
+
+    public void shrink() {
+        setSize(new Dimension(getWidth() , 2));
     }
 }

@@ -3,10 +3,9 @@ package net.gotzi.drawmachine;
 import net.gotzi.drawmachine.builder.HotKeyBuilder;
 import net.gotzi.drawmachine.handler.IHotKeyHandler;
 import net.gotzi.drawmachine.data.ConfigLoader;
-import net.gotzi.drawmachine.menubar.MenuBarBuilder;
+import net.gotzi.drawmachine.menubar.MenuBar;
 import net.gotzi.drawmachine.view.View;
 import net.gotzi.drawmachine.view.file.FileHubView;
-import net.gotzi.drawmachine.menubar.GMenuBar;
 import net.gotzi.drawmachine.view.workspace.Workspace;
 
 import javax.imageio.ImageIO;
@@ -28,8 +27,10 @@ public class DrawMachineSim implements Application {
 
     public static Logger LOGGER;
 
+    private final Image logo;
+
     private Map<String, String> config;
-    private GMenuBar menuBar;
+    private MenuBar menuBar;
 
     private FileHubView fileHubView;
 
@@ -37,18 +38,17 @@ public class DrawMachineSim implements Application {
 
     private View view;
 
-    private Window window;
+    private MainWindow mainWindow;
 
     private IHotKeyHandler hotKeyHandler;
 
-    public DrawMachineSim() {
+    public DrawMachineSim() throws IOException {
         LOGGER = Logger.getLogger("main-logger");
         instance = this;
 
-        this.loadConfig();
-        this.buildMenuBar();
-        this.buildView();
-        this.buildHotKeyHandler();
+        InputStream in = getClass().getClassLoader().getResourceAsStream("logo.PNG");
+        this.logo = ImageIO.read(in);
+
     }
 
     /**
@@ -57,24 +57,28 @@ public class DrawMachineSim implements Application {
     @Override
     public void start() throws IOException {
         Dimension dimension = new Dimension(1200, 675);
-        this.window = new Window("DrawMachine - Simulation V1.0", (KeyListener) hotKeyHandler);
+        this.mainWindow = new MainWindow("DrawMachine - Simulation V1.0", (KeyListener) hotKeyHandler);
 
-        InputStream in = getClass().getClassLoader().getResourceAsStream("icon.PNG");
-        Image image = ImageIO.read(in);
-        window.setIconImage(image);
-        window.setResizable(true);
-        window.setJMenuBar(menuBar);
-        window.add(this.view);
-        window.setMinimumSize(new Dimension(1000, 450));
+        this.loadConfig();
+        this.buildMenuBar();
+        this.buildView();
+        this.buildHotKeyHandler();
 
-        window.setSize(dimension);
-        window.pack();
-        window.centerOnScreen();
-        window.setBackground(Color.LIGHT_GRAY);
-        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        window.setVisible(true);
-        window.start();
+        mainWindow.setIconImage(this.logo);
+        mainWindow.setResizable(true);
+        mainWindow.setJMenuBar(menuBar);
+        mainWindow.add(this.view);
+        mainWindow.setMinimumSize(new Dimension(1000, 450));
+
+        mainWindow.setSize(dimension);
+        mainWindow.pack();
+        mainWindow.centerOnScreen();
+        mainWindow.setBackground(Color.LIGHT_GRAY);
+        mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        mainWindow.setVisible(true);
+        mainWindow.start();
     }
 
     private void buildView() {
@@ -88,9 +92,9 @@ public class DrawMachineSim implements Application {
      * Build the menu bar and store it in the menuBar variable.
      */
     private void buildMenuBar() {
-        MenuBarBuilder menuBarBuilder = new MenuBarBuilder(this);
-        menuBarBuilder.build();
-        this.menuBar = menuBarBuilder.getResult();
+        MenuBar menuBar = new MenuBar(this.mainWindow);
+        menuBar.build();
+        this.menuBar = menuBar;
     }
 
     private void buildHotKeyHandler() {
@@ -107,7 +111,7 @@ public class DrawMachineSim implements Application {
     }
 
     public void setCursor(Cursor cursor) {
-        this.window.setCursor(cursor);
+        this.mainWindow.setCursor(cursor);
     }
 
     @Override
@@ -125,12 +129,12 @@ public class DrawMachineSim implements Application {
         return fileHubView;
     }
 
-    public GMenuBar getMenuBar() {
+    public MenuBar getMenuBar() {
         return menuBar;
     }
 
-    public Window getWindow() {
-        return window;
+    public MainWindow getWindow() {
+        return mainWindow;
     }
 
     public Map<String, String> getConfig() {
@@ -143,5 +147,9 @@ public class DrawMachineSim implements Application {
 
     public Workspace getWorkspace() {
         return workspace;
+    }
+
+    public Image getLogo() {
+        return logo;
     }
 }
