@@ -26,10 +26,6 @@ public class ExitButton extends JPanel {
     public void paint(Graphics g) {
         Graphics2D graphics2D = (Graphics2D) g;
 
-        int width = getWidth();
-        int height = getHeight();
-
-
         try {
             Image image = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("exitTabPanel.png")));
             graphics2D.setColor(Color.RED);

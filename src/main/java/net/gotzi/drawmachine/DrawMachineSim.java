@@ -3,9 +3,8 @@ package net.gotzi.drawmachine;
 import net.gotzi.drawmachine.builder.HotKeyBuilder;
 import net.gotzi.drawmachine.handler.IHotKeyHandler;
 import net.gotzi.drawmachine.data.ConfigLoader;
-import net.gotzi.drawmachine.builder.MenuBarBuilder;
+import net.gotzi.drawmachine.menubar.MenuBarBuilder;
 import net.gotzi.drawmachine.view.View;
-import net.gotzi.drawmachine.view.file.NullFile;
 import net.gotzi.drawmachine.view.file.FileHubView;
 import net.gotzi.drawmachine.menubar.GMenuBar;
 import net.gotzi.drawmachine.view.workspace.Workspace;
@@ -60,24 +59,22 @@ public class DrawMachineSim implements Application {
         Dimension dimension = new Dimension(1200, 675);
         this.window = new Window("DrawMachine - Simulation V1.0", (KeyListener) hotKeyHandler);
 
+        InputStream in = getClass().getClassLoader().getResourceAsStream("icon.PNG");
+        Image image = ImageIO.read(in);
+        window.setIconImage(image);
         window.setResizable(true);
-        window.setVisible(true);
         window.setJMenuBar(menuBar);
         window.add(this.view);
         window.setMinimumSize(new Dimension(1000, 450));
 
-        InputStream in = getClass().getClassLoader().getResourceAsStream("icon.PNG");
-        Image image = ImageIO.read(in);
-        window.setIconImage(image);
-
+        window.setSize(dimension);
         window.pack();
         window.centerOnScreen();
         window.setBackground(Color.LIGHT_GRAY);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        window.setVisible(true);
         window.start();
-
-        window.setSize(dimension);
     }
 
     private void buildView() {
@@ -115,7 +112,9 @@ public class DrawMachineSim implements Application {
 
     @Override
     public void stop() {
-
+        System.gc();
+        System.exit(0);
+        System.gc();
     }
 
     public View getView() {

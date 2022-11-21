@@ -1,13 +1,22 @@
 package net.gotzi.drawmachine;
 
+import net.gotzi.drawmachine.view.ComponentResizer;
+import net.gotzi.drawmachine.view.FrameDragListener;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyListener;
 
 public class Window extends JFrame implements Runnable {
     private static boolean running = false;
     private Thread thread;
     private final String title;
+
+    private ComponentResizer componentResizer;
+
+    private int state = -1;
 
     public Window(String title, KeyListener keyListener) {
         this.title = title;
@@ -16,10 +25,41 @@ public class Window extends JFrame implements Runnable {
 
     private void init(KeyListener keyListener) {
         this.setTitle(title);
-        //this.setUndecorated(true);
-        this.pack();
+
+        this.setOpacity(0.02f);
+        this.setUndecorated(true);
+        FrameDragListener frameDragListener = new FrameDragListener(this);
+        addMouseListener(frameDragListener);
+        addMouseMotionListener(frameDragListener);
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.addKeyListener(keyListener);
+
+        this.pack();
+        setLocationRelativeTo(null);
+
+        addComponentListener(new ComponentListener() {
+
+            @Override
+            public void componentShown(ComponentEvent arg0) {
+            }
+
+            @Override
+            public void componentResized(ComponentEvent arg0) {
+                if (state != -1) {
+                    setExtendedState(state); //Restore the state.
+                    state = -1; //If it is not back to -1, window won't be resized properly by OS.
+                }
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent arg0) {
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent arg0) {
+            }
+        });
     }
 
     public synchronized void start() {

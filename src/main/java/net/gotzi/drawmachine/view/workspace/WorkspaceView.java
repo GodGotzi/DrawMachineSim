@@ -34,7 +34,10 @@ public class WorkspaceView extends JPanel implements Workspace {
     private void buildLayout() {
         this.setMinimumSize(new Dimension(200, 0));
 
-        ScrollPane scrollPane = new ScrollPane();
+        JScrollPane scrollPane = new JScrollPane(this.workspaceTree,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
         HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(this.title, scrollPane);
         horizontalSplitLayout.setComponent1Size(25);
         setLayout(horizontalSplitLayout);
@@ -43,7 +46,6 @@ public class WorkspaceView extends JPanel implements Workspace {
         scrollPane.setBackground(Color.GRAY);
         scrollPane.setForeground(Color.GRAY);
 
-        scrollPane.add(this.workspaceTree);
         colorRise();
 
         add(this.title);

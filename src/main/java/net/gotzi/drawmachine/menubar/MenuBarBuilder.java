@@ -1,6 +1,7 @@
-package net.gotzi.drawmachine.builder;
+package net.gotzi.drawmachine.menubar;
 
 import net.gotzi.drawmachine.DrawMachineSim;
+import net.gotzi.drawmachine.builder.Builder;
 import net.gotzi.drawmachine.menubar.actions.NewModeFileAction;
 import net.gotzi.drawmachine.menubar.actions.OpenWorkspaceAction;
 import net.gotzi.drawmachine.menubar.GMenu;
@@ -9,6 +10,10 @@ import net.gotzi.drawmachine.menubar.ItemDivider;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MenuBarBuilder extends Builder<GMenuBar> {
 
@@ -42,10 +47,15 @@ public class MenuBarBuilder extends Builder<GMenuBar> {
         UIManager.put("MenuItem.foreground", Color.WHITE);
         UIManager.put("Menu.opaque", false);
 
-        this.buildMenu00(menuBar);
-        this.buildMenu01(menuBar);
-        this.buildMenu04(menuBar);
-        this.buildMenu05(menuBar);
+        this.buildMenuFile(menuBar);
+        this.buildMenuEdit(menuBar);
+        this.buildMenuTheme(menuBar);
+        this.buildMenuHelp(menuBar);
+
+        menuBar.add(Box.createHorizontalGlue());
+        this.buildMenuMinimize(menuBar);
+        this.buildMenuResize(menuBar);
+        this.buildMenuClose(menuBar);
 
         this.menuBar = menuBar;
         setSuccessful(true);
@@ -59,7 +69,7 @@ public class MenuBarBuilder extends Builder<GMenuBar> {
      *
      * @param menuBar The GMenuBar object that you want to add the menu to.
      */
-    private void buildMenu00(GMenuBar menuBar) {
+    private void buildMenuFile(GMenuBar menuBar) {
         GMenu menu00 = new GMenu("File");
 
         JMenuItem item00 = new JMenuItem("Open Workspace");
@@ -84,7 +94,7 @@ public class MenuBarBuilder extends Builder<GMenuBar> {
      *
      * @param menuBar The GMenuBar object that you want to add the menu to.
      */
-    private void buildMenu01(GMenuBar menuBar) {
+    private void buildMenuEdit(GMenuBar menuBar) {
         GMenu menu01 = new GMenu("Edit");
         JMenuItem item00 = new JMenuItem("Undo");
         JMenuItem item01 = new JMenuItem("Redo");
@@ -94,7 +104,7 @@ public class MenuBarBuilder extends Builder<GMenuBar> {
         menuBar.add(menu01);
     }
 
-    private void buildMenu04(GMenuBar menuBar) {
+    private void buildMenuTheme(GMenuBar menuBar) {
         GMenu menu04 = new GMenu("Theme");
 
         JMenuItem menu = new JMenuItem("Edit");
@@ -103,7 +113,7 @@ public class MenuBarBuilder extends Builder<GMenuBar> {
         menuBar.add(menu04);
     }
 
-    private void buildMenu05(GMenuBar menuBar) {
+    private void buildMenuHelp(GMenuBar menuBar) {
         GMenu menu04 = new GMenu("Help");
         JMenuItem item01 = new JMenuItem("Discord Gotzi#2650");
         JMenuItem item02 = new JMenuItem("Email eli.gottsbacher@gmail.com");
@@ -111,6 +121,45 @@ public class MenuBarBuilder extends Builder<GMenuBar> {
         menu04.add(item02);
         //menu04.add(ItemDivider.getDefaultItemDivider());
         menuBar.add(menu04);
+    }
+
+    private void buildMenuMinimize(GMenuBar menuBar) {
+        GMenu minimize = new GMenu(" ̶");
+
+        minimize.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                drawMachineSim.getWindow().setExtendedState(JFrame.ICONIFIED);
+            }
+        });
+
+        //menu04.add(ItemDivider.getDefaultItemDivider());
+        menuBar.add(minimize);
+    }
+
+    private void buildMenuResize(GMenuBar menuBar) {
+        GMenu resize = new GMenu("□");
+        resize.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int state = drawMachineSim.getWindow().getExtendedState();
+                if (state == JFrame.MAXIMIZED_BOTH)
+                    drawMachineSim.getWindow().setExtendedState(JFrame.NORMAL);
+                else drawMachineSim.getWindow().setExtendedState(JFrame.MAXIMIZED_BOTH);
+            }
+        });
+
+        //menu04.add(ItemDivider.getDefaultItemDivider());
+        menuBar.add(resize);
+    }
+
+    private void buildMenuClose(GMenuBar menuBar) {
+        GMenu close = new GMenu("X");
+        close.addChangeListener(e ->
+                drawMachineSim.stop()
+        );
+
+        menuBar.add(close);
     }
 
     @Override
