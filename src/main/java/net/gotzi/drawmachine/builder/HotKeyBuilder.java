@@ -5,6 +5,7 @@ import net.gotzi.drawmachine.handler.HotKeyHandler;
 import net.gotzi.drawmachine.view.file.ModeFileView;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 
 public class HotKeyBuilder extends Builder<HotKeyHandler> {
 
@@ -19,12 +20,12 @@ public class HotKeyBuilder extends Builder<HotKeyHandler> {
     public void build() {
         this.hotKeyHandler = new HotKeyHandler();
 
-        String keyStrokeStr = drawMachineSim.getConfig().get("reset_view_hotkey");
-        KeyStroke keyStroke = KeyStroke.getKeyStroke(keyStrokeStr);
+        String reset_view_hotkey = drawMachineSim.getConfig().get("reset_view_hotkey");
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(reset_view_hotkey);
+
         hotKeyHandler.addHotKey(keyStroke, keyEvent -> {
             ModeFileView modeFileView = (ModeFileView) drawMachineSim.getFileHub().getSelectedComponent();
             modeFileView.getSimView().resetView();
-            System.out.println(":D");
         });
 
         setSuccessful(true);

@@ -3,6 +3,8 @@ package net.gotzi.drawmachine.view.workspace;
 import net.gotzi.drawmachine.api.FileUpdateScheduler;
 import net.gotzi.drawmachine.api.ThreadScheduler;
 import net.gotzi.drawmachine.control.layout.HorizontalSplitLayout;
+import net.gotzi.drawmachine.handler.design.DesignColor;
+import net.gotzi.drawmachine.handler.design.DesignHandler;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -18,11 +20,14 @@ public class WorkspaceView extends JPanel implements Workspace {
     private final WorkspaceTree workspaceTree;
     private final JLabel title;
     private final Map<File, WorkspaceElement> fileMap;
+    private final DesignHandler designHandler;
 
     private String directory;
 
-    public WorkspaceView() {
+
+    public WorkspaceView(DesignHandler designHandler) {
         this.title = new JLabel();
+        this.designHandler = designHandler;
         title.setText("Workspace");
         this.workspaceTree = new WorkspaceTree(new DefaultMutableTreeNode("..."));
         this.workspaceTree.getRoot().setAllowsChildren(true);
@@ -47,21 +52,11 @@ public class WorkspaceView extends JPanel implements Workspace {
 
         this.title.setHorizontalAlignment(JLabel.CENTER);
 
-        //scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setBackground(Color.GRAY);
-        scrollPane.setForeground(Color.GRAY);
-
-        colorRise();
-
-        add(this.title);
-        add(scrollPane);
-    }
-
-    private void colorRise() {
-        setBackground(new Color(126, 60, 183));
+        designHandler.getDesignColorChanges(DesignColor.SECONDARY)
+                .registerPossibleChange(this::setBackground);
 
         this.title.setForeground(Color.WHITE);
-        this.workspaceTree.setBackground(Color.GRAY);
+        this.workspaceTree.setBackground(Color.DARK_GRAY);
 
         DefaultTreeCellRenderer renderer =
                 (DefaultTreeCellRenderer) this.workspaceTree.getCellRenderer();
@@ -70,6 +65,9 @@ public class WorkspaceView extends JPanel implements Workspace {
         renderer.setTextSelectionColor(Color.WHITE);
         renderer.setBackgroundSelectionColor(Color.LIGHT_GRAY);
         renderer.setBorderSelectionColor(Color.WHITE);
+
+        add(this.title);
+        add(scrollPane);
     }
 
     private ThreadScheduler updateThread = null;

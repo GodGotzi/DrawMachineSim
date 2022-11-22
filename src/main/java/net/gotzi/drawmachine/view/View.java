@@ -1,5 +1,6 @@
 package net.gotzi.drawmachine.view;
 
+import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.view.file.FileHubView;
 import net.gotzi.drawmachine.view.workspace.Workspace;
 import net.gotzi.drawmachine.view.workspace.WorkspaceView;
@@ -9,24 +10,13 @@ import java.awt.*;
 
 public class View extends JSplitPane {
 
-    private FileHubView fileHubView;
+    private final DesignHandler designHandler;
 
+    private FileHubView fileHubView;
     private WorkspaceView workspaceView;
 
-    public View() {
-        UIManager.put("TabbedPane.contentAreaColor ", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.selected", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.background", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.shadow", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.borderColor", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.darkShadow", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.light", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.highlight", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.focus", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.unselectedBackground", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.selectHighlight", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.tabAreaBackground", new Color(126, 60, 183));
-        UIManager.put("TabbedPane.borderHightlightColor", new Color(126, 60, 183));
+    public View(DesignHandler designHandler) {
+        this.designHandler = designHandler;
         //UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));
         //UIManager.put("TabbedPane.contentBorderColor", new Color(126, 60, 183));
 
@@ -36,8 +26,8 @@ public class View extends JSplitPane {
     }
 
     private void init() {
-        this.fileHubView = new FileHubView();
-        this.workspaceView = new WorkspaceView();
+        this.fileHubView = new FileHubView(this.designHandler);
+        this.workspaceView = new WorkspaceView(this.designHandler);
 
         setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 

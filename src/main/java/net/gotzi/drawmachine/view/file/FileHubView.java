@@ -1,12 +1,18 @@
 package net.gotzi.drawmachine.view.file;
 
+import net.gotzi.drawmachine.handler.design.DesignColor;
+import net.gotzi.drawmachine.handler.design.DesignHandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
 
 public class FileHubView extends JTabbedPane implements FileHub {
 
-    public FileHubView() {
+    private final DesignHandler designHandler;
+
+    public FileHubView(DesignHandler designHandler) {
+        this.designHandler = designHandler;
     }
 
     public void openFilePage(FileView fileView) {
@@ -53,7 +59,12 @@ public class FileHubView extends JTabbedPane implements FileHub {
         this.setForeground(Color.WHITE);
         this.setBackgroundAt(index, new Color(161, 120, 196));
         this.setForegroundAt(index, Color.WHITE);
-        this.setBackground(Color.WHITE);
+
+        this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
+                .registerPossibleChange(this::setBackground);
+
+        this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
+                .registerPossibleChange(pnlTab::setBackground);
     }
 
     @Override

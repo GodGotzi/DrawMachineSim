@@ -3,6 +3,9 @@ package net.gotzi.drawmachine.menubar;
 import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.MainWindow;
 import net.gotzi.drawmachine.handler.MouseInputHandler;
+import net.gotzi.drawmachine.handler.design.ChangeDesign;
+import net.gotzi.drawmachine.handler.design.DesignColor;
+import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.menubar.actions.NewModeFileAction;
 import net.gotzi.drawmachine.menubar.actions.OpenWorkspaceAction;
 import net.gotzi.drawmachine.utils.ImageUtils;
@@ -10,31 +13,41 @@ import net.gotzi.drawmachine.view.FrameDragListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 
 public class MenuBar extends JMenuBar {
 
     private final MainWindow mainWindow;
-    private final Image logo23x23;
 
-    public MenuBar(MainWindow mainWindow) {
+    private final DesignHandler designHandler;
+    //private final Image logo23x23;
+
+    public MenuBar(MainWindow mainWindow, DesignHandler designHandler) {
         this.mainWindow = mainWindow;
+        this.designHandler = designHandler;
 
         setBackground(Color.GRAY);
-        setBorder(BorderFactory.createLineBorder(new Color(126, 60, 183), 2));
 
-        FrameDragListener frameDragListener = new FrameDragListener(mainWindow);
-        addMouseListener(frameDragListener);
-        addMouseMotionListener(frameDragListener);
+        designHandler.getDesignColorChanges(DesignColor.SECONDARY)
+                .registerPossibleChange(color -> setBorder(BorderFactory.createLineBorder(color, 2)));
 
-        this.logo23x23 = ImageUtils.resizeImage(DrawMachineSim.getInstance().getLogo(), 23, 23);
+        //this.logo23x23 = ImageUtils.resizeImage(DrawMachineSim.getInstance().getLogo(), 23, 23);
     }
 
     @Override
     public JMenu add(JMenu c) {
-        c.getPopupMenu().setBackground(new Color(126, 60, 183));
-        c.getPopupMenu().setForeground(new Color(126, 60, 183));
+
+        this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
+                .registerPossibleChange(color -> c.getPopupMenu().setBackground(color));
+        this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
+                .registerPossibleChange(color -> c.getPopupMenu().setForeground(color));
+
         c.setBackground(Color.LIGHT_GRAY);
         c.setForeground(Color.WHITE);
         c.setFont(c.getFont().deriveFont(15.0f));
@@ -44,23 +57,16 @@ public class MenuBar extends JMenuBar {
 
     public void build() {
 
+        /*
         Logo logo = new Logo(this.logo23x23);
         logo.setUnClickable();
         this.add(logo);
 
+
+         */
         //MouseInputHandler mouseInputHandler = new MouseInputHandler(this.mainWindow, this.mainWindow.getRootPane());
         //this.addMouseListener(mouseInputHandler);
         //this.addMouseMotionListener(mouseInputHandler);
-
-        UIManager.put("Menu.selectionBackground", Color.LIGHT_GRAY);
-        UIManager.put("Menu.selectionForeground", Color.WHITE);
-        UIManager.put("Menu.background", Color.LIGHT_GRAY);
-        UIManager.put("Menu.foreground", Color.BLACK);
-        UIManager.put("MenuItem.selectionBackground", Color.LIGHT_GRAY);
-        UIManager.put("MenuItem.selectionForeground", Color.WHITE);
-        UIManager.put("MenuItem.background", new Color(88, 88, 88));
-        UIManager.put("MenuItem.foreground", Color.WHITE);
-        UIManager.put("Menu.opaque", false);
 
         this.buildMenuFile();
         this.buildMenuEdit();
@@ -68,9 +74,6 @@ public class MenuBar extends JMenuBar {
         this.buildMenuHelp();
 
         this.add(Box.createHorizontalGlue());
-        this.buildMenuMinimize();
-        this.buildMenuResize();
-        this.buildMenuClose();
     }
 
     private void buildMenuFile() {
@@ -103,11 +106,19 @@ public class MenuBar extends JMenuBar {
     }
 
     private void buildMenuTheme() {
-        Menu menu04 = new Menu("Theme");
+        Menu menu04 = new Menu("Settings");
 
-        JMenuItem menu = new JMenuItem("Edit");
+        JMenuItem menu = new JMenuItem("Design Color");
+        menu.addActionListener(e -> {
+            Color initialColor = this.designHandler
+                    .getDesignColorChanges(DesignColor.SECONDARY).getDefaultColor();
+            Color color = JColorChooser.showDialog(this,"Select a color", initialColor);
+            this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
+                    .redesignAll(color);
+        });
+
         menu04.add(menu);
-        //menu04.add(ItemDivider.getDefaultItemDivider());
+
         this.add(menu04);
     }
 
@@ -119,46 +130,5 @@ public class MenuBar extends JMenuBar {
         menu04.add(item02);
         //menu04.add(ItemDivider.getDefaultItemDivider());
         this.add(menu04);
-    }
-
-    private void buildMenuMinimize() {
-        Menu minimize = new Menu(" ̶");
-
-        minimize.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                mainWindow.setExtendedState(Frame.ICONIFIED);
-            }
-        });
-
-        this.add(minimize);
-    }
-
-    private void buildMenuResize() {
-        Menu resize = new Menu("□");
-
-        resize.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                int state = mainWindow.getExtendedState();
-                if (state == Frame.MAXIMIZED_BOTH)
-                    mainWindow.setExtendedState(Frame.NORMAL);
-                else {
-                    mainWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
-                }
-            }
-        });
-
-        //menu04.add(ItemDivider.getDefaultItemDivider());
-        this.add(resize);
-    }
-
-    private void buildMenuClose() {
-        Menu close = new Menu("X");
-        close.addChangeListener(e ->
-                DrawMachineSim.getInstance().stop()
-        );
-
-        this.add(close);
     }
 }

@@ -32,16 +32,22 @@ public class FrameDragListener extends MouseAdapter {
     }
 
     public void mouseDragged(MouseEvent e) {
-        Point currCoords = e.getLocationOnScreen();
-        Rectangle r = this.mainWindow.getBounds();
-        if (currCoords != null) {
-            this.mainWindow
-                    .setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
-            if (this.mainWindow.getExtendedState() == JFrame.MAXIMIZED_BOTH) {
-                this.mainWindow.centerOnScreen();
-                this.mainWindow.setPreferredSize(new Dimension(r.x-16, r.y-20));
-                //this.mainWindow.setBounds(r.x + 8, r.y + 10, r.x-16, r.y-20);
-            }
+        int lastState = this.mainWindow.getExtendedState();
+        int xOnScreen = mainWindow.getX() + e.getX() - mouseDownCompCoords.x;
+        int yOnScreen = mainWindow.getY() + e.getY() - mouseDownCompCoords.y;
+
+        Point location = new Point(xOnScreen, yOnScreen);
+
+
+        if (lastState == Frame.MAXIMIZED_BOTH) {
+            System.out.println("maximized");
+
+            Dimension dim = new Dimension(this.mainWindow.getWidth()-100, this.mainWindow.getHeight()-100);
+            this.mainWindow.setSize(dim);
+
+            location = new Point((int)location.getX() + 50, (int)location.getY() + 50);
         }
+
+        this.mainWindow.setLocation(location);
     }
 }
