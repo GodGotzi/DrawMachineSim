@@ -51,21 +51,20 @@ public class FileHubView extends JTabbedPane implements FileHub {
         pnlTab.add(lblTitle, gbc);
 
         gbc.gridx++;
-        gbc.weightx = 0;
+        gbc.weightx = 20;
         pnlTab.add(exitPanel, gbc);
 
-        lblTitle.setForeground(Color.WHITE);
         this.setTabComponentAt(index, pnlTab);
-        this.setForeground(Color.WHITE);
-        this.setBackgroundAt(index, new Color(161, 120, 196));
-        this.setForegroundAt(index, Color.WHITE);
 
+        /*
         this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
                 .registerPossibleChange(this::setBackground);
 
         this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
                 .registerPossibleChange(pnlTab::setBackground);
+        */
     }
+
 
     @Override
     public synchronized void addMouseListener(MouseListener l) {
