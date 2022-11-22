@@ -2,6 +2,7 @@ package net.gotzi.drawmachine.menubar;
 
 import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.MainWindow;
+import net.gotzi.drawmachine.handler.MouseInputHandler;
 import net.gotzi.drawmachine.menubar.actions.NewModeFileAction;
 import net.gotzi.drawmachine.menubar.actions.OpenWorkspaceAction;
 import net.gotzi.drawmachine.utils.ImageUtils;
@@ -46,6 +47,10 @@ public class MenuBar extends JMenuBar {
         Logo logo = new Logo(this.logo23x23);
         logo.setUnClickable();
         this.add(logo);
+
+        //MouseInputHandler mouseInputHandler = new MouseInputHandler(this.mainWindow, this.mainWindow.getRootPane());
+        //this.addMouseListener(mouseInputHandler);
+        //this.addMouseMotionListener(mouseInputHandler);
 
         UIManager.put("Menu.selectionBackground", Color.LIGHT_GRAY);
         UIManager.put("Menu.selectionForeground", Color.WHITE);
@@ -138,7 +143,9 @@ public class MenuBar extends JMenuBar {
                 int state = mainWindow.getExtendedState();
                 if (state == Frame.MAXIMIZED_BOTH)
                     mainWindow.setExtendedState(Frame.NORMAL);
-                else mainWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
+                else {
+                    mainWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
+                }
             }
         });
 

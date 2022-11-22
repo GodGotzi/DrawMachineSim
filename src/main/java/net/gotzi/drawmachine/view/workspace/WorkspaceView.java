@@ -40,7 +40,12 @@ public class WorkspaceView extends JPanel implements Workspace {
         
         HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(this.title, scrollPane);
         horizontalSplitLayout.setComponent1Size(25);
+
         setLayout(horizontalSplitLayout);
+
+        //getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+
+        this.title.setHorizontalAlignment(JLabel.CENTER);
 
         //scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBackground(Color.GRAY);

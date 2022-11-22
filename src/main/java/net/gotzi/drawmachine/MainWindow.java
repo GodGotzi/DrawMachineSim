@@ -1,10 +1,12 @@
 package net.gotzi.drawmachine;
 
-import net.gotzi.drawmachine.view.ComponentResizer;
-import net.gotzi.drawmachine.view.FrameDragListener;
+import net.gotzi.drawmachine.handler.MouseInputHandler;
+import net.gotzi.drawmachine.handler.WindowResizer;
+import net.gotzi.drawmachine.view.View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyListener;
@@ -14,53 +16,48 @@ public class MainWindow extends JFrame implements Runnable {
     private Thread thread;
     private final String title;
 
-    private ComponentResizer componentResizer;
+    private final View view;
 
     private int state = -1;
 
-    public MainWindow(String title, KeyListener keyListener) {
+    public MainWindow(String title, View view, KeyListener keyListener) {
         this.title = title;
+        this.view = view;
+
+        this.add(view);
         this.init(keyListener);
     }
 
     private void init(KeyListener keyListener) {
         this.setTitle(title);
-
         this.setUndecorated(true);
+
+        /*
+        MouseInputHandler mouseInputHandler = new MouseInputHandler(this, this.getRootPane());
+        this.addMouseListener(mouseInputHandler);
+        this.addMouseMotionListener(mouseInputHandler);
+
+        this.getContentPane().addMouseListener(mouseInputHandler);
+        this.getContentPane().addMouseMotionListener(mouseInputHandler);
+
+        this.view.addMouseListener(mouseInputHandler);
+        this.view.addMouseMotionListener(mouseInputHandler);
+
+         */
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.addKeyListener(keyListener);
 
         this.pack();
         setLocationRelativeTo(null);
-
-        addComponentListener(new ComponentListener() {
-
-            @Override
-            public void componentShown(ComponentEvent arg0) {
-            }
-
-            @Override
-            public void componentResized(ComponentEvent arg0) {
-                if (state != -1) {
-                    setExtendedState(state); //Restore the state.
-                    state = -1; //If it is not back to -1, window won't be resized properly by OS.
-                }
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent arg0) {
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent arg0) {
-            }
-        });
     }
 
     public synchronized void start() {
         running = true;
         this.thread = new Thread(this, "net.gotzi.gui.Window");
+    }
+
+    public void setView(View view) {
     }
 
     public synchronized void stop() {

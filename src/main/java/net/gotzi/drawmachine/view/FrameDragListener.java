@@ -1,7 +1,7 @@
 package net.gotzi.drawmachine.view;
 
 import net.gotzi.drawmachine.MainWindow;
-
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,8 +17,7 @@ public class FrameDragListener extends MouseAdapter {
     @Override
     public void mouseClicked(MouseEvent e) {
         if(e.getClickCount()==2){
-            int state = mainWindow.getExtendedState();
-            if (state == Frame.MAXIMIZED_BOTH)
+            if (mainWindow.getExtendedState() == Frame.MAXIMIZED_BOTH)
                 mainWindow.setExtendedState(Frame.NORMAL);
             else mainWindow.setExtendedState(Frame.MAXIMIZED_BOTH);
         }
@@ -34,10 +33,15 @@ public class FrameDragListener extends MouseAdapter {
 
     public void mouseDragged(MouseEvent e) {
         Point currCoords = e.getLocationOnScreen();
+        Rectangle r = this.mainWindow.getBounds();
         if (currCoords != null) {
-            this.mainWindow.setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
-            mainWindow.setExtendedState(Frame.NORMAL);
-            mainWindow.shrink();
+            this.mainWindow
+                    .setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
+            if (this.mainWindow.getExtendedState() == JFrame.MAXIMIZED_BOTH) {
+                this.mainWindow.centerOnScreen();
+                this.mainWindow.setPreferredSize(new Dimension(r.x-16, r.y-20));
+                //this.mainWindow.setBounds(r.x + 8, r.y + 10, r.x-16, r.y-20);
+            }
         }
     }
 }

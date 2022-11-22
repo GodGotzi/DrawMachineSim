@@ -49,6 +49,9 @@ public class DrawMachineSim implements Application {
         InputStream in = getClass().getClassLoader().getResourceAsStream("logo.PNG");
         this.logo = ImageIO.read(in);
 
+        this.loadConfig();
+        this.buildView();
+        this.buildHotKeyHandler();
     }
 
     /**
@@ -57,21 +60,19 @@ public class DrawMachineSim implements Application {
     @Override
     public void start() throws IOException {
         Dimension dimension = new Dimension(1200, 675);
-        this.mainWindow = new MainWindow("DrawMachine - Simulation V1.0", (KeyListener) hotKeyHandler);
+        this.mainWindow = new MainWindow("DrawMachine - Simulation V1.0", view, (KeyListener) hotKeyHandler);
 
-        this.loadConfig();
-        this.buildMenuBar();
-        this.buildView();
-        this.buildHotKeyHandler();
-
+        MenuBar menuBar = new MenuBar(this.mainWindow);
+        menuBar.build();
+        this.menuBar = menuBar;
 
         mainWindow.setIconImage(this.logo);
         mainWindow.setResizable(true);
         mainWindow.setJMenuBar(menuBar);
-        mainWindow.add(this.view);
+
         mainWindow.setMinimumSize(new Dimension(1000, 450));
 
-        mainWindow.setSize(dimension);
+        mainWindow.setPreferredSize(dimension);
         mainWindow.pack();
         mainWindow.centerOnScreen();
         mainWindow.setBackground(Color.LIGHT_GRAY);
@@ -86,15 +87,6 @@ public class DrawMachineSim implements Application {
         this.fileHubView = view.getFileHub();
         this.workspace = view.getWorkspace();
         //fileHubView.addTab("documentation.readme", new NullFile());
-    }
-
-    /**
-     * Build the menu bar and store it in the menuBar variable.
-     */
-    private void buildMenuBar() {
-        MenuBar menuBar = new MenuBar(this.mainWindow);
-        menuBar.build();
-        this.menuBar = menuBar;
     }
 
     private void buildHotKeyHandler() {

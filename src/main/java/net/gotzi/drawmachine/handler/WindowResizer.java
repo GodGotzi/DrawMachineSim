@@ -1,20 +1,16 @@
-package net.gotzi.drawmachine.view;
+package net.gotzi.drawmachine.handler;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
 
 /**
  *  The ComponentResizer allows you to resize a component by dragging a border
  *  of the component.
  */
-public class ComponentResizer extends MouseAdapter
-{
-    private final static Dimension MINIMUM_SIZE = new Dimension(10, 10);
+public class WindowResizer extends MouseAdapter {
+    private final static Dimension MINIMUM_SIZE = new Dimension(1200, 675);
     private final static Dimension MAXIMUM_SIZE =
             new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
@@ -39,6 +35,8 @@ public class ComponentResizer extends MouseAdapter
     protected static final int SOUTH = 4;
     protected static final int EAST = 8;
 
+
+    private JFrame window;
     private Cursor sourceCursor;
     private boolean resizing;
     private Rectangle bounds;
@@ -52,9 +50,10 @@ public class ComponentResizer extends MouseAdapter
      *  Convenience contructor. All borders are resizable in increments of
      *  a single pixel. Components must be registered separately.
      */
-    public ComponentResizer()
+    public WindowResizer(JFrame window)
     {
         this(new Insets(5, 5, 5, 5), new Dimension(1, 1));
+        this.window = window;
     }
 
     /**
@@ -64,8 +63,7 @@ public class ComponentResizer extends MouseAdapter
      *
      *  @param components components to be automatically registered
      */
-    public ComponentResizer(Component... components)
-    {
+    public WindowResizer(Component... components) {
         this(new Insets(5, 5, 5, 5), new Dimension(1, 1), components);
     }
 
@@ -78,7 +76,7 @@ public class ComponentResizer extends MouseAdapter
      *                    resized.
      *  @param components components to be automatically registered
      */
-    public ComponentResizer(Insets dragInsets, Component... components)
+    public WindowResizer(Insets dragInsets, Component... components)
     {
         this(dragInsets, new Dimension(1, 1), components);
     }
@@ -92,7 +90,7 @@ public class ComponentResizer extends MouseAdapter
      *                  when being dragged. Snapping occurs at the halfway mark.
      *  @param components components to be automatically registered
      */
-    public ComponentResizer(Insets dragInsets, Dimension snapSize, Component... components)
+    public WindowResizer(Insets dragInsets, Dimension snapSize, Component... components)
     {
         setDragInsets( dragInsets );
         setSnapSize( snapSize );
@@ -169,11 +167,6 @@ public class ComponentResizer extends MouseAdapter
         this.minimumSize = minimumSize;
     }
 
-    /**
-     *  Remove listeners from the specified component
-     *
-     *  @param components  the component the listeners are removed from
-     */
     public void deregisterComponent(Component... components)
     {
         for (Component component : components)
@@ -183,11 +176,6 @@ public class ComponentResizer extends MouseAdapter
         }
     }
 
-    /**
-     *  Add the required listeners to the specified component
-     *
-     *  @param components  the component the listeners are added to
-     */
     public void registerComponent(Component... components)
     {
         for (Component component : components)
@@ -243,7 +231,7 @@ public class ComponentResizer extends MouseAdapter
     @Override
     public void mouseMoved(MouseEvent e)
     {
-        Component source = e.getComponent();
+        Component source = this.window;
         Point location = e.getPoint();
         direction = 0;
 
@@ -278,7 +266,7 @@ public class ComponentResizer extends MouseAdapter
     {
         if (! resizing)
         {
-            Component source = e.getComponent();
+            Component source = this.window;
             sourceCursor = source.getCursor();
         }
     }
@@ -288,7 +276,7 @@ public class ComponentResizer extends MouseAdapter
     {
         if (! resizing)
         {
-            Component source = e.getComponent();
+            Component source = this.window;
             source.setCursor( sourceCursor );
         }
     }
@@ -305,37 +293,24 @@ public class ComponentResizer extends MouseAdapter
 
         resizing = true;
 
-        Component source = e.getComponent();
+        Component source = this.window;
         pressed = e.getPoint();
         SwingUtilities.convertPointToScreen(pressed, source);
         bounds = source.getBounds();
 
         //  Making sure autoscrolls is false will allow for smoother resizing
         //  of components
-
-        if (source instanceof JComponent)
-        {
-            JComponent jc = (JComponent)source;
-            autoscrolls = jc.getAutoscrolls();
-            jc.setAutoscrolls( false );
-        }
     }
 
     /**
      *  Restore the original state of the Component
      */
     @Override
-    public void mouseReleased(MouseEvent e)
-    {
+    public void mouseReleased(MouseEvent e) {
         resizing = false;
 
-        Component source = e.getComponent();
+        Component source = this.window;
         source.setCursor( sourceCursor );
-
-        if (source instanceof JComponent)
-        {
-            ((JComponent)source).setAutoscrolls( autoscrolls );
-        }
     }
 
     /**
@@ -347,15 +322,12 @@ public class ComponentResizer extends MouseAdapter
      *  resizing started.
      */
     @Override
-    public void mouseDragged(MouseEvent e)
-    {
-        if (!resizing) return;
+    public void mouseDragged(MouseEvent e) {
 
-        Component source = e.getComponent();
         Point dragged = e.getPoint();
-        SwingUtilities.convertPointToScreen(dragged, source);
+        SwingUtilities.convertPointToScreen(dragged, this.window);
 
-        changeBounds(source, direction, bounds, pressed, dragged);
+        changeBounds(this.window, direction, bounds, pressed, dragged);
     }
 
     protected void changeBounds(Component source, int direction, Rectangle bounds, Point pressed, Point current)
@@ -458,4 +430,3 @@ public class ComponentResizer extends MouseAdapter
         }
     }
 }
-
