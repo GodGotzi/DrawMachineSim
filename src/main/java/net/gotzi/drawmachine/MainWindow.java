@@ -1,11 +1,7 @@
 package net.gotzi.drawmachine;
 
-import net.gotzi.drawmachine.view.View;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyListener;
 
 public class MainWindow extends JFrame implements Runnable {
@@ -13,17 +9,18 @@ public class MainWindow extends JFrame implements Runnable {
     private Thread thread;
     private final String title;
 
-    public MainWindow(String title, KeyListener keyListener) {
+    public MainWindow(String title) {
         this.title = title;
 
-        this.init(keyListener);
+        this.init();
     }
 
-    private void init(KeyListener keyListener) {
+    private void init() {
         this.setTitle(title);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.getContentPane().addKeyListener(keyListener);
+
+        this.setFocusableWindowState(true);
 
         this.pack();
     }

@@ -35,6 +35,7 @@ public class HotKeyHandler extends KeyAdapter implements IHotKeyHandler {
     }
 
     private void runAction(Map.Entry<KeyStroke, KeyAction> entry, KeyEvent keyEvent) {
+        System.out.println(keyEvent);
         entry.getValue().run(keyEvent);
         currentlyClicked.remove(entry.getKey());
     }

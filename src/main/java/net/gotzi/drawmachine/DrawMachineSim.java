@@ -8,12 +8,14 @@ import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.menubar.MenuBar;
 import net.gotzi.drawmachine.view.View;
 import net.gotzi.drawmachine.view.file.FileHubView;
+import net.gotzi.drawmachine.view.file.ModeFileView;
 import net.gotzi.drawmachine.view.workspace.Workspace;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,15 +45,14 @@ public class DrawMachineSim implements Application {
 
     private MainWindow mainWindow;
 
-    private IHotKeyHandler hotKeyHandler;
-
-    private DesignHandler designHandler;
+    private final DesignHandler designHandler;
 
     public DrawMachineSim() throws IOException {
         LOGGER = Logger.getLogger("main-logger");
         instance = this;
 
         InputStream in = getClass().getClassLoader().getResourceAsStream("logo.PNG");
+        assert in != null;
         this.logo = ImageIO.read(in);
 
         this.loadConfig();
@@ -64,9 +65,22 @@ public class DrawMachineSim implements Application {
      * It creates a new window, sets the size, centers it on the screen, maximizes it, and removes the title bar
      */
     @Override
-    public void start() throws IOException {
+    public void start() {
         Dimension dimension = new Dimension(1200, 675);
-        this.mainWindow = new MainWindow("DrawMachine - Simulation V1.0", (KeyListener) hotKeyHandler);
+        this.mainWindow = new MainWindow("DrawMachine - Simulation V1.0");
+
+        String reset_view_hotkey = getConfig().get("reset_view_hotkey");
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(reset_view_hotkey);
+
+        getWindow().getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keyStroke, "reset_sim_view");
+        getWindow().getRootPane().getActionMap().put("reset_sim_view", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("control R");
+                ModeFileView modeFileView = (ModeFileView) getFileHub().getSelectedComponent();
+                if (modeFileView != null) modeFileView.getSimView().resetView();
+            }
+        });
 
         try {
             initNimbusDesign(mainWindow);
@@ -78,7 +92,6 @@ public class DrawMachineSim implements Application {
         menuBar.build();
         this.menuBar = menuBar;
 
-        this.buildHotKeyHandler();
         this.buildView();
 
         mainWindow.setIconImage(this.logo);
@@ -103,12 +116,6 @@ public class DrawMachineSim implements Application {
         this.fileHubView = view.getFileHub();
         this.workspace = view.getWorkspace();
         //fileHubView.addTab("documentation.readme", new NullFile());
-    }
-
-    private void buildHotKeyHandler() {
-        HotKeyBuilder hotKeyBuilder = new HotKeyBuilder(this);
-        hotKeyBuilder.build();
-        this.hotKeyHandler = hotKeyBuilder.getResult();
     }
 
     private void loadConfig() {
@@ -147,10 +154,6 @@ public class DrawMachineSim implements Application {
 
     public Map<String, String> getConfig() {
         return Collections.unmodifiableMap(config);
-    }
-
-    public IHotKeyHandler getHotKeyHandler() {
-        return hotKeyHandler;
     }
 
     public Workspace getWorkspace() {
