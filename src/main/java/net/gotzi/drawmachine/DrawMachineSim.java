@@ -1,6 +1,7 @@
 package net.gotzi.drawmachine;
 
 import net.gotzi.drawmachine.builder.HotKeyBuilder;
+import net.gotzi.drawmachine.control.DimensionConstants;
 import net.gotzi.drawmachine.data.ConfigLoader;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
@@ -72,6 +73,7 @@ public class DrawMachineSim implements Application {
         assert in != null;
         this.logo = ImageIO.read(in);
 
+        DimensionConstants.load();
         this.loadConfig();
 
         this.designHandler = new DesignHandler();

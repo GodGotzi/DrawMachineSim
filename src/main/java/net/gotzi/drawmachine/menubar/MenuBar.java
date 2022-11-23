@@ -1,9 +1,11 @@
 package net.gotzi.drawmachine.menubar;
 
+import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.menubar.actions.NewModeFileAction;
 import net.gotzi.drawmachine.menubar.actions.OpenWorkspaceAction;
+import net.gotzi.drawmachine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,6 +55,7 @@ public class MenuBar extends JMenuBar {
         this.buildMenuHelp();
 
         this.add(Box.createHorizontalGlue());
+        //this.add(new Logo(this.logo23x23));
 
         return this;
     }

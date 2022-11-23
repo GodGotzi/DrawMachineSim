@@ -1,13 +1,12 @@
 package net.gotzi.drawmachine.sim.monitor;
 
 import net.gotzi.drawmachine.DrawMachineSim;
-import net.gotzi.drawmachine.handler.MouseHandler;
+import net.gotzi.drawmachine.handler.MouseCursorHandler;
 import net.gotzi.drawmachine.error.UnsupportedValue;
 import net.gotzi.drawmachine.sim.Simulation;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
@@ -74,21 +73,21 @@ public class SimMonitorView implements SimMonitor {
 
     private void addListeners() {
         simSpeedSlider.addChangeListener(this::updateSimSpeed);
-        simSpeedSlider.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR)));
+        simSpeedSlider.addMouseListener(new MouseCursorHandler(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR)));
 
         runButton.addActionListener(this::run);
-        runButton.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
+        runButton.addMouseListener(new MouseCursorHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
 
         stopButton.addActionListener(this::stop);
-        stopButton.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
+        stopButton.addMouseListener(new MouseCursorHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
 
         resetViewButton.addActionListener(this::resetView);
-        resetViewButton.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
+        resetViewButton.addMouseListener(new MouseCursorHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
 
         resetCanvasButton.addActionListener(this::resetCanvas);
-        resetCanvasButton.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
+        resetCanvasButton.addMouseListener(new MouseCursorHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
 
-        fastMode.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
+        fastMode.addMouseListener(new MouseCursorHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
 
         simStepSpinner.addChangeListener(this::updateSimSteps);
     }

@@ -6,11 +6,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MouseHandler extends MouseAdapter {
+public class MouseCursorHandler extends MouseAdapter {
 
     private final Cursor cursor;
 
-    public MouseHandler(Cursor cursor) {
+    public MouseCursorHandler(Cursor cursor) {
         this.cursor = cursor;
     }
 
