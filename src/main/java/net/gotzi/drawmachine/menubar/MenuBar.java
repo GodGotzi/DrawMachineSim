@@ -1,6 +1,5 @@
 package net.gotzi.drawmachine.menubar;
 
-import net.gotzi.drawmachine.MainWindow;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.menubar.actions.NewModeFileAction;
@@ -25,8 +24,13 @@ public class MenuBar extends JMenuBar {
         //this.logo23x23 = ImageUtils.resizeImage(DrawMachineSim.getInstance().getLogo(), 23, 23);
     }
 
+    /**
+     * It adds a menu to the menu bar and registers the menu's background and foreground colors to the design handler
+     *
+     * @param c The menu to add
+     * @return A Menu object.
+     */
     public Menu add(Menu c) {
-
         this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
                 .registerPossibleChange(color -> c.getPopupMenu().setBackground(color));
         this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
@@ -42,16 +46,6 @@ public class MenuBar extends JMenuBar {
     }
 
     public MenuBar build() {
-
-        /*
-        Logo logo = new Logo(this.logo23x23);
-        logo.setUnClickable();
-        this.add(logo);
-         */
-
-        //MouseInputHandler mouseInputHandler = new MouseInputHandler(this.mainWindow, this.mainWindow.getRootPane());
-        //this.addMouseListener(mouseInputHandler);
-        //this.addMouseMotionListener(mouseInputHandler);
 
         this.buildMenuFile();
         this.buildMenuEdit();

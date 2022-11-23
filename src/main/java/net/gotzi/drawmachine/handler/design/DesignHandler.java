@@ -16,6 +16,12 @@ public class DesignHandler {
         return this.designColorChangesMap.get(designColor);
     }
 
+    /**
+     * Register a design color with a default color.
+     *
+     * @param designColor The design color you want to change.
+     * @param defaultColor The default color of the design color.
+     */
     public void registerDesignColor(DesignColor designColor, Color defaultColor) {
         DesignColorChanges designs = new DesignColorChanges();
         designs.setDefaultColor(defaultColor);
@@ -23,6 +29,11 @@ public class DesignHandler {
         this.designColorChangesMap.put(designColor, designs);
     }
 
+    /**
+     * > Removes the design color from the design color changes map
+     *
+     * @param designColor The DesignColor object that you want to deregister.
+     */
     public void deregisterDesignColor(DesignColor designColor) {
         this.designColorChangesMap.remove(designColor);
     }

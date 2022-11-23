@@ -50,6 +50,17 @@ public class HorizontalSplitLayout extends SplitLayout {
         return new Dimension(0, 0);
     }
 
+    /**
+     * "If size1 is not -1, then set the bounds of component1 to the top of the parent container and size1 pixels high, and
+     * set the bounds of component2 to the bottom of the parent container and the rest of the height of the parent
+     * container. Otherwise, if size2 is not -1, then set the bounds of component1 to the top of the parent container and
+     * the rest of the height of the parent container, and set the bounds of component2 to the bottom of the parent
+     * container and size2 pixels high."
+     *
+     * The layoutContainer() function is called whenever the container is resized
+     *
+     * @param parent The container that is being laid out.
+     */
     @Override
     public void layoutContainer(Container parent) {
         if (size1 != -1) {

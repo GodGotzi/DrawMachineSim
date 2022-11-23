@@ -23,6 +23,9 @@ public class ModeFileView extends FileView {
         this.buildLayout();
     }
 
+    /**
+     * This function creates a vertical split layout, and sets the size of the first component to 325 pixels.
+     */
     private void buildLayout() {
         VerticalSplitLayout verticalSplitLayout = new VerticalSplitLayout(this.simEditorView.getPanel(), this.simView);
         verticalSplitLayout.setComponent1Size(325);

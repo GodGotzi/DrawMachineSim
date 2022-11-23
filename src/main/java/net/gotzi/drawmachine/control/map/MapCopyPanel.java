@@ -9,6 +9,11 @@ public class MapCopyPanel extends JLabel {
 
     private Action<Graphics> paintAction;
 
+    /**
+     * If there is a paintAction, run it.
+     *
+     * @param g The graphics object that is used to draw on the canvas.
+     */
     @Override
     public void paint(Graphics g) {
         Graphics2D graphics2D = (Graphics2D) g;
@@ -18,6 +23,11 @@ public class MapCopyPanel extends JLabel {
         if (paintAction != null) paintAction.run(g);
     }
 
+    /**
+     * Create a white canvas.
+     *
+     * @param graphics2D The graphics object that we will be drawing on.
+     */
     private void createCanvas(Graphics2D graphics2D) {
         graphics2D.setColor(Color.WHITE);
         graphics2D.fillRect(0, 0, 2100, 2100);

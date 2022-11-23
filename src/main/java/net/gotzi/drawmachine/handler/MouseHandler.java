@@ -16,11 +16,11 @@ public class MouseHandler extends MouseAdapter {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        DrawMachineSim.getInstance().setCursor(this.cursor);
+        DrawMachineSim.getInstance().getWindow().setCursor(this.cursor);
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        DrawMachineSim.getInstance().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        DrawMachineSim.getInstance().getWindow().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 }

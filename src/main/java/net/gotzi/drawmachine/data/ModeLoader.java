@@ -13,6 +13,7 @@ public class ModeLoader extends Loader<SimModeInfo> {
     }
 
     @Override
+    // Loading the json string into an object.
     public void load() {
         this.simModeInfo = new SimModeInfo();
 

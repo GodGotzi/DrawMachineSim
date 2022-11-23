@@ -34,7 +34,7 @@ public class NewModeFileAction extends AbstractAction {
         }
 
         ModeFileView modeFileView = new ModeFileView(simModeInfo, str);
-        DrawMachineSim.getInstance().getFileHub().openFilePage(modeFileView);
+        DrawMachineSim.getInstance().getView().getFileHub().openFilePage(modeFileView);
     }
 
     private Object createData(SimModeInfo simModeInfo) {
@@ -51,7 +51,7 @@ public class NewModeFileAction extends AbstractAction {
      * @param data The data to be written to the file.
      */
     private void createFile(String str, Object data) throws IOException {
-        Workspace workspace = DrawMachineSim.getInstance().getWorkspace();
+        Workspace workspace = DrawMachineSim.getInstance().getView().getWorkspace();
         File newFile = new File(workspace.getDirectoryPath() + "\\" + str);
         boolean ret = newFile.createNewFile();
 

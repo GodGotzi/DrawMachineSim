@@ -19,6 +19,7 @@ public class UnderLayPanel extends JPanel {
         add(component, BorderLayout.CENTER);
     }
 
+    // Creating a border around the component.
     public void setNorthBorderThickness(int thickness) {
         this.panelN = new JPanel();
         this.panelN.setPreferredSize(new Dimension(-1, thickness));
@@ -43,6 +44,11 @@ public class UnderLayPanel extends JPanel {
         add(this.panelW, BorderLayout.WEST);
     }
 
+    /**
+     * This function sets the color of the border of the panel.
+     *
+     * @param color The color of the border.
+     */
     public void setBorderColor(Color color) {
         this.color = color;
 
@@ -50,6 +56,20 @@ public class UnderLayPanel extends JPanel {
         this.panelE.setBackground(color);
         this.panelS.setBackground(color);
         this.panelW.setBackground(color);
+    }
+
+    /**
+     * > Sets the opaque property of the panelN, panelE, panelS, panelW, and the current panel to the value of the opaque
+     * parameter
+     *
+     * @param opaque true if the component should be opaque, false otherwise
+     */
+    public void setOpaqueAll(boolean opaque) {
+        this.panelN.setOpaque(opaque);
+        this.panelE.setOpaque(opaque);
+        this.panelS.setOpaque(opaque);
+        this.panelW.setOpaque(opaque);
+        super.setOpaque(opaque);
     }
 
     public Color getColor() {

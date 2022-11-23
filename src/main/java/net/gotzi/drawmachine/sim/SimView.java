@@ -21,17 +21,25 @@ public class SimView extends JPanel implements Simulation {
         this.simMonitor = new SimMonitorView(this);
         this.simMainView = new SimMainView(this);
 
-        add(simMainView);
-        add(simMonitor.getPanel());
+        add(simMainView.getView());
+        add(simMonitor.getView());
         buildLayout();
     }
 
+    /**
+     * Create a HorizontalSplitLayout with the main view on the left and the monitor view on the right, and set the width
+     * of the monitor view to 120 pixels.
+     */
     private void buildLayout() {
-        HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(simMainView, simMonitor.getPanel());
+        HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(simMainView.getView(), simMonitor.getView());
         horizontalSplitLayout.setComponent2Size(120);
         setLayout(horizontalSplitLayout);
     }
 
+    /**
+     * > The `run()` function is called when the simulation is started. It sets the `running` variable to `true` and then
+     * calls the `render()` function of the `Renderer` class
+     */
     @Override
     public void run() {
         this.running = true;
@@ -40,6 +48,9 @@ public class SimView extends JPanel implements Simulation {
         );
     }
 
+    /**
+     * > Stop the simulation and reset the simulation monitor
+     */
     @Override
     public void stop() {
         this.running = false;
@@ -47,6 +58,11 @@ public class SimView extends JPanel implements Simulation {
         this.simMonitor.updateSteps(0);
     }
 
+    /**
+     * This function updates the number of steps in the simulation
+     *
+     * @param steps The number of steps that have been completed.
+     */
     @Override
     public void updateSteps(int steps) {
         this.simMonitor.updateSteps(steps);

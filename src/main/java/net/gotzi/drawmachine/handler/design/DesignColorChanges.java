@@ -12,11 +12,21 @@ public class DesignColorChanges extends ArrayList<ChangeDesign> {
         this.color = newColor;
     }
 
+    /**
+     * Add the change design to the list of possible changes, and then redesign the change design with the current color.
+     *
+     * @param changeDesign The object that will be changed.
+     */
     public void registerPossibleChange(ChangeDesign changeDesign) {
         add(changeDesign);
         changeDesign.redesign(color);
     }
 
+    /**
+     * Remove the given change design from the list of possible changes.
+     *
+     * @param changeDesign The ChangeDesign object that is being deregistered.
+     */
     public void deregisterPossibleChange(ChangeDesign changeDesign) {
         remove(changeDesign);
     }

@@ -12,14 +12,24 @@ public class WorkspaceTree extends JTree {
         super(root);
         this.root = root;
 
-        reset();
+        this.reset();
     }
 
+    /**
+     * Remove all the children of the root node, set the root node's user object to "...", and reload the tree.
+     */
     public void reset() {
 
         this.root.removeAllChildren();
         this.root.setUserObject("...");
 
+        this.reload();
+    }
+
+    /**
+     * Reload the tree model.
+     */
+    public void reload() {
         DefaultTreeModel model = (DefaultTreeModel) this.getModel();
         model.reload();
     }

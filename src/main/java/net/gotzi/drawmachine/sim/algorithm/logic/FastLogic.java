@@ -18,16 +18,14 @@ public class FastLogic implements Logic {
     private final SimInfo simInfo;
     private final Action<Integer> update;
     private final Canvas paper;
-    private final SimRenderer simRenderer;
     private final Action<SimCompletedInfo> finishedAction;
     private final List<SimPoint[]> simPoints;
     private boolean finished = false;
 
-    public FastLogic(SimInfo simInfo, Action<Integer> update, Canvas paper, SimRenderer simRenderer, Action<SimCompletedInfo> finishedAction) {
+    public FastLogic(SimInfo simInfo, Action<Integer> update, Canvas paper, Action<SimCompletedInfo> finishedAction) {
         this.simInfo = simInfo;
         this.update = update;
         this.paper = paper;
-        this.simRenderer = simRenderer;
         this.finishedAction = finishedAction;
         this.simPoints = new ArrayList<>(simInfo.getStepAmount());
     }
@@ -37,20 +35,32 @@ public class FastLogic implements Logic {
         return this.finished;
     }
 
+    /**
+     * > This function is called by each thread to add its results to the global array of results
+     *
+     * @param threadSimPoint The SimPoint array that the thread is trying to add to the simPoints array.
+     */
     private void collect(SimPoint[] threadSimPoint) {
         synchronized (simPoints) {
             this.simPoints.add(threadSimPoint);
         }
     }
 
+    /**
+     * "If there is only one thread left alive, then return true, otherwise return false."
+     *
+     * The function is synchronized because it is called from multiple threads
+     *
+     * @param mathThreads An array of threads that are running the math operations.
+     * @return The number of threads that are still alive.
+     */
     private synchronized boolean checkFinished(Thread[] mathThreads) {
-        if (Arrays.stream(mathThreads).filter(Thread::isAlive).count() <= 1) {
-            return true;
-        }
-
-        return false;
+        return Arrays.stream(mathThreads).filter(Thread::isAlive).count() <= 1;
     }
 
+    /**
+     * It draws all the points in the simulation
+     */
     private synchronized void drawPoints() {
         simPoints.forEach(simPoints -> {
             for (SimPoint point : simPoints) {
@@ -64,6 +74,10 @@ public class FastLogic implements Logic {
         //System.out.println("juhu");
     }
 
+    /**
+     * It creates a bunch of threads, each of which calculates a bunch of points, and then when all the threads are done,
+     * it draws the points and calls the finishedAction
+     */
     @Override
     public synchronized void run() {
         //TODO fastlogic

@@ -13,11 +13,18 @@ public class HotKeyHandler implements IHotKeyHandler {
 
     private final DrawMachineSim drawMachineSim;
 
-    public HotKeyHandler( DrawMachineSim drawMachineSim) {
+    public HotKeyHandler(DrawMachineSim drawMachineSim) {
         this.rootPane = drawMachineSim.getWindow().getRootPane();
         this.drawMachineSim = drawMachineSim;
     }
 
+    /**
+     * When the user presses the keystroke, run the action.
+     *
+     * @param key The name of the hotkey.
+     * @param keyStroke The keystroke that will trigger the action.
+     * @param action The action to be performed when the hotkey is pressed.
+     */
     @Override
     public void addHotKey(String key, KeyStroke keyStroke, Action<DrawMachineSim> action) {
         this.rootPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keyStroke, key);

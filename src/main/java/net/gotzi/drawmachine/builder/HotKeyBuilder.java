@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.InputStream;
 
-public class HotKeyBuilder extends Builder<HotKeyHandler> {
+public class HotKeyBuilder extends Builder<HotKeyHandler, HotKeyBuilder> {
 
     private final HotKeyHandler hotKeyHandler;
 
@@ -20,7 +20,7 @@ public class HotKeyBuilder extends Builder<HotKeyHandler> {
     }
 
     @Override
-    public void build() {
+    public HotKeyBuilder build() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("hotkeys.properties");
         ConfigLoader configLoader = new ConfigLoader(inputStream);
         configLoader.load();
@@ -33,6 +33,8 @@ public class HotKeyBuilder extends Builder<HotKeyHandler> {
         }
 
         setSuccessful(true);
+
+        return this;
     }
 
     @Override

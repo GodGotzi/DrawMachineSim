@@ -57,6 +57,13 @@ public class VerticalSplitLayout extends SplitLayout {
         return 0.5f;
     }
 
+    /**
+     * If size1 is set, then component1 is set to the left side of the container and component2 is set to the right side of
+     * the container. If size2 is set, then component1 is set to the left side of the container and component2 is set to
+     * the right side of the container
+     *
+     * @param parent The container that is being laid out.
+     */
     @Override
     public void layoutContainer(Container parent) {
         if (size1 != -1) {

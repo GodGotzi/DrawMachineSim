@@ -24,7 +24,8 @@ public class SimRenderer implements Renderer {
     }
 
     /**
-     * It creates a new thread that runs the simulation logic, and updates the UI every step
+     * If the simulation is not running, set it to running, and if it's not in fast mode, run the normal simulation logic,
+     * otherwise run the fast simulation logic
      *
      * @param simInfo The information about the simulation.
      */
@@ -52,7 +53,7 @@ public class SimRenderer implements Renderer {
 
                 thread.start();
             } else {
-                FastLogic fastLogic = new FastLogic(simInfo, update, this.paper, this, simCompletedInfo -> {
+                FastLogic fastLogic = new FastLogic(simInfo, update, this.paper, simCompletedInfo -> {
                     setRunning(false);
 
                     //TODO Sim Information output
@@ -70,19 +71,24 @@ public class SimRenderer implements Renderer {
      */
     public synchronized void stop() {
         setRunning(false);
-        update(0);
     }
 
+    /**
+     * This function returns the value of the running variable.
+     *
+     * @return The value of the running variable.
+     */
     public synchronized boolean isRunning() {
         return running;
     }
 
+    /**
+     * Sets the running variable to the value of the running parameter.
+     *
+     * @param running This is a boolean value that indicates whether the thread is running or not.
+     */
     private synchronized void setRunning(boolean running) {
         this.running = running;
-    }
-
-    private synchronized void update(int step) {
-        this.update.run(step);
     }
 
     /**

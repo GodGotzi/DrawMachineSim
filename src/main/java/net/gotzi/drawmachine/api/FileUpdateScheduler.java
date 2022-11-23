@@ -18,6 +18,12 @@ public abstract class FileUpdateScheduler extends ThreadScheduler {
         this.listAllFiles(files, this.allFiles);
     }
 
+    /**
+     * It takes a list of files and a list of files, and adds all the files in the first list to the second list
+     *
+     * @param files The array of files to be listed.
+     * @param list The list of files to be returned
+     */
     public void listAllFiles(File[] files, List<File> list) {
         for (File f : files) {
             list.add(f);

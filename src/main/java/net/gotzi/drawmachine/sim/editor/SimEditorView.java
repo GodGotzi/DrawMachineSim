@@ -16,7 +16,6 @@ public class SimEditorView implements SimEditor {
     public SimEditorView(SimModeInfo simModeInfo) {
         this.baseSteps = Integer.parseInt(DrawMachineSim.getInstance().getConfig().get("base_steps"));
 
-
         //TODO init values with simModeInfo
     }
 

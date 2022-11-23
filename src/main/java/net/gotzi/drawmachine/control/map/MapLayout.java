@@ -39,6 +39,10 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
         this.updateScroll();
     }
 
+    /**
+     * This function creates a new MapCopyPanel object, sets its preferred size, sets its paint action, and adds it to the
+     * mapPanel
+     */
     private void buildMapCopyPanel() {
         this.mapCopyPanel = new MapCopyPanel();
         this.mapCopyPanel.setPreferredSize(new Dimension(this.scroll, this.scroll));
@@ -95,6 +99,12 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
         return new Dimension(0, 0);
     }
 
+    /**
+     * The function takes the size of the parent container (the map panel) and the size of the map copy panel and centers
+     * the map copy panel within the map panel
+     *
+     * @param parent The container that holds the component.
+     */
     @Override
     public void layoutContainer(Container parent) {
         Dimension parentDimension = mapPanel.getSize();
@@ -132,6 +142,15 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
         DrawMachineSim.getInstance().getWindow().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
 
+    /**
+     * "If the mouse is dragged, the map is moved in the direction of the mouse drag."
+     *
+     * The first thing we do is get the current mouse position. Then we subtract the previous mouse position from the
+     * current mouse position. This gives us the distance the mouse has moved. We then subtract this distance from the
+     * current map position. This gives us the new map position
+     *
+     * @param e The mouse event that triggered the method.
+     */
     @Override
     public void mouseDragged(MouseEvent e) {
         Point point = e.getPoint();
@@ -155,6 +174,11 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
     public void mouseMoved(MouseEvent e) {
     }
 
+    /**
+     * If the mouse wheel is moved, update the scroll value and update the scroll.
+     *
+     * @param e The mouse wheel event.
+     */
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         int scroll = this.scroll;
@@ -170,12 +194,20 @@ public class MapLayout implements MouseListener, MouseMotionListener, MouseWheel
         }
     }
 
+    /**
+     * It resizes the image to the size of the scroll pane, and then draws it to the panel
+     *
+     * @param graphics The graphics object that is used to draw the image.
+     */
     private void repaintPanel(Graphics graphics) {
         BufferedImage resizedImage = ImageUtils.resizeImage(paper, scroll, scroll);
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.drawImage(resizedImage, 0, 0, scroll, scroll, null);
     }
 
+    /**
+     * This function updates the scroll bar.
+     */
     private void updateScroll() {
         this.mapCopyPanel.setPreferredSize(new Dimension(scroll, scroll));
         this.mapCopyPanel.repaint();

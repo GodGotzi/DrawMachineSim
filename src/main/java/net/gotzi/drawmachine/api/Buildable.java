@@ -1,7 +1,7 @@
 package net.gotzi.drawmachine.api;
 
-public interface Buildable {
+public interface Buildable<T> {
 
-    void build();
+    T build();
 
 }

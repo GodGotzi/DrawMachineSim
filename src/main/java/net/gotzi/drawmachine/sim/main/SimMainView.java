@@ -9,23 +9,24 @@ import net.gotzi.drawmachine.utils.Helper;
 import javax.swing.*;
 import java.awt.*;
 
-public class SimMainView extends JPanel {
+public class SimMainView {
+
+    private final JPanel view;
     private final MapPanel mapPanel;
     private final SimRenderer renderer;
 
     public SimMainView(Simulation simulation) {
         Dimension paperDimension = Helper.getPaperDimension();
+
+        this.view = new JPanel();
         this.mapPanel = new MapPanel(paperDimension, simulation, 3000, 100, 1000);
         this.renderer = mapPanel.getSimRenderer();
 
-        add(mapPanel);
-        setBackground(Color.LIGHT_GRAY);
-        buildBorderLayout();
-    }
+        this.view.add(mapPanel);
+        this.view.setBackground(Color.LIGHT_GRAY);
 
-    private void buildBorderLayout() {
         SimMainViewLayout simMainViewLayout = new SimMainViewLayout(mapPanel, 5);
-        setLayout(simMainViewLayout);
+        this.view.setLayout(simMainViewLayout);
     }
 
     public Renderer getRenderer() {
@@ -34,5 +35,9 @@ public class SimMainView extends JPanel {
 
     public MapPanel getMapPanel() {
         return mapPanel;
+    }
+
+    public JPanel getView() {
+        return view;
     }
 }

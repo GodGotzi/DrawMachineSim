@@ -30,6 +30,10 @@ public class MapPanel extends JPanel {
         build();
     }
 
+    /**
+     * This function sets the background color of the JPanel to dark gray, sets the layout to the mapLayout, adds the mouse
+     * listeners to the mapLayout, and adds the mouse wheel listener to the mapLayout
+     */
     private void build() {
         setBackground(Color.DARK_GRAY);
         setLayout((LayoutManager) mapLayout);

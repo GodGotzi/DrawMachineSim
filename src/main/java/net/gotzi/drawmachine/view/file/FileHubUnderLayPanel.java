@@ -15,6 +15,11 @@ public class FileHubUnderLayPanel extends UnderLayPanel {
         setWestBorderThickness(2);
     }
 
+    /**
+     * This function paints the background of the JPanel.
+     *
+     * @param g The Graphics object that is passed in.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

@@ -88,14 +88,36 @@ public class SimMonitorView implements SimMonitor {
         resetCanvasButton.addActionListener(this::resetCanvas);
         resetCanvasButton.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
 
-        fastMode.addActionListener(this::switchFastMode);
         fastMode.addMouseListener(new MouseHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
 
         simStepSpinner.addChangeListener(this::updateSimSteps);
     }
 
-    private void switchFastMode(ActionEvent event) {
-        //event.get
+    @Override
+    public void updateProgress(int progress) {
+        this.progressBar.setValue(progress);
+    }
+
+    @Override
+    public void updateSteps(int steps) {
+        int progress = (int) ((float)steps/(float) atomicSimSteps.get() * 100);
+        stepProgress.setText(steps + "/" + atomicSimSteps.get());
+        updateProgress(progress);
+    }
+
+    @Override
+    public AtomicInteger getSimulationSpeed() {
+        return atomicSimSpeed;
+    }
+
+    @Override
+    public AtomicInteger getSimulationSteps() {
+        return atomicSimSteps;
+    }
+
+    @Override
+    public boolean isFastMode() {
+        return fastMode.isSelected();
     }
 
     private void updateSimSteps(ChangeEvent ignored) {
@@ -121,10 +143,6 @@ public class SimMonitorView implements SimMonitor {
             simSpeedValueLabel.setText(String.format("%.2f ", this.simSpeedSlider.getValue() * Math.pow(10, -1)) + "x");
     }
 
-    private synchronized JProgressBar getProgressBar() {
-        return this.progressBar;
-    }
-
     private void run(ActionEvent actionEvent) {
         if (this.simulation.isRunning()) return;
         this.simulation.run();
@@ -144,34 +162,7 @@ public class SimMonitorView implements SimMonitor {
         this.simulation.resetCanvas();
     }
 
-    public JPanel getPanel() {
+    public JPanel getView() {
         return view;
-    }
-
-    @Override
-    public AtomicInteger getSimulationSpeed() {
-        return atomicSimSpeed;
-    }
-
-    @Override
-    public AtomicInteger getSimulationSteps() {
-        return atomicSimSteps;
-    }
-
-    @Override
-    public boolean isFastMode() {
-        //fastMode.addChangeListener(e -> System.out.println(e.getSource()));
-        return fastMode.isSelected();
-    }
-    @Override
-    public void updateProgress(int progress) {
-        this.progressBar.setValue(progress);
-    }
-
-    @Override
-    public void updateSteps(int steps) {
-        int progress = (int) ((float)steps/(float) atomicSimSteps.get() * 100);
-        stepProgress.setText(steps + "/" + atomicSimSteps.get());
-        updateProgress(progress);
     }
 }

@@ -14,6 +14,9 @@ public class ConfigLoader extends Loader<Map<String, String>> {
         this.inputStream = inputStream;
     }
 
+    /**
+     * It reads a file line by line and puts the key value pairs into a map.
+     */
     @Override
     public void load() {
         this.map = new HashMap<>();

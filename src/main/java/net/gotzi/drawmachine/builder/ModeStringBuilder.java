@@ -2,7 +2,7 @@ package net.gotzi.drawmachine.builder;
 
 import net.gotzi.drawmachine.api.sim.SimModeInfo;
 
-public class ModeStringBuilder extends Builder<String> {
+public class ModeStringBuilder extends Builder<String, ModeStringBuilder> {
     private final SimModeInfo modeInfo;
 
     private StringBuilder stringBuilder;
@@ -12,9 +12,11 @@ public class ModeStringBuilder extends Builder<String> {
     }
 
     @Override
-    public void build() {
+    public ModeStringBuilder build() {
         this.stringBuilder = new StringBuilder();
         //TODO SimModeInfo convert to String bzw json format
+
+        return this;
     }
 
     @Override

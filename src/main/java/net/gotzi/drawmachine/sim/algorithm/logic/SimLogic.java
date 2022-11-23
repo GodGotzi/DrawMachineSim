@@ -32,7 +32,6 @@ public class SimLogic implements Logic {
         return travelDistance;
     }
 
-    // It waits for the correct speed.
     private void awaitForSpeed() {
         try {
             Thread.sleep(999/simInfo.getSpeed());
@@ -44,7 +43,6 @@ public class SimLogic implements Logic {
     }
 
     @Override
-    // It checks if the Simulation is finished
     public boolean isFinished(int step) {
         return !((step <= simInfo.getStepAmount()
                 || 1 < mathLogic.speedToDegree(step, simInfo.getRealSpeedM1())

@@ -27,12 +27,15 @@ public class View extends JSplitPane {
         this.init();
     }
 
+    /**
+     * > The function initializes the file hub and workspace views, and sets the orientation of the split pane to
+     * horizontal
+     */
     private void init() {
-        this.fileHubView = new FileHubView(this.designHandler);
+        this.fileHubView = new FileHubView();
         this.workspaceView = new WorkspaceView(this.designHandler);
 
         setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-
 
         FileHubUnderLayPanel underLayPanel = new FileHubUnderLayPanel(this.fileHubView);
         this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)

@@ -6,7 +6,8 @@ import net.gotzi.drawmachine.view.file.ModeFileView;
 
 public enum HotKey {
     RESET_SIM_VIEW("reset_sim_view", drawMachineSim -> {
-        ModeFileView modeFileView = (ModeFileView) drawMachineSim.getFileHub().getSelectedComponent();
+        ModeFileView modeFileView = (ModeFileView) drawMachineSim
+                .getView().getFileHub().getSelectedComponent();
         if (modeFileView != null) modeFileView.getSimView().resetView();
     });
 

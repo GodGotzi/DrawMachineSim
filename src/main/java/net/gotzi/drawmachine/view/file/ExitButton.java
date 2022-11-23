@@ -21,6 +21,11 @@ public class ExitButton extends JLabel {
         addListeners();
     }
 
+    /**
+     * Draw the image on the panel.
+     *
+     * @param g The Graphics object to draw on.
+     */
     @Override
     public void paint(Graphics g) {
         Graphics2D graphics2D = (Graphics2D) g;
@@ -40,26 +45,6 @@ public class ExitButton extends JLabel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 clickAction.run(e);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                super.mouseReleased(e);
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                super.mouseEntered(e);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                super.mouseExited(e);
             }
         };
 

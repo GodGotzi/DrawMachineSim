@@ -39,13 +39,12 @@ public class WorkspaceView extends JPanel implements Workspace {
         buildLayout();
     }
 
+    /**
+     * This function sets the minimum size of the panel, sets the title, sets the background color, sets the background
+     * color of the tree, adds the title and scroll pane to the panel, and sets the layout of the panel.
+     */
     private void buildLayout() {
         this.setMinimumSize(new Dimension(200, 0));
-        
-        HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(this.title, scrollPane);
-        horizontalSplitLayout.setComponent1Size(25);
-
-        this.setLayout(horizontalSplitLayout);
 
         this.title.setText("Workspace");
         this.title.setHorizontalAlignment(JLabel.CENTER);
@@ -55,16 +54,13 @@ public class WorkspaceView extends JPanel implements Workspace {
 
         this.workspaceTree.setBackground(Color.DARK_GRAY);
 
-        DefaultTreeCellRenderer renderer =
-                (DefaultTreeCellRenderer) this.workspaceTree.getCellRenderer();
-        renderer.setBackgroundNonSelectionColor(Color.GRAY);
-        renderer.setTextNonSelectionColor(Color.WHITE);
-        renderer.setTextSelectionColor(Color.WHITE);
-        renderer.setBackgroundSelectionColor(Color.LIGHT_GRAY);
-        renderer.setBorderSelectionColor(Color.WHITE);
-
         add(this.title);
-        add(scrollPane);
+        add(this.scrollPane);
+
+        HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(this.title, scrollPane);
+        horizontalSplitLayout.setComponent1Size(25);
+
+        this.setLayout(horizontalSplitLayout);
     }
 
     /**
@@ -81,6 +77,8 @@ public class WorkspaceView extends JPanel implements Workspace {
 
         if (file.listFiles() == null) {
             this.workspaceTree.expandPath(new TreePath(this.workspaceTree.getRoot().getPath()));
+            this.workspaceTree.reload();
+
             return;
         }
 
@@ -108,11 +106,6 @@ public class WorkspaceView extends JPanel implements Workspace {
         };
 
         this.updateThread.start();
-    }
-
-    @Override
-    public String getDirectoryPath() {
-        return this.directory;
     }
 
     /**
@@ -160,5 +153,10 @@ public class WorkspaceView extends JPanel implements Workspace {
 
         mutableTreeNode.add(workspaceFile);
         workspaceFile.setAllowsChildren(false);
+    }
+
+    @Override
+    public String getDirectoryPath() {
+        return this.directory;
     }
 }
