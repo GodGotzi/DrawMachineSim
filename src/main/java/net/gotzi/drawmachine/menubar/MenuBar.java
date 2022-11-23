@@ -1,38 +1,23 @@
 package net.gotzi.drawmachine.menubar;
 
-import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.MainWindow;
-import net.gotzi.drawmachine.handler.MouseInputHandler;
-import net.gotzi.drawmachine.handler.design.ChangeDesign;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.menubar.actions.NewModeFileAction;
 import net.gotzi.drawmachine.menubar.actions.OpenWorkspaceAction;
-import net.gotzi.drawmachine.utils.ImageUtils;
-import net.gotzi.drawmachine.view.FrameDragListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 
 public class MenuBar extends JMenuBar {
-
-    private final MainWindow mainWindow;
 
     private final DesignHandler designHandler;
     //private final Image logo23x23;
 
-    public MenuBar(MainWindow mainWindow, DesignHandler designHandler) {
-        this.mainWindow = mainWindow;
+    public MenuBar(DesignHandler designHandler) {
         this.designHandler = designHandler;
 
-        setBackground(Color.GRAY);
+        this.setBackground(Color.GRAY);
 
         designHandler.getDesignColorChanges(DesignColor.SECONDARY)
                 .registerPossibleChange(color -> setBorder(BorderFactory.createLineBorder(color, 2)));
@@ -40,8 +25,7 @@ public class MenuBar extends JMenuBar {
         //this.logo23x23 = ImageUtils.resizeImage(DrawMachineSim.getInstance().getLogo(), 23, 23);
     }
 
-    @Override
-    public JMenu add(JMenu c) {
+    public Menu add(Menu c) {
 
         this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
                 .registerPossibleChange(color -> c.getPopupMenu().setBackground(color));
@@ -52,18 +36,19 @@ public class MenuBar extends JMenuBar {
         c.setForeground(Color.WHITE);
         c.setFont(c.getFont().deriveFont(15.0f));
 
-        return super.add(c);
+        add((JMenu) c);
+
+        return c;
     }
 
-    public void build() {
+    public MenuBar build() {
 
         /*
         Logo logo = new Logo(this.logo23x23);
         logo.setUnClickable();
         this.add(logo);
-
-
          */
+
         //MouseInputHandler mouseInputHandler = new MouseInputHandler(this.mainWindow, this.mainWindow.getRootPane());
         //this.addMouseListener(mouseInputHandler);
         //this.addMouseMotionListener(mouseInputHandler);
@@ -74,6 +59,8 @@ public class MenuBar extends JMenuBar {
         this.buildMenuHelp();
 
         this.add(Box.createHorizontalGlue());
+
+        return this;
     }
 
     private void buildMenuFile() {

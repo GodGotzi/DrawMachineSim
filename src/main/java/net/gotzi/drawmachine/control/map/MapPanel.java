@@ -1,5 +1,7 @@
 package net.gotzi.drawmachine.control.map;
 
+import net.gotzi.drawmachine.handler.design.DesignColor;
+import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.sim.algorithm.SimRenderer;
 import net.gotzi.drawmachine.sim.algorithm.Canvas;
 import net.gotzi.drawmachine.sim.Simulation;
@@ -20,7 +22,8 @@ public class MapPanel extends JPanel {
     public MapPanel(Dimension dimension, Simulation simulation, int maxScrollSize, int minScrollSize, int startScroll) {
         this.dimension = dimension;
         
-        Canvas paper = new Canvas(dimension.width, dimension.height, Color.BLACK.getRGB());
+        Canvas paper = new Canvas(dimension.width, dimension.height, Color.BLACK);
+
         this.simRenderer = new SimRenderer(paper, this::update);
         this.mapLayout = new MapLayout(this, paper, maxScrollSize, minScrollSize, startScroll);
         this.simulation = simulation;

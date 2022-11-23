@@ -1,10 +1,11 @@
 package net.gotzi.drawmachine;
 
 import net.gotzi.drawmachine.builder.HotKeyBuilder;
-import net.gotzi.drawmachine.handler.IHotKeyHandler;
 import net.gotzi.drawmachine.data.ConfigLoader;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
+import net.gotzi.drawmachine.handler.hotkey.HotKey;
+import net.gotzi.drawmachine.handler.hotkey.HotKeyHandler;
 import net.gotzi.drawmachine.menubar.MenuBar;
 import net.gotzi.drawmachine.view.View;
 import net.gotzi.drawmachine.view.file.FileHubView;
@@ -16,7 +17,6 @@ import javax.swing.*;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -47,6 +47,8 @@ public class DrawMachineSim implements Application {
 
     private final DesignHandler designHandler;
 
+    private HotKeyHandler hotKeyHandler;
+
     public DrawMachineSim() throws IOException {
         LOGGER = Logger.getLogger("main-logger");
         instance = this;
@@ -69,18 +71,9 @@ public class DrawMachineSim implements Application {
         Dimension dimension = new Dimension(1200, 675);
         this.mainWindow = new MainWindow("DrawMachine - Simulation V1.0");
 
-        String reset_view_hotkey = getConfig().get("reset_view_hotkey");
-        KeyStroke keyStroke = KeyStroke.getKeyStroke(reset_view_hotkey);
-
-        getWindow().getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keyStroke, "reset_sim_view");
-        getWindow().getRootPane().getActionMap().put("reset_sim_view", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("control R");
-                ModeFileView modeFileView = (ModeFileView) getFileHub().getSelectedComponent();
-                if (modeFileView != null) modeFileView.getSimView().resetView();
-            }
-        });
+        HotKeyBuilder hotKeyBuilder = new HotKeyBuilder(this);
+        hotKeyBuilder.build();
+        this.hotKeyHandler = hotKeyBuilder.getResult();
 
         try {
             initNimbusDesign(mainWindow);
@@ -88,9 +81,7 @@ public class DrawMachineSim implements Application {
             throw new RuntimeException(e);
         }
 
-        MenuBar menuBar = new MenuBar(this.mainWindow, this.designHandler);
-        menuBar.build();
-        this.menuBar = menuBar;
+        this.menuBar = new MenuBar(this.designHandler).build();
 
         this.buildView();
 
@@ -168,7 +159,7 @@ public class DrawMachineSim implements Application {
         return designHandler;
     }
 
-    public static void initNimbusDesign(Window window) throws UnsupportedLookAndFeelException {
+    public static void initNimbusDesign(MainWindow window) throws UnsupportedLookAndFeelException {
         try {
             UIManager.setLookAndFeel(new NimbusLookAndFeel());
             UIManager.put("control", new Color(128, 128, 128));

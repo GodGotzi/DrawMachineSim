@@ -15,6 +15,7 @@ public class View extends JSplitPane {
 
     private final DesignHandler designHandler;
 
+
     private FileHubView fileHubView;
     private WorkspaceView workspaceView;
 

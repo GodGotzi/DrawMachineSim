@@ -1,0 +1,12 @@
+package net.gotzi.drawmachine.handler.hotkey;
+
+import net.gotzi.drawmachine.DrawMachineSim;
+import net.gotzi.drawmachine.api.Action;
+
+import javax.swing.*;
+
+public interface IHotKeyHandler {
+
+    void addHotKey(String key, KeyStroke comb, Action<DrawMachineSim> action);
+
+}

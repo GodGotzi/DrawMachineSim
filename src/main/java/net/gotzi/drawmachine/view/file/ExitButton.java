@@ -15,10 +15,9 @@ import java.util.Objects;
 
 public class ExitButton extends JLabel {
 
-    private final Action<MouseEvent> clickAction;
+    private Action<MouseEvent> clickAction;
 
-    public ExitButton(Action<MouseEvent> clickAction) {
-        this.clickAction = clickAction;
+    public ExitButton() {
         addListeners();
     }
 
@@ -65,5 +64,9 @@ public class ExitButton extends JLabel {
         };
 
         addMouseListener(mouseAdapter);
+    }
+
+    public void setClickAction(Action<MouseEvent> clickAction) {
+        this.clickAction = clickAction;
     }
 }

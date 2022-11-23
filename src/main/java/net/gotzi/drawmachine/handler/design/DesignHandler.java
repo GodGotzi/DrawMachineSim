@@ -6,6 +6,10 @@ import java.util.Map;
 
 public class DesignHandler {
 
+    public DesignHandler() {
+        instance = this;
+    }
+
     private final Map<DesignColor, DesignColorChanges> designColorChangesMap = new HashMap<>();
 
     public DesignColorChanges getDesignColorChanges(DesignColor designColor) {
@@ -21,5 +25,11 @@ public class DesignHandler {
 
     public void deregisterDesignColor(DesignColor designColor) {
         this.designColorChangesMap.remove(designColor);
+    }
+
+    private static DesignHandler instance;
+
+    public static DesignHandler getInstance() {
+        return instance;
     }
 }

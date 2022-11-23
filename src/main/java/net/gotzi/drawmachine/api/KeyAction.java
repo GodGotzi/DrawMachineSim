@@ -1,6 +1,6 @@
 package net.gotzi.drawmachine.api;
 
-import java.awt.event.KeyEvent;
+import javax.swing.*;
 
-public interface KeyAction extends Action<KeyEvent> {
+public interface KeyAction extends Action<KeyStroke> {
 }

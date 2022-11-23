@@ -22,11 +22,19 @@ public class FileHubView extends JTabbedPane implements FileHub {
     @Override
     public void addTab(String title, Component component) {
         super.addTab(title, component);
-
         int index = indexOfTab(title);
-        JPanel pnlTab = new JPanel(new GridBagLayout());
-        pnlTab.setOpaque(false);
+
+        JPanel pnlTab = createTabComponent();
+
+        this.setTabComponentAt(index, pnlTab);
+    }
+
+    public JPanel createTabComponent(String title, int index) {
+        JPanel panel = new JPanel(new GridBagLayout());
         JLabel lblTitle = new JLabel(title);
+
+
+        panel.setOpaque(false);
 
         ExitButton exitButton = new ExitButton(e -> {
             removeTabAt(indexOfTab(title));
@@ -54,20 +62,8 @@ public class FileHubView extends JTabbedPane implements FileHub {
         gbc.weightx = 20;
         pnlTab.add(exitPanel, gbc);
 
-        this.setTabComponentAt(index, pnlTab);
 
-        /*
-        this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
-                .registerPossibleChange(this::setBackground);
 
-        this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
-                .registerPossibleChange(pnlTab::setBackground);
-        */
     }
 
-
-    @Override
-    public synchronized void addMouseListener(MouseListener l) {
-        super.addMouseListener(l);
-    }
 }

@@ -8,11 +8,11 @@ import java.awt.image.BufferedImage;
 
 public class Canvas extends BufferedImage {
 
-    private final int rgb;
+    private final Color color;
 
-    public Canvas(int width, int height, int rgb) {
+    public Canvas(int width, int height, Color color) {
         super(width, height, BufferedImage.TYPE_INT_RGB);
-        this.rgb = rgb;
+        this.color = color;
         this.reset();
     }
 
@@ -39,7 +39,7 @@ public class Canvas extends BufferedImage {
     public synchronized void setPoint(int x, int y) throws PencilOutOfCanvas {
         try {
             //System.out.println("X: " + (getWidth() - x) + " Y:" + (getHeight() - y));
-            setPixelPoint(getWidth() - x,getHeight() - y, rgb);
+            setPixelPoint(getWidth() - x,getHeight() - y, color);
         } catch (ArrayIndexOutOfBoundsException ignored) {
             throw new PencilOutOfCanvas(DrawMachineSim.getInstance().getWindow(), "X: " + (getWidth() - x) + " Y: " + (getHeight() - y));
         }
@@ -50,18 +50,18 @@ public class Canvas extends BufferedImage {
      *
      * @param x The x coordinate of the pixel.
      * @param y The y coordinate of the pixel.
-     * @param rgb the color of the pixel
+     * @param color the color of the pixel
      */
-    private void setPixelPoint(int x, int y, int rgb) {
-        setRGB(x, y, rgb);
+    private void setPixelPoint(int x, int y, Color color) {
+        setRGB(x, y, color.getRGB());
         if (x < getHeight())
-            setRGB(x+1, y, rgb);
+            setRGB(x+1, y, color.getRGB());
         if (x > 0)
-            setRGB(x-1, y, rgb);
+            setRGB(x-1, y, color.getRGB());
         if (y < getWidth())
-            setRGB(x, y+1, rgb);
+            setRGB(x, y+1, color.getRGB());
         if (y > 0)
-            setRGB(x, y-1, rgb);
+            setRGB(x, y-1, color.getRGB());
     }
 
 }

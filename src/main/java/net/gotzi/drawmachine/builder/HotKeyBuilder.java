@@ -1,38 +1,36 @@
 package net.gotzi.drawmachine.builder;
 
 import net.gotzi.drawmachine.DrawMachineSim;
-import net.gotzi.drawmachine.handler.HotKeyHandler;
+import net.gotzi.drawmachine.api.KeyAction;
+import net.gotzi.drawmachine.data.ConfigLoader;
+import net.gotzi.drawmachine.handler.hotkey.HotKey;
+import net.gotzi.drawmachine.handler.hotkey.HotKeyHandler;
 import net.gotzi.drawmachine.view.file.ModeFileView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.io.InputStream;
 
 public class HotKeyBuilder extends Builder<HotKeyHandler> {
 
-    private HotKeyHandler hotKeyHandler;
+    private final HotKeyHandler hotKeyHandler;
 
-    private final DrawMachineSim drawMachineSim;
     public HotKeyBuilder(DrawMachineSim drawMachineSim) {
-        this.drawMachineSim = drawMachineSim;
+        this.hotKeyHandler = new HotKeyHandler(drawMachineSim);
     }
 
     @Override
     public void build() {
-        this.hotKeyHandler = new HotKeyHandler();
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("hotkeys.properties");
+        ConfigLoader configLoader = new ConfigLoader(inputStream);
+        configLoader.load();
 
-        String reset_view_hotkey = drawMachineSim.getConfig().get("reset_view_hotkey");
-        KeyStroke keyStroke = KeyStroke.getKeyStroke(reset_view_hotkey);
+        for (HotKey hotKey : HotKey.values()) {
+            String reset_sim_view_hotkey = configLoader.getResult().get("hotkey." + hotKey.getKey());
+            KeyStroke keyStroke = KeyStroke.getKeyStroke(reset_sim_view_hotkey);
 
-        drawMachineSim.getWindow().getRootPane().getInputMap().put(keyStroke, "reset_sim_view");
-        drawMachineSim.getWindow().getRootPane().getActionMap().put("reset_sim_view", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("control R");
-                ModeFileView modeFileView = (ModeFileView) drawMachineSim.getFileHub().getSelectedComponent();
-                if (modeFileView != null) modeFileView.getSimView().resetView();
-            }
-        });
+            this.hotKeyHandler.addHotKey(hotKey.getKey(), keyStroke, hotKey.getDrawMachineSimAction());
+        }
 
         setSuccessful(true);
     }

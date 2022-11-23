@@ -19,43 +19,40 @@ public class WorkspaceView extends JPanel implements Workspace {
 
     private final WorkspaceTree workspaceTree;
     private final JLabel title;
-    private final Map<File, WorkspaceElement> fileMap;
+    private final Map<File, WorkspaceElement> fileMap; //TODO
     private final DesignHandler designHandler;
+    private final JScrollPane scrollPane;
 
     private String directory;
-
+    private ThreadScheduler updateThread = null;
 
     public WorkspaceView(DesignHandler designHandler) {
         this.title = new JLabel();
         this.designHandler = designHandler;
-        title.setText("Workspace");
         this.workspaceTree = new WorkspaceTree(new DefaultMutableTreeNode("..."));
         this.workspaceTree.getRoot().setAllowsChildren(true);
         this.fileMap = new HashMap<>();
+        this.scrollPane = new JScrollPane(this.workspaceTree,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         buildLayout();
     }
 
     private void buildLayout() {
         this.setMinimumSize(new Dimension(200, 0));
-
-        JScrollPane scrollPane = new JScrollPane(this.workspaceTree,
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
         HorizontalSplitLayout horizontalSplitLayout = new HorizontalSplitLayout(this.title, scrollPane);
         horizontalSplitLayout.setComponent1Size(25);
 
-        setLayout(horizontalSplitLayout);
+        this.setLayout(horizontalSplitLayout);
 
-        //getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-
+        this.title.setText("Workspace");
         this.title.setHorizontalAlignment(JLabel.CENTER);
 
-        designHandler.getDesignColorChanges(DesignColor.SECONDARY)
+        this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
                 .registerPossibleChange(this::setBackground);
 
-        this.title.setForeground(Color.WHITE);
         this.workspaceTree.setBackground(Color.DARK_GRAY);
 
         DefaultTreeCellRenderer renderer =
@@ -70,8 +67,6 @@ public class WorkspaceView extends JPanel implements Workspace {
         add(scrollPane);
     }
 
-    private ThreadScheduler updateThread = null;
-
     /**
      * It loads the workspace and starts a thread that checks for changes in the workspace
      *
@@ -83,7 +78,11 @@ public class WorkspaceView extends JPanel implements Workspace {
 
         this.workspaceTree.reset();
         this.workspaceTree.getRoot().setUserObject(file.getName());
-        if (file.listFiles() == null) return;
+
+        if (file.listFiles() == null) {
+            this.workspaceTree.expandPath(new TreePath(this.workspaceTree.getRoot().getPath()));
+            return;
+        }
 
         this.loopFiles(Objects.requireNonNull(file.listFiles()), this.workspaceTree.getRoot());
         this.workspaceTree.expandPath(new TreePath(this.workspaceTree.getRoot().getPath()));
