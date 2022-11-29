@@ -2,21 +2,14 @@ package net.gotzi.drawmachine.view.workspace;
 
 import net.gotzi.drawmachine.api.FileUpdateScheduler;
 import net.gotzi.drawmachine.api.ThreadScheduler;
-import net.gotzi.drawmachine.builder.ModeStringBuilder;
 import net.gotzi.drawmachine.control.DimensionConstants;
 import net.gotzi.drawmachine.control.layout.HorizontalSplitLayout;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
-import net.gotzi.drawmachine.view.file.FileHub;
 import net.gotzi.drawmachine.view.file.FileHubView;
-import net.gotzi.drawmachine.view.file.FileView;
-import net.gotzi.drawmachine.view.file.ModeFileView;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;

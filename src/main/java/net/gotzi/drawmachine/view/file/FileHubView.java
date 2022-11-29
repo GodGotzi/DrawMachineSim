@@ -6,6 +6,7 @@ import net.gotzi.drawmachine.control.UnderLayPanel;
 import net.gotzi.drawmachine.data.ModeLoader;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
+import net.gotzi.drawmachine.manager.ModeFileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +25,6 @@ public class FileHubView extends JTabbedPane implements FileHub {
     }
 
     public void openFilePage(File file) {
-
         String name;
 
         if (this.indexOfTab(file.getName()) != -1) {
@@ -44,12 +44,8 @@ public class FileHubView extends JTabbedPane implements FileHub {
         SimModeInfo simModeInfo = null;
 
         try {
-            Path filePath = Path.of(file.getAbsolutePath());
-            String content = Files.readString(filePath);
-            ModeLoader modeLoader = new ModeLoader(content);
-            modeLoader.load();
-
-            simModeInfo = modeLoader.getResult();
+            ModeFileManager.ModeFileLoader modeFileLoader = new ModeFileManager.ModeFileLoader(file);
+            simModeInfo = modeFileLoader.loadSimModeInfo();
         } catch (Exception e) {
             //TODO
         }
@@ -57,7 +53,6 @@ public class FileHubView extends JTabbedPane implements FileHub {
         if (simModeInfo == null) {
             return;
         }
-
 
         ModeFileView modeFileView = new ModeFileView(simModeInfo, name, file);
         addTab(modeFileView.getName(), modeFileView);

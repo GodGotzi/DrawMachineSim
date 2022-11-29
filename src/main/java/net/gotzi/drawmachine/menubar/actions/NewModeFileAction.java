@@ -4,12 +4,10 @@ import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.api.sim.SimModeInfo;
 import net.gotzi.drawmachine.api.sim.SimPoint;
 import net.gotzi.drawmachine.api.sim.SimRawValues;
-import net.gotzi.drawmachine.builder.ModeStringBuilder;
 import net.gotzi.drawmachine.manager.ModeFileManager;
 import net.gotzi.drawmachine.view.file.FileHubView;
 import net.gotzi.drawmachine.view.file.FileView;
 import net.gotzi.drawmachine.view.file.ModeFileView;
-import net.gotzi.drawmachine.view.workspace.Workspace;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -31,7 +29,9 @@ public class NewModeFileAction extends AbstractAction {
         if (str == null) return;
         if (!str.contains(".mdm")) str += ".mdm";
 
-        SimModeInfo simModeInfo = new SimModeInfo(new SimRawValues(new SimPoint(0, 0), new SimPoint(0, 0), new SimPoint(0, 0), 0, 0, 0, 0, 0, 0, 0, 0));
+        SimModeInfo simModeInfo = new SimModeInfo(
+                new SimRawValues(new SimPoint(0, 0), new SimPoint(0, 0), new SimPoint(0, 0), 0, 0, 0, 0, 0, 0, 0, 0)
+        );
 
         ModeFileManager.ModeFileCreator modeFileCreator = new ModeFileManager.ModeFileCreator(str, simModeInfo);
         File file = modeFileCreator.createNewModeFile();
