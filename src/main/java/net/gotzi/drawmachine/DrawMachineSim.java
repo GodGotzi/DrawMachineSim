@@ -3,6 +3,7 @@ package net.gotzi.drawmachine;
 import net.gotzi.drawmachine.builder.HotKeyBuilder;
 import net.gotzi.drawmachine.control.DimensionConstants;
 import net.gotzi.drawmachine.data.ConfigLoader;
+import net.gotzi.drawmachine.handler.design.ChangeDesign;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.handler.hotkey.HotKeyHandler;
@@ -30,18 +31,27 @@ public class DrawMachineSim implements Application {
      *
      * @param window The main window of the application.
      */
-    public static void initNimbusDesign(MainWindow window) throws UnsupportedLookAndFeelException {
+    public static void initNimbusDesign(MainWindow window, DesignHandler designHandler) throws UnsupportedLookAndFeelException {
         try {
             UIManager.setLookAndFeel(new NimbusLookAndFeel());
             UIManager.put("control", new Color(128, 128, 128));
             UIManager.put("info", new Color(128, 128, 128));
-            UIManager.put("nimbusBase", new Color(18, 30, 49));
+
+
+            designHandler.getDesignColorChanges(DesignColor.SECONDARY)
+                            .registerPossibleChange(color -> UIManager.put("nimbusBase", color));
+
+
+
             UIManager.put("nimbusAlertYellow", new Color(248, 187, 0));
             UIManager.put("nimbusDisabledText", new Color(128, 128, 128));
             UIManager.put("nimbusFocus", new Color(115, 164, 209));
             UIManager.put("nimbusGreen", new Color(176, 179, 50));
             UIManager.put("nimbusInfoBlue", new Color(66, 139, 221));
-            UIManager.put("nimbusLightBackground", new Color(18, 30, 49));
+
+            designHandler.getDesignColorChanges(DesignColor.SECONDARY)
+                    .registerPossibleChange(color -> UIManager.put("nimbusLightBackground", color));
+
             UIManager.put("nimbusOrange", new Color(191, 98, 4));
             UIManager.put("nimbusRed", new Color(169, 46, 34));
             UIManager.put("nimbusSelectedText", new Color(255, 255, 255));
@@ -92,7 +102,7 @@ public class DrawMachineSim implements Application {
         this.hotKeyHandler = new HotKeyBuilder(this).build().getResult();
 
         try {
-            initNimbusDesign(mainWindow);
+            initNimbusDesign(mainWindow, this.designHandler);
         } catch (UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e);
         }
