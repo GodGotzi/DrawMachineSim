@@ -1,5 +1,6 @@
 package net.gotzi.drawmachine.sim.main;
 
+import net.gotzi.drawmachine.control.DimensionConstants;
 import net.gotzi.drawmachine.control.map.MapPanel;
 import net.gotzi.drawmachine.sim.Simulation;
 import net.gotzi.drawmachine.sim.algorithm.Renderer;
@@ -16,7 +17,7 @@ public class SimMainView {
     private final SimRenderer renderer;
 
     public SimMainView(Simulation simulation) {
-        Dimension paperDimension = Helper.getPaperDimension();
+        Dimension paperDimension = DimensionConstants.getConstantDimension("simulation.view.canvas");
 
         this.view = new JPanel();
         this.mapPanel = new MapPanel(paperDimension, simulation, 3000, 100, 1000);

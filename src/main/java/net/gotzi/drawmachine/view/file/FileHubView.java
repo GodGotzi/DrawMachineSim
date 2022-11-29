@@ -1,17 +1,66 @@
 package net.gotzi.drawmachine.view.file;
 
+import net.gotzi.drawmachine.api.sim.SimModeInfo;
+import net.gotzi.drawmachine.control.DimensionConstants;
 import net.gotzi.drawmachine.control.UnderLayPanel;
+import net.gotzi.drawmachine.data.ModeLoader;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class FileHubView extends JTabbedPane implements FileHub {
 
     public void openFilePage(FileView fileView) {
         addTab(fileView.getName(), fileView);
+    }
+
+    public void openFilePage(File file) {
+
+        String name;
+
+        if (this.indexOfTab(file.getName()) != -1) {
+            int index = this.indexOfTab(file.getName());
+
+            if (this.getComponentAt(index) instanceof FileView fileView) {
+                if (file.getAbsolutePath().equals(fileView.getAbsolutePath()))
+                    return;
+                else
+                    this.setTitleAt(index, fileView.getAbsolutePath());
+            }
+
+            name = file.getAbsolutePath();
+        } else
+            name = file.getName();
+
+        SimModeInfo simModeInfo = null;
+
+        try {
+            Path filePath = Path.of(file.getAbsolutePath());
+            String content = Files.readString(filePath);
+            ModeLoader modeLoader = new ModeLoader(content);
+            modeLoader.load();
+
+            simModeInfo = modeLoader.getResult();
+        } catch (Exception e) {
+            //TODO
+        }
+
+        if (simModeInfo == null) {
+            return;
+        }
+
+
+        ModeFileView modeFileView = new ModeFileView(simModeInfo, name, file);
+        addTab(modeFileView.getName(), modeFileView);
     }
 
     /**
@@ -48,7 +97,9 @@ public class FileHubView extends JTabbedPane implements FileHub {
             System.gc();
         });
 
-        exitButton.setPreferredSize(new Dimension(15, 15));
+        exitButton.setPreferredSize(
+                DimensionConstants.getConstantDimension("filehub.view.tabcomponent.exitbutton.default")
+        );
 
         UnderLayPanel underLayPanel = new UnderLayPanel(exitButton);
         underLayPanel.setWestBorderThickness(20);
@@ -57,7 +108,9 @@ public class FileHubView extends JTabbedPane implements FileHub {
         underLayPanel.setEastBorderThickness(0);
         underLayPanel.setOpaqueAll(false);
 
-        underLayPanel.setPreferredSize(new Dimension(35, 19));
+        underLayPanel.setPreferredSize(
+                DimensionConstants.getConstantDimension("filehub.view.tabcomponent.default")
+        );
 
         return buildMainTabPanel(underLayPanel, lblTitle);
     }

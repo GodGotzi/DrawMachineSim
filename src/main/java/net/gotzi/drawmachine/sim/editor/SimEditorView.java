@@ -73,6 +73,12 @@ public class SimEditorView implements SimEditor {
                 baseSteps);
     }
 
+    private int getValue(JSpinner spinner) {
+
+
+        return 0;
+    }
+
     @Override
     public SimValues getSimValues() {
         return null;

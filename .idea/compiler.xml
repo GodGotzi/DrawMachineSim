@@ -25,7 +25,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="DrawMachineApp" options="--add-exports java.desktop/java.awt.peer=at.gotzi.karodesigner.karodesigner" />
+      <module name="DrawMachineApp" options="" />
     </option>
   </component>
 </project>

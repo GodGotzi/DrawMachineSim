@@ -1,5 +1,7 @@
 package net.gotzi.drawmachine;
 
+import net.gotzi.drawmachine.control.DimensionConstants;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,16 +22,20 @@ public class MainWindow extends JFrame {
     private void init(DrawMachineSim drawMachineSim) {
         this.setTitle(title);
 
-        Dimension dimension = new Dimension(1200, 675);
+        this.setPreferredSize(
+                DimensionConstants.getConstantDimension("window.default")
+        );
+
+        this.setMinimumSize(
+                DimensionConstants.getConstantDimension("window.min")
+        );
+
         this.setIconImage(drawMachineSim.getLogo());
         this.setResizable(true);
         this.setJMenuBar(drawMachineSim.getMenuBar());
         this.add(drawMachineSim.getView());
 
-        this.setMinimumSize(new Dimension(1000, 450));
-
         this.centerOnScreen();
-        this.setPreferredSize(dimension);
         this.setBackground(Color.LIGHT_GRAY);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 

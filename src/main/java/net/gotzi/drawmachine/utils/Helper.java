@@ -48,19 +48,4 @@ public class Helper {
     private static int getDigits(int num) {
         return String.valueOf(num).toCharArray().length;
     }
-
-    public static int getPaperWidth() {
-        return Integer.parseInt(DrawMachineSim.getInstance().getConfig().get("paper_width"));
-    }
-
-    public static int getPaperHeight() {
-        return Integer.parseInt(DrawMachineSim.getInstance().getConfig().get("paper_height"));
-    }
-
-    public static Dimension getPaperDimension() {
-        return new Dimension(getPaperWidth(), getPaperHeight());
-    }
-
-
-
 }

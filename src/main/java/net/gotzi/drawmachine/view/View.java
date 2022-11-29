@@ -33,11 +33,12 @@ public class View extends JSplitPane {
      */
     private void init() {
         this.fileHubView = new FileHubView();
-        this.workspaceView = new WorkspaceView(this.designHandler);
+        this.workspaceView = new WorkspaceView(this.designHandler, this.fileHubView);
 
         setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 
         FileHubUnderLayPanel underLayPanel = new FileHubUnderLayPanel(this.fileHubView);
+
         this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
                 .registerPossibleChange(color -> {
                     underLayPanel.setBorderColor(color);

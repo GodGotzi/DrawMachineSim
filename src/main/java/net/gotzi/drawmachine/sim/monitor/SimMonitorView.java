@@ -50,10 +50,9 @@ public class SimMonitorView implements SimMonitor {
 
         simSpeedValueLabel.setHorizontalAlignment(JLabel.CENTER);
         simSpeedValueLabel.setVerticalAlignment(JLabel.CENTER);
-        simSpeedValueLabel.setPreferredSize(new Dimension(150, 0));
+
         stepProgress.setHorizontalAlignment(JLabel.CENTER);
         stepProgress.setVerticalAlignment(JLabel.CENTER);
-        stepProgress.setPreferredSize(new Dimension(150, 0));
 
         simSpeedSlider.setMinimum(10);
         simSpeedSlider.setValue(10);

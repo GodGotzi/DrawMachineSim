@@ -6,14 +6,15 @@ import net.gotzi.drawmachine.sim.editor.SimEditorView;
 import net.gotzi.drawmachine.sim.SimView;
 
 import java.awt.*;
+import java.io.File;
 
 public class ModeFileView extends FileView {
 
     private final SimEditorView simEditorView;
     private final SimView simView;
 
-    public ModeFileView(SimModeInfo simModeInfo, String name) {
-        super(name);
+    public ModeFileView(SimModeInfo simModeInfo, String name, File file) {
+        super(name, file);
         this.simEditorView = new SimEditorView(simModeInfo);
         this.simView = new SimView(simEditorView);
 
@@ -27,7 +28,9 @@ public class ModeFileView extends FileView {
      * This function creates a vertical split layout, and sets the size of the first component to 325 pixels.
      */
     private void buildLayout() {
-        VerticalSplitLayout verticalSplitLayout = new VerticalSplitLayout(this.simEditorView.getPanel(), this.simView);
+        VerticalSplitLayout verticalSplitLayout = new VerticalSplitLayout(
+                this.simEditorView.getPanel(),
+                this.simView);
         verticalSplitLayout.setComponent1Size(325);
         setLayout(verticalSplitLayout);
     }

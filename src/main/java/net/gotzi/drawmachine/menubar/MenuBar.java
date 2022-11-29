@@ -1,11 +1,9 @@
 package net.gotzi.drawmachine.menubar;
 
-import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.menubar.actions.NewModeFileAction;
 import net.gotzi.drawmachine.menubar.actions.OpenWorkspaceAction;
-import net.gotzi.drawmachine.utils.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,11 +1,15 @@
 package net.gotzi.drawmachine.view.workspace;
 
+import java.io.File;
+
 public class WorkspaceFile extends WorkspaceElement {
 
-    public WorkspaceFile(boolean file, String s) {
-        super(file, s);
+    private final File file;
 
+    public WorkspaceFile(File file, String s) {
+        super(true, s);
 
+        this.file = file;
     }
 
     @Override
@@ -13,6 +17,10 @@ public class WorkspaceFile extends WorkspaceElement {
 
     @Override
     public void rename(String s) {}
+
+    public File getFile() {
+        return file;
+    }
 
     @Override
     public boolean isFile() {

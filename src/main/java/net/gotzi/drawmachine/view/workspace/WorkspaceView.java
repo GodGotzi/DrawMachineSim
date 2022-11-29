@@ -2,39 +2,56 @@ package net.gotzi.drawmachine.view.workspace;
 
 import net.gotzi.drawmachine.api.FileUpdateScheduler;
 import net.gotzi.drawmachine.api.ThreadScheduler;
+import net.gotzi.drawmachine.builder.ModeStringBuilder;
+import net.gotzi.drawmachine.control.DimensionConstants;
 import net.gotzi.drawmachine.control.layout.HorizontalSplitLayout;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
+import net.gotzi.drawmachine.view.file.FileHub;
+import net.gotzi.drawmachine.view.file.FileHubView;
+import net.gotzi.drawmachine.view.file.FileView;
+import net.gotzi.drawmachine.view.file.ModeFileView;
 
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.*;
 import java.util.List;
 
 public class WorkspaceView extends JPanel implements Workspace {
 
+    private final FileHubView fileHubView;
     private final WorkspaceTree workspaceTree;
     private final JLabel title;
-    private final Map<File, WorkspaceElement> fileMap; //TODO
     private final DesignHandler designHandler;
     private final JScrollPane scrollPane;
-
     private String directory;
     private ThreadScheduler updateThread = null;
 
-    public WorkspaceView(DesignHandler designHandler) {
+    public WorkspaceView(DesignHandler designHandler, FileHubView fileHubView) {
         this.title = new JLabel();
         this.designHandler = designHandler;
         this.workspaceTree = new WorkspaceTree(new DefaultMutableTreeNode("..."));
         this.workspaceTree.getRoot().setAllowsChildren(true);
-        this.fileMap = new HashMap<>();
+        this.fileHubView = fileHubView;
         this.scrollPane = new JScrollPane(this.workspaceTree,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        this.workspaceTree.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                doMouseClicked(e);
+            }
+        });
 
         buildLayout();
     }
@@ -44,7 +61,7 @@ public class WorkspaceView extends JPanel implements Workspace {
      * color of the tree, adds the title and scroll pane to the panel, and sets the layout of the panel.
      */
     private void buildLayout() {
-        this.setMinimumSize(new Dimension(200, 0));
+        this.setMinimumSize(DimensionConstants.getConstantDimension("workspace.view.min"));
 
         this.title.setText("Workspace");
         this.title.setHorizontalAlignment(JLabel.CENTER);
@@ -148,11 +165,24 @@ public class WorkspaceView extends JPanel implements Workspace {
      * @param mutableTreeNode The parent node to which the new node will be added.
      */
     private void loadFile(File file, DefaultMutableTreeNode mutableTreeNode) {
-        WorkspaceFile workspaceFile = new WorkspaceFile(true, file.getName());
+        WorkspaceFile workspaceFile = new WorkspaceFile(file, file.getName());
         //DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(file.getName());
 
         mutableTreeNode.add(workspaceFile);
         workspaceFile.setAllowsChildren(false);
+    }
+
+    void doMouseClicked(MouseEvent me) {
+        TreePath tp = this.workspaceTree.getPathForLocation(me.getX(), me.getY());
+        if (tp != null) {
+            TreeNode treeNode = ((TreeNode)tp.getLastPathComponent());
+
+            if (treeNode instanceof WorkspaceElement workspaceElement) {
+                if (workspaceElement.isFile() && workspaceElement instanceof WorkspaceFile workspaceFile) {
+                    this.fileHubView.openFilePage(workspaceFile.getFile());
+                }
+            }
+        }
     }
 
     @Override

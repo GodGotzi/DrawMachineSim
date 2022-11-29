@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 
 public class DrawMachineSim implements Application {
     private static DrawMachineSim instance;
@@ -79,15 +80,18 @@ public class DrawMachineSim implements Application {
     public DrawMachineSim() throws IOException {
         instance = this;
 
-        InputStream in = getClass().getClassLoader().getResourceAsStream("logo.PNG");
-        assert in != null;
+        InputStream in = Objects.requireNonNull(
+                getClass().getClassLoader().getResourceAsStream("logo.png")
+        );
+
         this.logo = ImageIO.read(in);
 
         DimensionConstants.load();
         this.loadConfig();
 
         this.designHandler = new DesignHandler();
-        this.designHandler.registerDesignColor(DesignColor.SECONDARY, Color.decode(config.get("designColor.secondary_hex")));
+        this.designHandler.registerDesignColor(DesignColor.SECONDARY,
+                Color.decode(config.get("designColor.secondary_hex")));
     }
 
     /**

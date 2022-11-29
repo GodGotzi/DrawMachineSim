@@ -3,8 +3,11 @@ package net.gotzi.drawmachine.menubar.actions;
 import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.api.sim.SimModeInfo;
 import net.gotzi.drawmachine.api.sim.SimPoint;
-import net.gotzi.drawmachine.api.sim.SimValues;
+import net.gotzi.drawmachine.api.sim.SimRawValues;
 import net.gotzi.drawmachine.builder.ModeStringBuilder;
+import net.gotzi.drawmachine.manager.ModeFileManager;
+import net.gotzi.drawmachine.view.file.FileHubView;
+import net.gotzi.drawmachine.view.file.FileView;
 import net.gotzi.drawmachine.view.file.ModeFileView;
 import net.gotzi.drawmachine.view.workspace.Workspace;
 
@@ -21,52 +24,37 @@ public class NewModeFileAction extends AbstractAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        String str = getName();
+        FileHubView fileHubView = DrawMachineSim.getInstance().getView().getFileHub();
+
+
+        String str = JOptionPane.showInputDialog("Name your Mode");
         if (str == null) return;
         if (!str.contains(".mdm")) str += ".mdm";
 
-        SimModeInfo simModeInfo = new SimModeInfo(new SimValues(new SimPoint(0, 0), new SimPoint(0, 0), new SimPoint(0, 0), 0, 0, 0, 0, 0, 0, 0, 0, 0));
-        Object data = createData(simModeInfo);
+        SimModeInfo simModeInfo = new SimModeInfo(new SimRawValues(new SimPoint(0, 0), new SimPoint(0, 0), new SimPoint(0, 0), 0, 0, 0, 0, 0, 0, 0, 0));
 
-        try {
-            this.createFile(str, data);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(DrawMachineSim.getInstance().getWindow(), "Problem while creating File: " + ex.getMessage());
-            return;
-        }
+        ModeFileManager.ModeFileCreator modeFileCreator = new ModeFileManager.ModeFileCreator(str, simModeInfo);
+        File file = modeFileCreator.createNewModeFile();
+        if (file == null) return;
 
-        ModeFileView modeFileView = new ModeFileView(simModeInfo, str);
+        String name;
+
+        if (fileHubView.indexOfTab(file.getName()) != -1) {
+            int index = fileHubView.indexOfTab(file.getName());
+
+            if (fileHubView.getComponentAt(index) instanceof FileView fileView) {
+                if (file.getAbsolutePath().equals(fileView.getAbsolutePath()))
+                    return;
+                else
+                    fileHubView.setTitleAt(index, fileView.getAbsolutePath());
+            }
+
+            name = file.getAbsolutePath();
+        } else
+            name = file.getName();
+
+
+        ModeFileView modeFileView = new ModeFileView(simModeInfo, name, file);
         DrawMachineSim.getInstance().getView().getFileHub().openFilePage(modeFileView);
-    }
-
-    private Object createData(SimModeInfo simModeInfo) {
-        ModeStringBuilder modeStringBuilder = new ModeStringBuilder(simModeInfo);
-        modeStringBuilder.build();
-        return modeStringBuilder.getResult();
-    }
-
-    /**
-     * It creates a new file in the workspace directory with the name of the first parameter and the contents of the second
-     * parameter
-     *
-     * @param str The name of the file to be created.
-     * @param data The data to be written to the file.
-     */
-    private void createFile(String str, Object data) throws IOException {
-        Workspace workspace = DrawMachineSim.getInstance().getView().getWorkspace();
-        File newFile = new File(workspace.getDirectoryPath() + "\\" + str);
-        boolean ret = newFile.createNewFile();
-
-        if (!ret) {
-            throw new IOException("File/Mode already Exists");
-        }
-
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(newFile));
-        bufferedWriter.write(data.toString());
-        bufferedWriter.close();
-    }
-
-    private String getName() {
-        return JOptionPane.showInputDialog("Name your Mode");
     }
 }
