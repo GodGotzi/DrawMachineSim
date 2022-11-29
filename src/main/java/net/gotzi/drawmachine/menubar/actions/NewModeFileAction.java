@@ -2,6 +2,8 @@ package net.gotzi.drawmachine.menubar.actions;
 
 import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.api.sim.SimModeInfo;
+import net.gotzi.drawmachine.api.sim.SimPoint;
+import net.gotzi.drawmachine.api.sim.SimValues;
 import net.gotzi.drawmachine.builder.ModeStringBuilder;
 import net.gotzi.drawmachine.view.file.ModeFileView;
 import net.gotzi.drawmachine.view.workspace.Workspace;
@@ -23,7 +25,7 @@ public class NewModeFileAction extends AbstractAction {
         if (str == null) return;
         if (!str.contains(".mdm")) str += ".mdm";
 
-        SimModeInfo simModeInfo = new SimModeInfo();
+        SimModeInfo simModeInfo = new SimModeInfo(new SimValues(new SimPoint(0, 0), new SimPoint(0, 0), new SimPoint(0, 0), 0, 0, 0, 0, 0, 0, 0, 0, 0));
         Object data = createData(simModeInfo);
 
         try {
