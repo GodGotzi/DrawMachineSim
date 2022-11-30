@@ -1,4 +1,4 @@
-package net.gotzi.drawmachine.view.file;
+package net.gotzi.drawmachine.view.hub;
 
 import net.gotzi.drawmachine.control.UnderLayPanel;
 

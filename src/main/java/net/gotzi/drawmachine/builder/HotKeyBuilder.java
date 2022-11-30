@@ -1,14 +1,11 @@
 package net.gotzi.drawmachine.builder;
 
 import net.gotzi.drawmachine.DrawMachineSim;
-import net.gotzi.drawmachine.api.KeyAction;
 import net.gotzi.drawmachine.data.ConfigLoader;
 import net.gotzi.drawmachine.handler.hotkey.HotKey;
 import net.gotzi.drawmachine.handler.hotkey.HotKeyHandler;
-import net.gotzi.drawmachine.view.file.ModeFileView;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.InputStream;
 
 public class HotKeyBuilder extends Builder<HotKeyHandler, HotKeyBuilder> {

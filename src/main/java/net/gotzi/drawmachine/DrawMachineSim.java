@@ -3,12 +3,10 @@ package net.gotzi.drawmachine;
 import net.gotzi.drawmachine.builder.HotKeyBuilder;
 import net.gotzi.drawmachine.control.DimensionConstants;
 import net.gotzi.drawmachine.data.ConfigLoader;
-import net.gotzi.drawmachine.handler.design.ChangeDesign;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.handler.hotkey.HotKeyHandler;
-import net.gotzi.drawmachine.menubar.MenuBar;
-import net.gotzi.drawmachine.view.View;
+import net.gotzi.drawmachine.view.menubar.MenuBar;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

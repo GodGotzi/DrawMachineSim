@@ -5,6 +5,8 @@ import java.awt.*;
 
 public class UnderLayPanel extends JPanel {
 
+    private final Component center;
+
     private JPanel panelN;
     private JPanel panelE;
     private JPanel panelS;
@@ -15,8 +17,14 @@ public class UnderLayPanel extends JPanel {
     public UnderLayPanel(Component component) {
         BorderLayout borderLayout = new BorderLayout();
 
+        this.center = component;
+
         setLayout(borderLayout);
         add(component, BorderLayout.CENTER);
+    }
+
+    public Component getCenter() {
+        return this.center;
     }
 
     // Creating a border around the component.

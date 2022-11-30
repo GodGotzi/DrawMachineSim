@@ -1,11 +1,7 @@
-package net.gotzi.drawmachine.menubar;
+package net.gotzi.drawmachine.view.menubar;
 
-import net.gotzi.drawmachine.DrawMachineSim;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.InputStream;
 
 public class Logo extends JMenu {
 

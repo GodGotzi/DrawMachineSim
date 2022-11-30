@@ -1,24 +1,24 @@
-package net.gotzi.drawmachine.view.file;
+package net.gotzi.drawmachine.view.hub.sim;
 
-import net.gotzi.drawmachine.api.sim.SimModeInfo;
+import net.gotzi.drawmachine.api.sim.SimProgramInfo;
 import net.gotzi.drawmachine.control.layout.VerticalSplitLayout;
 import net.gotzi.drawmachine.sim.editor.SimEditorView;
 import net.gotzi.drawmachine.sim.SimView;
+import net.gotzi.drawmachine.view.hub.FileView;
 
-import java.awt.*;
 import java.io.File;
 
-public class ModeFileView extends FileView {
+public class SimProgramFileView extends FileView<SimProgramInfo> {
 
     private final SimEditorView simEditorView;
     private final SimView simView;
 
-    public ModeFileView(SimModeInfo simModeInfo, String name, File file) {
-        super(name, file);
-        this.simEditorView = new SimEditorView(simModeInfo);
+    public SimProgramFileView(SimProgramInfo simProgramInfo, String name, File file) {
+        super(name, "dmsp", file);
+        this.simEditorView = new SimEditorView(simProgramInfo);
         this.simView = new SimView(simEditorView);
 
-        add(simEditorView.getPanel());
+        add(simEditorView.getView());
         add(simView);
 
         this.buildLayout();
@@ -29,7 +29,7 @@ public class ModeFileView extends FileView {
      */
     private void buildLayout() {
         VerticalSplitLayout verticalSplitLayout = new VerticalSplitLayout(
-                this.simEditorView.getPanel(),
+                this.simEditorView.getView(),
                 this.simView);
         verticalSplitLayout.setComponent1Size(325);
         setLayout(verticalSplitLayout);
@@ -41,5 +41,10 @@ public class ModeFileView extends FileView {
 
     public SimView getSimView() {
         return simView;
+    }
+
+    @Override
+    public SimProgramInfo getObjectToSave() {
+        return this.simEditorView.getNewSimProgramInfo();
     }
 }

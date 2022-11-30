@@ -1,15 +1,13 @@
-package net.gotzi.drawmachine.view;
+package net.gotzi.drawmachine;
 
-import net.gotzi.drawmachine.control.UnderLayPanel;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
-import net.gotzi.drawmachine.view.file.FileHubUnderLayPanel;
-import net.gotzi.drawmachine.view.file.FileHubView;
+import net.gotzi.drawmachine.view.hub.FileHubUnderLayPanel;
+import net.gotzi.drawmachine.view.hub.FileHubView;
 import net.gotzi.drawmachine.view.workspace.Workspace;
 import net.gotzi.drawmachine.view.workspace.WorkspaceView;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class View extends JSplitPane {
 

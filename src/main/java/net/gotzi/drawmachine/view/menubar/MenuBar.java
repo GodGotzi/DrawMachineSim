@@ -1,9 +1,11 @@
-package net.gotzi.drawmachine.menubar;
+package net.gotzi.drawmachine.view.menubar;
 
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
-import net.gotzi.drawmachine.menubar.actions.NewModeFileAction;
-import net.gotzi.drawmachine.menubar.actions.OpenWorkspaceAction;
+import net.gotzi.drawmachine.view.menubar.actions.NewProgramAction;
+import net.gotzi.drawmachine.view.menubar.actions.OpenWorkspaceAction;
+import net.gotzi.drawmachine.view.menubar.actions.SaveAllProgramAction;
+import net.gotzi.drawmachine.view.menubar.actions.SaveProgramAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,15 +66,22 @@ public class MenuBar extends JMenuBar {
         JMenuItem item00 = new JMenuItem("Open Workspace");
         item00.addActionListener(new OpenWorkspaceAction());
         JMenuItem item01 = new JMenuItem("Open recent Workspace");
-        JMenuItem item02 = new JMenuItem("New Mode/File");
-        item02.addActionListener(new NewModeFileAction());
+        JMenuItem item02 = new JMenuItem("New Program");
+        item02.addActionListener(new NewProgramAction());
         JMenuItem item03 = new JMenuItem("Save");
-        JMenuItem item04 = new JMenuItem("Save as picture");
+        item03.addActionListener(new SaveProgramAction());
+        JMenuItem item04 = new JMenuItem("Save All");
+        item04.addActionListener(new SaveAllProgramAction());
+
+        JMenuItem item05 = new JMenuItem("Save as picture");
+
+
         menu00.add(item00);
         menu00.add(item01);
         menu00.add(item02);
         menu00.add(item03);
         menu00.add(item04);
+        menu00.add(item05);
         //menu00.add(ItemDivider.getDefaultItemDivider());
         add(menu00);
     }

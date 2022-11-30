@@ -2,13 +2,13 @@ package net.gotzi.drawmachine.handler.hotkey;
 
 import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.api.Action;
-import net.gotzi.drawmachine.view.file.ModeFileView;
+import net.gotzi.drawmachine.view.hub.sim.SimProgramFileView;
 
 public enum HotKey {
     RESET_SIM_VIEW("reset_sim_view", drawMachineSim -> {
-        ModeFileView modeFileView = (ModeFileView) drawMachineSim
+        SimProgramFileView simProgramFileView = (SimProgramFileView) drawMachineSim
                 .getView().getFileHub().getSelectedComponent();
-        if (modeFileView != null) modeFileView.getSimView().resetView();
+        if (simProgramFileView != null) simProgramFileView.getSimView().resetView();
     });
 
     private final String key;

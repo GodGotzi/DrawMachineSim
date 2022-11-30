@@ -1,9 +1,8 @@
-package net.gotzi.drawmachine.menubar.actions;
+package net.gotzi.drawmachine.view.menubar.actions;
 
 import net.gotzi.drawmachine.DrawMachineSim;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 

@@ -6,7 +6,7 @@ import net.gotzi.drawmachine.control.DimensionConstants;
 import net.gotzi.drawmachine.control.layout.HorizontalSplitLayout;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
-import net.gotzi.drawmachine.view.file.FileHubView;
+import net.gotzi.drawmachine.view.hub.FileHubView;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
