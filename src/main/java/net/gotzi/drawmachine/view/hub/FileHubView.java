@@ -1,7 +1,9 @@
 package net.gotzi.drawmachine.view.hub;
 
+import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.control.DimensionConstants;
 import net.gotzi.drawmachine.control.UnderLayPanel;
+import net.gotzi.drawmachine.error.UnsupportedAction;
 import net.gotzi.drawmachine.json.SimProgramLoader;
 import net.gotzi.drawmachine.view.hub.sim.SimProgramCoordinator;
 
@@ -47,6 +49,19 @@ public class FileHubView extends JTabbedPane implements FileHub {
         this.setTabComponentAt(index, pnlTab);
     }
 
+    public int indexOfTabFileName(String title) {
+        for (int i = 0; i < getTabCount(); i++) {
+            FileView<?> view = (FileView<?>) getComponentAt(i);
+
+            if (view.getFile().getName().equals(title)) {
+                return i;
+            }
+        }
+
+
+        return -1;
+    }
+
     public void openFilePage(File file) {
         String fileType = getFileEnding(file.getName());
         Coordinator<?, ?> coordinator = this.coordinatorMap.get(fileType);
@@ -56,7 +71,17 @@ public class FileHubView extends JTabbedPane implements FileHub {
         try {
             fileView = coordinator.load(file);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            new UnsupportedAction(DrawMachineSim.getInstance().getView(),
+                    "Couldn't load json from file");
+            return;
+        }
+
+        if (fileView == null) {
+            setSelectedIndex(
+                    indexOfTab(file.getName())
+            );
+
+            return;
         }
 
         addTab(fileView.getName(), fileView);
@@ -76,6 +101,14 @@ public class FileHubView extends JTabbedPane implements FileHub {
             throw new RuntimeException(e);
         }
 
+        if (fileView == null) {
+            setSelectedIndex(
+                    indexOfTab(name)
+            );
+
+            return;
+        }
+
         addTab(fileView.getName(), fileView);
     }
 
@@ -89,14 +122,7 @@ public class FileHubView extends JTabbedPane implements FileHub {
         JLabel lblTitle = new JLabel(title);
         FileView.ExitButton exitButton = new FileView.ExitButton();
 
-        exitButton.setClickAction(e -> {
-            try {
-                removeFileTab(e, component);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-            System.gc();
-        });
+        exitButton.setClickAction(e -> removeFileTab(e, component));
 
         exitButton.setPreferredSize(
                 DimensionConstants.getConstantDimension("filehub.view.tabcomponent.exitbutton.default")
@@ -116,31 +142,63 @@ public class FileHubView extends JTabbedPane implements FileHub {
         return buildMainTabPanel(underLayPanel, lblTitle);
     }
 
-    private void removeFileTab(MouseEvent mouseEvent, FileView<?> fileView) throws Exception {
+    private void removeFileTab(MouseEvent mouseEvent, FileView<?> fileView) {
         Coordinator<?, ?> coordinator = coordinatorMap.get(fileView.getFileType());
-        coordinator.save(new File(fileView.getAbsolutePath()), fileView.getObjectToSave());
+        try {
+            coordinator.save(new File(fileView.getAbsolutePath()), fileView.getObjectToSave());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        removeTabAt(indexOfComponent(fileView));
+        removeTabAt(
+                indexOfComponent(fileView)
+        );
+
+        int amount = 0;
+        FileView<?> rename = null;
+
+        for (int i = 0; i < getTabCount(); i++) {
+            FileView<?> view = (FileView<?>) getComponentAt(i);
+
+            if (view.getFile().getName().equals(fileView.getFile().getName())) {
+                rename = view;
+                amount++;
+            }
+        }
+
+        if (amount == 1) {
+            setTitleAt(indexOfComponent(rename), rename.getFile().getName());
+        }
 
         System.gc();
     }
 
+    @Override
+    public String getTitleAt(int index) {
+        FileView<?> view = (FileView<?>) getComponentAt(index);
+        return view.getName();
+    }
+
+    @Override
+    public void setTitleAt(int index, String title) {
+        FileView<?> view = (FileView<?>) getComponentAt(index);
+        view.setName(title);
+        JPanel pnlTab = createTabComponent(title, view);
+        this.setTabComponentAt(index, pnlTab);
+    }
+
     public void save() throws Exception {
-        if (getSelectedComponent() instanceof UnderLayPanel underLayPanel) {
-            if (underLayPanel.getCenter() instanceof FileView<?> fileView) {
-                Coordinator<?, ?> coordinator = coordinatorMap.get(fileView.getFileType());
-                coordinator.save(new File(fileView.getAbsolutePath()), fileView.getObjectToSave());
-            }
+        if (getSelectedComponent() instanceof FileView<?> fileView) {
+            Coordinator<?, ?> coordinator = coordinatorMap.get(fileView.getFileType());
+            coordinator.save(new File(fileView.getAbsolutePath()), fileView.getObjectToSave());
         }
     }
 
     public void saveAll() throws Exception {
         for (Component component : getComponents()) {
-            if (component instanceof UnderLayPanel underLayPanel) {
-                if (underLayPanel.getCenter() instanceof FileView<?> fileView) {
-                    Coordinator<?, ?> coordinator = coordinatorMap.get(fileView.getFileType());
-                    coordinator.save(new File(fileView.getAbsolutePath()), fileView.getObjectToSave());
-                }
+            if (component instanceof FileView<?> fileView) {
+                Coordinator<?, ?> coordinator = coordinatorMap.get(fileView.getFileType());
+                coordinator.save(new File(fileView.getAbsolutePath()), fileView.getObjectToSave());
             }
         }
     }

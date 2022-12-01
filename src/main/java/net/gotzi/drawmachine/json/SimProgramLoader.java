@@ -73,7 +73,7 @@ public class SimProgramLoader {
                 .endObject();
 
 
-        return stringBuilder.toString();
+        return new JSONObject(stringBuilder.toString()).toString(4);
     }
 
     public SimProgramInfo load(String source) {
@@ -86,32 +86,32 @@ public class SimProgramLoader {
         JSONObject points = values.getJSONObject("points");
 
         JSONObject jsonMiddle = points.getJSONObject("middlePoint");
-        x = Double.parseDouble(jsonMiddle.getString("x"));
-        y = Double.parseDouble(jsonMiddle.getString("y"));
+        x = jsonMiddle.getDouble("x");
+        y = jsonMiddle.getDouble("y");
         middlePoint = new SimPoint(x, y);
 
         JSONObject jsonM1 = points.getJSONObject("m1Point");
-        x = Double.parseDouble(jsonM1.getString("x"));
-        y = Double.parseDouble(jsonM1.getString("y"));
+        x = jsonM1.getDouble("x");
+        y = jsonM1.getDouble("y");
         m1Point = new SimPoint(x, y);
 
         JSONObject jsonM2 = points.getJSONObject("m2Point");
-        x = Double.parseDouble(jsonM2.getString("x"));
-        y = Double.parseDouble(jsonM2.getString("y"));
+        x = jsonM2.getDouble("x");
+        y = jsonM2.getDouble("y");
         m2Point = new SimPoint(x, y);
 
         JSONObject lengths = values.getJSONObject("lengths");
 
-        m1Horn = Double.parseDouble(lengths.getString("m1Horn"));
-        m2Horn = Double.parseDouble(lengths.getString("m2Horn"));
-        mainPole = Double.parseDouble(lengths.getString("mainPole"));
-        supportPole = Double.parseDouble(lengths.getString("supportPole"));
-        intersection = Double.parseDouble(lengths.getString("intersection"));
+        m1Horn = lengths.getDouble("m1Horn");
+        m2Horn = lengths.getDouble("m2Horn");
+        mainPole = lengths.getDouble("mainPole");
+        supportPole = lengths.getDouble("supportPole");
+        intersection = lengths.getDouble("intersection");
 
         JSONObject speeds = values.getJSONObject("speeds");
-        speedMiddle = Double.parseDouble(speeds.getString("speedMiddle"));
-        speedM1 = Double.parseDouble(speeds.getString("speedM1"));
-        speedM2 = Double.parseDouble(speeds.getString("speedM2"));
+        speedMiddle = speeds.getDouble("speedMiddle");
+        speedM1 = speeds.getDouble("speedM1");
+        speedM2 = speeds.getDouble("speedM2");
 
         return new SimProgramInfo(new SimRawValues(
                 middlePoint,

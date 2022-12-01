@@ -33,6 +33,10 @@ public abstract class FileView<T> extends JPanel {
         return name;
     }
 
+    public File getFile() {
+        return file;
+    }
+
     @Override
     public void setName(String name) {
         this.name = name;

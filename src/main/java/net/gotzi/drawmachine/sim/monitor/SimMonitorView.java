@@ -17,6 +17,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SimMonitorView implements SimMonitor {
 
     private final Simulation simulation;
+    private final String maxAllowedStepsStr =
+            DrawMachineSim.getInstance().getConfig().get("max_simulation_steps");
 
     private JPanel view;
     private JSlider simSpeedSlider;
@@ -45,7 +47,8 @@ public class SimMonitorView implements SimMonitor {
         resetCanvasButton.setText("Reset Canvas");
         speedLabel.setText("Simulation Speed");
         stepLabel.setText("Simulation Steps");
-        stepProgress.setText("0/10000");
+        stepProgress.setText(String.format("%0" + maxAllowedStepsStr.length() + "d/%" +
+                maxAllowedStepsStr.length() + "d", 0, 10000));
         simSpeedValueLabel.setText(String.format("%.2f x", 10 * Math.pow(10, -1)));
 
         simSpeedValueLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -99,7 +102,8 @@ public class SimMonitorView implements SimMonitor {
     @Override
     public void updateSteps(int steps) {
         int progress = (int) ((float)steps/(float) atomicSimSteps.get() * 100);
-        stepProgress.setText(steps + "/" + atomicSimSteps.get());
+        stepProgress.setText(String.format("%0" + maxAllowedStepsStr.length() + "d/%" +
+                maxAllowedStepsStr.length() + "d", steps, getSimulationSteps().get()));
         updateProgress(progress);
     }
 
@@ -120,16 +124,22 @@ public class SimMonitorView implements SimMonitor {
 
     private void updateSimSteps(ChangeEvent ignored) {
         NumberFormat nf = DecimalFormat.getInstance(new Locale("en", "US"));
-        int maxAllowed = Integer.parseInt(DrawMachineSim.getInstance().getConfig().get("max_simulation_steps"));
+        int maxAllowed = Integer.parseInt(this.maxAllowedStepsStr);
         int value;
 
-        value = Integer.parseInt(simStepSpinner.getValue().toString());
-        if (maxAllowed < value) {
-            simStepSpinner.setValue(maxAllowed);
-            new UnsupportedValue(DrawMachineSim.getInstance().getWindow(), "Value is too high Max: " + nf.format(maxAllowed));
+        try {
+            value = Integer.parseInt(simStepSpinner.getValue().toString());
+            if (maxAllowed < value) {
+                simStepSpinner.setValue(maxAllowed);
+                new UnsupportedValue(DrawMachineSim.getInstance().getWindow(), "Value is too high Max: " + nf.format(maxAllowed));
+                return;
+            }
+        } catch (Exception e) {
+            return;
         }
 
-        stepProgress.setText(simulation.getCurrentSteps() + "/" + value);
+        stepProgress.setText(String.format("%0" + maxAllowedStepsStr.length() + "d/%" +
+                maxAllowedStepsStr.length() + "d", simulation.getCurrentSteps(), value));
         atomicSimSteps.set(value);
     }
 

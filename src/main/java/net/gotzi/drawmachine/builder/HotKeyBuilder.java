@@ -23,10 +23,10 @@ public class HotKeyBuilder extends Builder<HotKeyHandler, HotKeyBuilder> {
         configLoader.load();
 
         for (HotKey hotKey : HotKey.values()) {
-            String reset_sim_view_hotkey = configLoader.getResult().get("hotkey." + hotKey.getKey());
-            KeyStroke keyStroke = KeyStroke.getKeyStroke(reset_sim_view_hotkey);
+            String hotkey = configLoader.getResult().get("hotkey." + hotKey.getKey());
+            KeyStroke keyStroke = KeyStroke.getKeyStroke(hotkey);
 
-            this.hotKeyHandler.addHotKey(hotKey.getKey(), keyStroke, hotKey.getDrawMachineSimAction());
+            this.hotKeyHandler.addHotKey(hotKey.getKey(), keyStroke, hotKey.getAction());
         }
 
         setSuccessful(true);

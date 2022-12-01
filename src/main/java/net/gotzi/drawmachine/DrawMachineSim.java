@@ -36,10 +36,7 @@ public class DrawMachineSim implements Application {
             UIManager.put("control", new Color(128, 128, 128));
             UIManager.put("info", new Color(128, 128, 128));
 
-
-            designHandler.getDesignColorChanges(DesignColor.SECONDARY)
-                            .registerPossibleChange(color -> UIManager.put("nimbusBase", color));
-
+            UIManager.put("nimbusBase", new Color(18, 30, 49));
 
 
             UIManager.put("nimbusAlertYellow", new Color(248, 187, 0));
@@ -48,8 +45,7 @@ public class DrawMachineSim implements Application {
             UIManager.put("nimbusGreen", new Color(176, 179, 50));
             UIManager.put("nimbusInfoBlue", new Color(66, 139, 221));
 
-            designHandler.getDesignColorChanges(DesignColor.SECONDARY)
-                    .registerPossibleChange(color -> UIManager.put("nimbusLightBackground", color));
+            UIManager.put("nimbusLightBackground", new Color(18, 30, 49));
 
             UIManager.put("nimbusOrange", new Color(191, 98, 4));
             UIManager.put("nimbusRed", new Color(169, 46, 34));

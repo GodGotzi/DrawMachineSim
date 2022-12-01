@@ -166,13 +166,15 @@ public class WorkspaceView extends JPanel implements Workspace {
     }
 
     void doMouseClicked(MouseEvent me) {
-        TreePath tp = this.workspaceTree.getPathForLocation(me.getX(), me.getY());
-        if (tp != null) {
-            TreeNode treeNode = ((TreeNode)tp.getLastPathComponent());
+        if (me.getClickCount() == 2) {
+            TreePath tp = this.workspaceTree.getPathForLocation(me.getX(), me.getY());
+            if (tp != null) {
+                TreeNode treeNode = ((TreeNode)tp.getLastPathComponent());
 
-            if (treeNode instanceof WorkspaceElement workspaceElement) {
-                if (workspaceElement.isFile() && workspaceElement instanceof WorkspaceFile workspaceFile) {
-                    this.fileHubView.openFilePage(workspaceFile.getFile());
+                if (treeNode instanceof WorkspaceElement workspaceElement) {
+                    if (workspaceElement.isFile() && workspaceElement instanceof WorkspaceFile workspaceFile) {
+                        this.fileHubView.openFilePage(workspaceFile.getFile());
+                    }
                 }
             }
         }

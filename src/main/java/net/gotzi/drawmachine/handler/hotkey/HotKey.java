@@ -9,6 +9,14 @@ public enum HotKey {
         SimProgramFileView simProgramFileView = (SimProgramFileView) drawMachineSim
                 .getView().getFileHub().getSelectedComponent();
         if (simProgramFileView != null) simProgramFileView.getSimView().resetView();
+    }),
+
+    SAVE_SIM_PROGRAM("save_sim_program", drawMachineSim -> {
+        try {
+            drawMachineSim.getView().getFileHub().saveAll();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     });
 
     private final String key;
@@ -23,7 +31,7 @@ public enum HotKey {
         return key;
     }
 
-    public Action<DrawMachineSim> getDrawMachineSimAction() {
+    public Action<DrawMachineSim> getAction() {
         return drawMachineSimAction;
     }
 }

@@ -5,14 +5,19 @@ import net.gotzi.drawmachine.api.sim.SimProgramInfo;
 import net.gotzi.drawmachine.api.sim.SimPoint;
 import net.gotzi.drawmachine.api.sim.SimRawValues;
 import net.gotzi.drawmachine.api.sim.SimValues;
+import net.gotzi.drawmachine.control.UnderLayPanel;
+import net.gotzi.drawmachine.handler.design.DesignColor;
+import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.utils.NumberUtils;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class SimEditorView implements SimEditor {
 
     private final int baseSteps;
 
+    private JTextPane simCompletedInfo;
     private JPanel panel;
     private JSpinner middlePointX;
     private JSpinner m1PointX;
@@ -28,15 +33,24 @@ public class SimEditorView implements SimEditor {
     private JSpinner m2Speed;
     private JSpinner m1Speed;
     private JSpinner middleSpeed;
+    private JPanel simCompletedInfoArea;
 
     public SimEditorView(SimProgramInfo simProgramInfo) {
         this.baseSteps = Integer.parseInt(DrawMachineSim.getInstance().getConfig().get("base_steps"));
-
 
         load(simProgramInfo);
     }
 
     private void load(SimProgramInfo simProgramInfo) {
+        this.simCompletedInfo = new JTextPane();
+        this.simCompletedInfo.setEditable(false);
+
+        UnderLayPanel underLayPanel = new UnderLayPanel(simCompletedInfo);
+        underLayPanel.setEastBorderThickness(5);
+        underLayPanel.setWestBorderThickness(5);
+
+        this.simCompletedInfoArea.add(underLayPanel, BorderLayout.CENTER);
+
         this.middlePointX.setValue(simProgramInfo.saved().middlePoint().x());
         this.middlePointY.setValue(simProgramInfo.saved().middlePoint().y());
 
@@ -68,7 +82,7 @@ public class SimEditorView implements SimEditor {
     }
 
     @Override
-    public SimValues getTestSimValues() {
+    public SimValues getSimValues() {
         return new SimValues(
                 new SimPoint(getValue(middlePointX), getValue(middlePointY)),
                 new SimPoint(getValue(m1PointX), getValue(m1PointY)),
@@ -107,11 +121,6 @@ public class SimEditorView implements SimEditor {
             return Double.parseDouble(spinner.getValue().toString());
 
         return 0;
-    }
-
-    @Override
-    public SimValues getSimValues() {
-        return null;
     }
 
     public int getBaseSteps() {

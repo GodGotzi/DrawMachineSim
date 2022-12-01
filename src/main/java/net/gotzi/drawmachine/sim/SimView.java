@@ -44,7 +44,7 @@ public class SimView extends JPanel implements Simulation {
     public void run() {
         this.running = true;
         this.simMainView.getRenderer().render(
-                new SimInfo(this.simEditor.getTestSimValues(), this.simMonitor)
+                new SimInfo(this.simEditor.getSimValues(), this.simMonitor)
         );
     }
 

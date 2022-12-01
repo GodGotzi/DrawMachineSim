@@ -71,9 +71,9 @@ public class SimProgramCoordinator implements Coordinator<SimProgramInfo, SimPro
 
     private String getNonDuplicateName(File file) {
         String name;
-        if (fileHubView.indexOfTab(file.getName()) != -1) {
-            int index = fileHubView.indexOfTab(file.getName());
+        int index = fileHubView.indexOfTabFileName(file.getName());
 
+        if (index != -1) {
             if (fileHubView.getComponentAt(index) instanceof FileView fileView) {
                 if (file.getAbsolutePath().equals(fileView.getAbsolutePath()))
                     return null;
@@ -84,6 +84,7 @@ public class SimProgramCoordinator implements Coordinator<SimProgramInfo, SimPro
             name = file.getAbsolutePath();
         } else
             name = file.getName();
+
         return name;
     }
 
