@@ -6,9 +6,11 @@ import net.gotzi.drawmachine.api.sim.SimPoint;
 import net.gotzi.drawmachine.api.sim.SimRawValues;
 import net.gotzi.drawmachine.api.sim.SimValues;
 import net.gotzi.drawmachine.control.UnderLayPanel;
-import net.gotzi.drawmachine.handler.design.DesignColor;
-import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.utils.NumberUtils;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +19,7 @@ public class SimEditorView implements SimEditor {
 
     private final int baseSteps;
 
-    private JTextPane simCompletedInfo;
+    private UnderLayPanel view;
     private JPanel panel;
     private JSpinner middlePointX;
     private JSpinner m1PointX;
@@ -30,10 +32,7 @@ public class SimEditorView implements SimEditor {
     private JSpinner mainPoleLength;
     private JSpinner supportPoleLength;
     private JSpinner intersectionLength;
-    private JSpinner m2Speed;
-    private JSpinner m1Speed;
-    private JSpinner middleSpeed;
-    private JPanel simCompletedInfoArea;
+    private JPanel editorPanel;
 
     public SimEditorView(SimProgramInfo simProgramInfo) {
         this.baseSteps = Integer.parseInt(DrawMachineSim.getInstance().getConfig().get("base_steps"));
@@ -42,14 +41,25 @@ public class SimEditorView implements SimEditor {
     }
 
     private void load(SimProgramInfo simProgramInfo) {
-        this.simCompletedInfo = new JTextPane();
-        this.simCompletedInfo.setEditable(false);
+        this.view = new UnderLayPanel(panel);
+        this.view.setSouthBorderThickness(5);
+        this.view.setNorthBorderThickness(5);
+        this.view.setWestBorderThickness(5);
+        this.view.setEastBorderThickness(5);
 
-        UnderLayPanel underLayPanel = new UnderLayPanel(simCompletedInfo);
-        underLayPanel.setEastBorderThickness(5);
-        underLayPanel.setWestBorderThickness(5);
 
-        this.simCompletedInfoArea.add(underLayPanel, BorderLayout.CENTER);
+        editorPanel.setLayout(new BorderLayout());
+        RSyntaxTextArea syntaxTextArea = new RSyntaxTextArea(20, 60);
+
+        syntaxTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
+        syntaxTextArea.setText("class Test {}");
+        syntaxTextArea.setBackground(Color.DARK_GRAY);
+        syntaxTextArea.setSelectedTextColor(Color.WHITE);
+        syntaxTextArea.setSelectionColor(Color.WHITE);
+        syntaxTextArea.setCurrentLineHighlightColor(Color.GRAY);
+        syntaxTextArea.setCodeFoldingEnabled(true);
+        RTextScrollPane scrollPane = new RTextScrollPane(syntaxTextArea);
+        editorPanel.add(scrollPane);
 
         this.middlePointX.setValue(simProgramInfo.saved().middlePoint().x());
         this.middlePointY.setValue(simProgramInfo.saved().middlePoint().y());
@@ -69,16 +79,11 @@ public class SimEditorView implements SimEditor {
 
         this.intersectionLength.setValue(simProgramInfo.saved().intersection());
 
-        this.middleSpeed.setValue(simProgramInfo.saved().speedMiddle());
-
-        this.m1Speed.setValue(simProgramInfo.saved().speedM1());
-        this.m2Speed.setValue(simProgramInfo.saved().speedM2());
-
         //TODO init values with simModeInfo
     }
 
     public JPanel getView() {
-        return panel;
+        return view;
     }
 
     @Override
@@ -92,9 +97,9 @@ public class SimEditorView implements SimEditor {
                 getValue(mainPoleLength),
                 getValue(supportPoleLength),
                 getValue(intersectionLength),
-                getValue(middleSpeed) / (double) baseSteps,
-                getValue(m1Speed),
-                getValue(m2Speed),
+                360 / (double) baseSteps,
+                20,
+                20,
                 baseSteps);
     }
 
@@ -109,9 +114,9 @@ public class SimEditorView implements SimEditor {
                         getValue(mainPoleLength),
                         getValue(supportPoleLength),
                         getValue(intersectionLength),
-                        getValue(middleSpeed),
-                        getValue(m1Speed),
-                        getValue(m2Speed)
+                        360,
+                        20,
+                        20
                 )
         );
     }

@@ -73,6 +73,8 @@ public class FileHubView extends JTabbedPane implements FileHub {
         } catch (Exception e) {
             new UnsupportedAction(DrawMachineSim.getInstance().getView(),
                     "Couldn't load json from file");
+            e.printStackTrace();
+
             return;
         }
 
