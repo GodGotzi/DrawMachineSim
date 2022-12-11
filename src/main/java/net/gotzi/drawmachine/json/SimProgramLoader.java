@@ -3,8 +3,13 @@ package net.gotzi.drawmachine.json;
 import net.gotzi.drawmachine.api.sim.SimPoint;
 import net.gotzi.drawmachine.api.sim.SimProgramInfo;
 import net.gotzi.drawmachine.api.sim.SimRawValues;
+import net.gotzi.drawmachine.sim.editor.GCode;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONWriter;
+
+import java.util.List;
+import java.util.function.Function;
 
 public class SimProgramLoader {
 
@@ -58,18 +63,15 @@ public class SimProgramLoader {
                 .key("intersection")
                 .value(simProgramInfo.saved().intersection())
                 .endObject()
-
-                .key("speeds")
-                .object()
-                .key("speedMiddle")
-                .value(simProgramInfo.saved().speedMiddle())
-                .key("speedM1")
-                .value(simProgramInfo.saved().speedM1())
-                .key("speedM2")
-                .value(simProgramInfo.saved().speedM2())
                 .endObject()
+                .key("gCode")
+                .array();
 
-                .endObject()
+        for (String line : simProgramInfo.saved().gcode())
+            jsonWriter.value(line);
+
+        jsonWriter
+                .endArray()
                 .endObject();
 
 
@@ -78,7 +80,7 @@ public class SimProgramLoader {
 
     public SimProgramInfo load(String source) {
         SimPoint middlePoint, m1Point, m2Point;
-        double m1Horn, m2Horn, mainPole, supportPole, intersection, speedMiddle, speedM1, speedM2;
+        double m1Horn, m2Horn, mainPole, supportPole, intersection;
         double x, y;
 
         JSONObject jsonObject = new JSONObject(source);
@@ -108,10 +110,10 @@ public class SimProgramLoader {
         supportPole = lengths.getDouble("supportPole");
         intersection = lengths.getDouble("intersection");
 
-        JSONObject speeds = values.getJSONObject("speeds");
-        speedMiddle = speeds.getDouble("speedMiddle");
-        speedM1 = speeds.getDouble("speedM1");
-        speedM2 = speeds.getDouble("speedM2");
+        JSONArray array = jsonObject.getJSONArray("gCode");
+
+        List<String> lines = array.toList().stream().map(Object::toString).toList();
+        GCode gCode = new GCode(lines);
 
         return new SimProgramInfo(new SimRawValues(
                 middlePoint,
@@ -122,13 +124,34 @@ public class SimProgramLoader {
                 mainPole,
                 supportPole,
                 intersection,
-                speedMiddle,
-                speedM1,
-                speedM2
+                gCode
         ));
     }
 
+    /*
+
+    all numbers can be written as non-whole Numbers
+
+    G0S -> begin einer Sequence (Argument T -> die Zeit in der der Block bearbeitet werden muss)
+    all commands in between this sequence should running / started at the same time
+    G0E -> end einer Sequence
+
+    G0 -> (Argument (endless) motors degree, Argument T -> die Zeit in der der Befehl ausgeführt werden muss)
+
+
+
+     */
+
     public SimProgramInfo getDefault() {
+        GCode gCode = new GCode();
+        gCode.add("G0S T10000");
+        gCode.add("G0 A4320 T10000");
+        gCode.add("G0 B4320 T10000");
+        gCode.add("G0 M4320 T10000");
+        gCode.add("G0E");
+        gCode.add("G1 A4320 M4320 S5 P20 T10000");
+        gCode.add("G2 B4320 M4320 S5 P20 E5000 T10000");
+
         return new SimProgramInfo(new SimRawValues(
                 new SimPoint(1050, 1050),
                 new SimPoint(1050-700, 1050-2400),
@@ -138,9 +161,7 @@ public class SimProgramLoader {
                 2200,
                 1400,
                 1100,
-                360,
-                60,
-                32
+                gCode
         ));
     }
 }

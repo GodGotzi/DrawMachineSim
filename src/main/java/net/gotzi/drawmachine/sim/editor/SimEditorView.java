@@ -6,10 +6,11 @@ import net.gotzi.drawmachine.api.sim.SimPoint;
 import net.gotzi.drawmachine.api.sim.SimRawValues;
 import net.gotzi.drawmachine.api.sim.SimValues;
 import net.gotzi.drawmachine.control.UnderLayPanel;
+import net.gotzi.drawmachine.handler.design.DesignColor;
+import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.utils.NumberUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
@@ -44,22 +45,28 @@ public class SimEditorView implements SimEditor {
         this.view = new UnderLayPanel(panel);
         this.view.setSouthBorderThickness(5);
         this.view.setNorthBorderThickness(5);
-        this.view.setWestBorderThickness(5);
-        this.view.setEastBorderThickness(5);
+        this.view.setWestBorderThickness(15);
+        this.view.setEastBorderThickness(15);
 
 
         editorPanel.setLayout(new BorderLayout());
         RSyntaxTextArea syntaxTextArea = new RSyntaxTextArea(20, 60);
 
-        syntaxTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
-        syntaxTextArea.setText("class Test {}");
+        syntaxTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_ACTIONSCRIPT);
         syntaxTextArea.setBackground(Color.DARK_GRAY);
         syntaxTextArea.setSelectedTextColor(Color.WHITE);
         syntaxTextArea.setSelectionColor(Color.WHITE);
         syntaxTextArea.setCurrentLineHighlightColor(Color.GRAY);
         syntaxTextArea.setCodeFoldingEnabled(true);
         RTextScrollPane scrollPane = new RTextScrollPane(syntaxTextArea);
-        editorPanel.add(scrollPane);
+        editorPanel.add(scrollPane, BorderLayout.CENTER);
+
+        JLabel label = new JLabel("GCode Editor", JLabel.CENTER);
+
+        DesignHandler.getInstance().getDesignColorChanges(DesignColor.SECONDARY)
+                        .registerPossibleChange(label::setBackground);
+
+        editorPanel.add(label, BorderLayout.NORTH);
 
         this.middlePointX.setValue(simProgramInfo.saved().middlePoint().x());
         this.middlePointY.setValue(simProgramInfo.saved().middlePoint().y());
@@ -104,6 +111,8 @@ public class SimEditorView implements SimEditor {
     }
 
     public SimProgramInfo getNewSimProgramInfo() {
+
+
         return new SimProgramInfo(
                 new SimRawValues(
                         new SimPoint(getValue(middlePointX), getValue(middlePointY)),
@@ -114,9 +123,7 @@ public class SimEditorView implements SimEditor {
                         getValue(mainPoleLength),
                         getValue(supportPoleLength),
                         getValue(intersectionLength),
-                        360,
-                        20,
-                        20
+                        new GCode()
                 )
         );
     }
