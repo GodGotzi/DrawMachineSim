@@ -2,6 +2,7 @@ package net.gotzi.drawmachine.sim.algorithm.logic;
 
 import net.gotzi.drawmachine.sim.SimInfo;
 import net.gotzi.drawmachine.api.sim.SimPoint;
+import net.gotzi.drawmachine.sim.algorithm.SimGCodeLoader;
 
 public class MathLogic {
     private final SimInfo simInfo;
@@ -27,10 +28,10 @@ public class MathLogic {
      * @param step The current step of the simulation
      * @return The point where the pencil is.
      */
-    protected SimPoint calculatePencilPoint(int step) {
-        double middleDegree = speedToDegree(step, simInfo.getRealSpeedMiddle());
-        double m1Degree = speedToDegree(step, simInfo.getRealSpeedM1());
-        double m2Degree = speedToDegree(step, simInfo.getRealSpeedM2());
+    protected SimPoint calculatePencilPoint(int timestamp, SimGCodeLoader simGCodeLoader) {
+        double middleDegree = 0;
+        double m1Degree = 0;
+        double m2Degree = 0;
 
         double m1exOffset = Math.cos(Math.toRadians(m1Degree)) * simInfo.getSimValues().m1Horn();
         double m1eyOffset = Math.sin(Math.toRadians(m1Degree)) * simInfo.getSimValues().m1Horn();

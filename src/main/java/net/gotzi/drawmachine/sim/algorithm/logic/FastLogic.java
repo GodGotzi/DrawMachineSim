@@ -5,8 +5,8 @@ import net.gotzi.drawmachine.api.sim.SimCompletedInfo;
 import net.gotzi.drawmachine.api.sim.SimPoint;
 import net.gotzi.drawmachine.error.PencilOutOfCanvas;
 import net.gotzi.drawmachine.sim.SimInfo;
-import net.gotzi.drawmachine.sim.algorithm.Canvas;
-import net.gotzi.drawmachine.sim.algorithm.SimRenderer;
+import net.gotzi.drawmachine.sim.Canvas;
+import net.gotzi.drawmachine.sim.algorithm.SimGCodeLoader;
 import net.gotzi.drawmachine.utils.BenchmarkTimer;
 
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ public class FastLogic implements Logic {
     private final Canvas paper;
     private final Action<SimCompletedInfo> finishedAction;
     private final List<SimPoint[]> simPoints;
+    private final SimGCodeLoader simGCodeLoader;
     private boolean finished = false;
 
     public FastLogic(SimInfo simInfo, Action<Integer> update, Canvas paper, Action<SimCompletedInfo> finishedAction) {
@@ -27,7 +28,9 @@ public class FastLogic implements Logic {
         this.update = update;
         this.paper = paper;
         this.finishedAction = finishedAction;
-        this.simPoints = new ArrayList<>(simInfo.getStepAmount());
+        this.simPoints = new ArrayList<>();
+
+        this.simGCodeLoader = new SimGCodeLoader(simInfo.getSimValues().gCode());
     }
 
     @Override
@@ -80,21 +83,23 @@ public class FastLogic implements Logic {
      */
     @Override
     public synchronized void run() {
-        //TODO fastlogic
-
-        System.out.println("test1");
+        SimGCodeLoader simGCodeLoader = new SimGCodeLoader(
+                this.simInfo.getSimValues().gCode()
+        );
 
         BenchmarkTimer benchmarkTimer = new BenchmarkTimer();
         benchmarkTimer.start();
 
-        int stepAmount = this.simInfo.getStepAmount();
+        double stepFactor = this.simInfo.getStepFactor();
+        int stepAmount = (int) (simGCodeLoader.calculateTime()/stepFactor);
+
         MathLogic mathLogic = new MathLogic(this.simInfo);
         Thread[] mathThreads = new Thread[(stepAmount/80000) + 1];
 
         Action<Long> finished = time -> {
             finished();
             synchronized (simPoints) {
-                System.out.println("Time (ms): " + time);
+                System.out.println("Calculation Time (ms): " + time);
 
                 drawPoints();
                 SimCompletedInfo completedInfo = new SimCompletedInfo();
@@ -110,8 +115,8 @@ public class FastLogic implements Logic {
             mathThreads[i] = new Thread(() -> {
                 SimPoint[] threadSimPoints = new SimPoint[80000];
 
-                for (int step = start; step < stop && !Thread.currentThread().isInterrupted(); step++) {
-                    threadSimPoints[step - start] = mathLogic.calculatePencilPoint(step);
+                for (int timestamp = start; timestamp < stop && !Thread.currentThread().isInterrupted(); timestamp++) {
+                    threadSimPoints[timestamp - start] = mathLogic.calculatePencilPoint(timestamp, simGCodeLoader);
                 }
 
                 collect(threadSimPoints);

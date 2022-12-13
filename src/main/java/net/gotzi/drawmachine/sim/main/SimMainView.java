@@ -4,8 +4,7 @@ import net.gotzi.drawmachine.control.DimensionConstants;
 import net.gotzi.drawmachine.control.map.MapPanel;
 import net.gotzi.drawmachine.sim.Simulation;
 import net.gotzi.drawmachine.sim.algorithm.Renderer;
-import net.gotzi.drawmachine.sim.algorithm.SimRenderer;
-import net.gotzi.drawmachine.utils.Helper;
+import net.gotzi.drawmachine.sim.SimRenderer;
 
 import javax.swing.*;
 import java.awt.*;

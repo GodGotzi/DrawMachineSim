@@ -6,9 +6,9 @@ import net.gotzi.drawmachine.error.PencilOutOfCanvas;
 import net.gotzi.drawmachine.error.ThreadInterrupt;
 import net.gotzi.drawmachine.sim.SimInfo;
 import net.gotzi.drawmachine.api.sim.SimPoint;
-import net.gotzi.drawmachine.sim.algorithm.Canvas;
-import net.gotzi.drawmachine.sim.algorithm.SimRenderer;
-import net.gotzi.drawmachine.utils.BenchmarkTimer;
+import net.gotzi.drawmachine.sim.Canvas;
+import net.gotzi.drawmachine.sim.SimRenderer;
+import net.gotzi.drawmachine.sim.algorithm.SimGCodeLoader;
 
 public class SimLogic implements Logic {
 
@@ -18,6 +18,7 @@ public class SimLogic implements Logic {
     private final Action<Integer> update;
     private final MathLogic mathLogic;
     private SimPoint lastPoint = null;
+    private final SimGCodeLoader simGCodeLoader;
     private double travelDistance = 0;
     
     public SimLogic(SimInfo simInfo, Action<Integer> update, Canvas paper, SimRenderer simRenderer) {
@@ -26,6 +27,7 @@ public class SimLogic implements Logic {
         this.simRenderer = simRenderer;
         this.update = update;
         this.mathLogic = new MathLogic(this.simInfo);
+        this.simGCodeLoader = new SimGCodeLoader(simInfo.getSimValues().gCode());
     }
 
     public double getTravelDistance() {
@@ -43,18 +45,18 @@ public class SimLogic implements Logic {
     }
 
     @Override
-    public boolean isFinished(int step) {
-        return !((step <= simInfo.getStepAmount()
-                || 1 < mathLogic.speedToDegree(step, simInfo.getRealSpeedM1())
-                || 1 < mathLogic.speedToDegree(step, simInfo.getRealSpeedM2()))
-                && this.simRenderer.isRunning());
+    public boolean isFinished(int timestamp) {
+        return simGCodeLoader.isFinished();
     }
 
     @Override
     public void run() {
-        for (int step = 1; !this.isFinished(step); step++) {
-            this.runStep(step);
-            this.update.run(step);
+        double stepFactor = this.simInfo.getStepFactor();
+        int stepAmount = (int) (simGCodeLoader.calculateTime()/stepFactor);
+
+        for (int timestamp = 1; timestamp <= stepAmount; timestamp++) {
+            this.runStep(timestamp);
+            this.update.run(timestamp);
 
             awaitForSpeed();
         }
@@ -66,10 +68,10 @@ public class SimLogic implements Logic {
      * The first line of the function is a call to the math logic. It's a call to the `calculatePencilPoint` function,
      * which is defined in the `MathLogic` class
      *
-     * @param step the current step of the simulation
+     * @param timestamp the current step of the simulation
      */
-    private void runStep(int step) {
-        SimPoint simPoint = this.mathLogic.calculatePencilPoint(step);
+    private void runStep(int timestamp) {
+        SimPoint simPoint = this.mathLogic.calculatePencilPoint(timestamp, simGCodeLoader);
 
         if (lastPoint != null)
             travelDistance += Math.sqrt(Math.pow(lastPoint.x() - simPoint.x(), 2) + Math.pow(lastPoint.y() - simPoint.y(), 2));

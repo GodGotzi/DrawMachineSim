@@ -15,6 +15,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class SimEditorView implements SimEditor {
 
@@ -35,6 +36,8 @@ public class SimEditorView implements SimEditor {
     private JSpinner intersectionLength;
     private JPanel editorPanel;
 
+    private RSyntaxTextArea gCodeEditor;
+
     public SimEditorView(SimProgramInfo simProgramInfo) {
         this.baseSteps = Integer.parseInt(DrawMachineSim.getInstance().getConfig().get("base_steps"));
 
@@ -48,17 +51,16 @@ public class SimEditorView implements SimEditor {
         this.view.setWestBorderThickness(15);
         this.view.setEastBorderThickness(15);
 
-
         editorPanel.setLayout(new BorderLayout());
-        RSyntaxTextArea syntaxTextArea = new RSyntaxTextArea(20, 60);
+        this.gCodeEditor = new RSyntaxTextArea(20, 60);
 
-        syntaxTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_ACTIONSCRIPT);
-        syntaxTextArea.setBackground(Color.DARK_GRAY);
-        syntaxTextArea.setSelectedTextColor(Color.WHITE);
-        syntaxTextArea.setSelectionColor(Color.WHITE);
-        syntaxTextArea.setCurrentLineHighlightColor(Color.GRAY);
-        syntaxTextArea.setCodeFoldingEnabled(true);
-        RTextScrollPane scrollPane = new RTextScrollPane(syntaxTextArea);
+        gCodeEditor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_ACTIONSCRIPT);
+        gCodeEditor.setBackground(Color.DARK_GRAY);
+        gCodeEditor.setSelectedTextColor(Color.WHITE);
+        gCodeEditor.setSelectionColor(Color.WHITE);
+        gCodeEditor.setCurrentLineHighlightColor(Color.GRAY);
+        gCodeEditor.setCodeFoldingEnabled(true);
+        RTextScrollPane scrollPane = new RTextScrollPane(gCodeEditor);
         editorPanel.add(scrollPane, BorderLayout.CENTER);
 
         JLabel label = new JLabel("GCode Editor", JLabel.CENTER);
@@ -95,6 +97,9 @@ public class SimEditorView implements SimEditor {
 
     @Override
     public SimValues getSimValues() {
+        String[] source = gCodeEditor.getText().split(System.lineSeparator());
+        GCode gCode = new GCode(Arrays.stream(source).toList());
+
         return new SimValues(
                 new SimPoint(getValue(middlePointX), getValue(middlePointY)),
                 new SimPoint(getValue(m1PointX), getValue(m1PointY)),
@@ -104,13 +109,13 @@ public class SimEditorView implements SimEditor {
                 getValue(mainPoleLength),
                 getValue(supportPoleLength),
                 getValue(intersectionLength),
-                360 / (double) baseSteps,
-                20,
-                20,
+                gCode,
                 baseSteps);
     }
 
     public SimProgramInfo getNewSimProgramInfo() {
+        String[] source = gCodeEditor.getText().split(System.lineSeparator());
+        GCode gCode = new GCode(Arrays.stream(source).toList());
 
 
         return new SimProgramInfo(
@@ -123,7 +128,7 @@ public class SimEditorView implements SimEditor {
                         getValue(mainPoleLength),
                         getValue(supportPoleLength),
                         getValue(intersectionLength),
-                        new GCode()
+                        gCode
                 )
         );
     }

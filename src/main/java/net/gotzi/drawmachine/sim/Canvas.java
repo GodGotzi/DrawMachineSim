@@ -1,4 +1,4 @@
-package net.gotzi.drawmachine.sim.algorithm;
+package net.gotzi.drawmachine.sim;
 
 import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.error.PencilOutOfCanvas;

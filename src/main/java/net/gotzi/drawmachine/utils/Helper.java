@@ -48,4 +48,8 @@ public class Helper {
     private static int getDigits(int num) {
         return String.valueOf(num).toCharArray().length;
     }
+
+    private static int processorAmount() {
+        return Runtime.getRuntime().availableProcessors();
+    }
 }

@@ -1,15 +1,11 @@
-package net.gotzi.drawmachine.sim.algorithm;
+package net.gotzi.drawmachine.sim;
 
 import net.gotzi.drawmachine.api.Action;
-import net.gotzi.drawmachine.api.sim.SimCompletedInfo;
-import net.gotzi.drawmachine.sim.SimInfo;
+import net.gotzi.drawmachine.sim.algorithm.Renderer;
 import net.gotzi.drawmachine.sim.algorithm.logic.FastLogic;
 import net.gotzi.drawmachine.sim.algorithm.logic.Logic;
 import net.gotzi.drawmachine.sim.algorithm.logic.SimLogic;
 import net.gotzi.drawmachine.utils.BenchmarkTimer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SimRenderer implements Renderer {
 

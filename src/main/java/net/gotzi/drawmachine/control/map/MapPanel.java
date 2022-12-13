@@ -1,9 +1,7 @@
 package net.gotzi.drawmachine.control.map;
 
-import net.gotzi.drawmachine.handler.design.DesignColor;
-import net.gotzi.drawmachine.handler.design.DesignHandler;
-import net.gotzi.drawmachine.sim.algorithm.SimRenderer;
-import net.gotzi.drawmachine.sim.algorithm.Canvas;
+import net.gotzi.drawmachine.sim.SimRenderer;
+import net.gotzi.drawmachine.sim.Canvas;
 import net.gotzi.drawmachine.sim.Simulation;
 
 import javax.swing.*;
