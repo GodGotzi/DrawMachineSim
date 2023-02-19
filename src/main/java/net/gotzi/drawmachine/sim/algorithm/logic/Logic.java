@@ -1,11 +1,14 @@
 package net.gotzi.drawmachine.sim.algorithm.logic;
 
-public interface Logic {
+import net.gotzi.drawmachine.api.sim.SimPoint;
 
-    boolean isFinished(int step);
+public abstract class Logic {
 
-    void run();
+    public abstract boolean isFinished(int step);
 
-    double getTravelDistance();
+    public abstract void run();
 
+    protected double distance(SimPoint p1, SimPoint p2) {
+        return Math.sqrt(Math.pow(p1.x() - p2.x(), 2) + Math.pow(p1.y() - p2.y(), 2));
+    }
 }

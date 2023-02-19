@@ -1,6 +1,8 @@
 package net.gotzi.drawmachine.sim;
 
 import net.gotzi.drawmachine.api.Action;
+import net.gotzi.drawmachine.api.sim.SimCompletedInfo;
+import net.gotzi.drawmachine.api.sim.SimRenderState;
 import net.gotzi.drawmachine.sim.algorithm.Renderer;
 import net.gotzi.drawmachine.sim.algorithm.logic.FastLogic;
 import net.gotzi.drawmachine.sim.algorithm.logic.Logic;
@@ -10,11 +12,11 @@ import net.gotzi.drawmachine.utils.BenchmarkTimer;
 public class SimRenderer implements Renderer {
 
     private final Canvas paper;
-    private final Action<Integer> update;
+    private final Action<SimRenderState> update;
 
     private boolean running = false;
 
-    public SimRenderer(Canvas canvas, Action<Integer> update) {
+    public SimRenderer(Canvas canvas, Action<SimRenderState> update) {
         this.paper = canvas;
         this.update = update;
     }
@@ -31,20 +33,16 @@ public class SimRenderer implements Renderer {
             setRunning(true);
 
             if (!simInfo.isFastMode()) {
-                BenchmarkTimer timer = new BenchmarkTimer();
-                timer.start();
-
-                Logic logic = new SimLogic(simInfo, update, this.paper, this);
+                SimLogic logic = new SimLogic(simInfo, update, this.paper);
 
                 Thread thread = new Thread(() -> {
                     logic.run();
-
                     setRunning(false);
 
-                    //TODO Sim Information output
+                    SimCompletedInfo simCompletedInfo = logic.getSimCompletedInfo();
 
-                    System.out.println("Timer ms: " + timer.stop());
-                    System.out.println("Travel: " + (logic.getTravelDistance() / 100.0));
+                    System.out.println("Timer ms: " + simCompletedInfo.calculationTime());
+                    System.out.println("Travel: " + (simCompletedInfo.travelDistance() / 100.0));
                 });
 
                 thread.start();
@@ -52,11 +50,11 @@ public class SimRenderer implements Renderer {
                 FastLogic fastLogic = new FastLogic(simInfo, update, this.paper, simCompletedInfo -> {
                     setRunning(false);
 
-                    //TODO Sim Information output
+                    System.out.println("Timer ms: " + simCompletedInfo.calculationTime());
+                    System.out.println("Travel: " + (simCompletedInfo.travelDistance() / 100.0));
                 });
 
                 Thread thread = new Thread(fastLogic::run);
-
                 thread.start();
             }
         }
@@ -95,6 +93,5 @@ public class SimRenderer implements Renderer {
      */
     public void resetCanvas() {
         this.paper.reset();
-        update.run(0);
     }
 }

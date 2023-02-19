@@ -1,6 +1,6 @@
 package net.gotzi.drawmachine.api.sim;
 
-import net.gotzi.drawmachine.sim.editor.GCode;
+import net.gotzi.drawmachine.sim.gcode.GCode;
 
 public record SimValues(SimPoint middlePoint, //DC gear Punkt ausgehend Canvas
                         SimPoint m1Point, //Stepper 1 Punkt ausgehend Canvas
@@ -10,6 +10,5 @@ public record SimValues(SimPoint middlePoint, //DC gear Punkt ausgehend Canvas
                         double mainPole, //Länge a Hauptlänge
                         double supportPole, //Länge b
                         double intersection, //Schnittpunkt von mainPole und supportPole Länge a
-                        GCode gCode,
-                        int baseSteps) {
+                        GCode gCode) {
 }

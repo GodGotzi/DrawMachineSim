@@ -1,5 +1,7 @@
 package net.gotzi.drawmachine.sim.monitor;
 
+import net.gotzi.drawmachine.api.sim.SimRenderState;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 public interface SimMonitor {
@@ -8,6 +10,6 @@ public interface SimMonitor {
     AtomicInteger getSimulationSteps();
     void updateProgress(int progress);
     boolean isFastMode();
-    void updateSteps(int steps);
+    void updateState(SimRenderState simRenderState);
 
 }

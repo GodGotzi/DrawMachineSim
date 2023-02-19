@@ -1,6 +1,6 @@
 package net.gotzi.drawmachine.api.sim;
 
-import net.gotzi.drawmachine.sim.editor.GCode;
+import net.gotzi.drawmachine.sim.gcode.GCode;
 
 public record SimRawValues(SimPoint middlePoint, //DC gear Punkt ausgehend Canvas
                            SimPoint m1Point, //Stepper 1 Punkt ausgehend Canvas

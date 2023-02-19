@@ -1,11 +1,3 @@
 package net.gotzi.drawmachine.api.sim;
 
-public class SimState {
-
-
-
-    public SimState() {
-
-    }
-
-}
+public record SimState(int timestamp, int time) { }

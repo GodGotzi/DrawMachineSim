@@ -8,6 +8,7 @@ import net.gotzi.drawmachine.api.sim.SimValues;
 import net.gotzi.drawmachine.control.UnderLayPanel;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
+import net.gotzi.drawmachine.sim.gcode.GCode;
 import net.gotzi.drawmachine.utils.NumberUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -43,7 +44,6 @@ public class SimEditorView implements SimEditor {
 
         load(simProgramInfo);
     }
-
     private void load(SimProgramInfo simProgramInfo) {
         this.view = new UnderLayPanel(panel);
         this.view.setSouthBorderThickness(5);
@@ -55,10 +55,10 @@ public class SimEditorView implements SimEditor {
         this.gCodeEditor = new RSyntaxTextArea(20, 60);
 
         gCodeEditor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_ACTIONSCRIPT);
-        gCodeEditor.setBackground(Color.DARK_GRAY);
-        gCodeEditor.setSelectedTextColor(Color.WHITE);
-        gCodeEditor.setSelectionColor(Color.WHITE);
-        gCodeEditor.setCurrentLineHighlightColor(Color.GRAY);
+        gCodeEditor.setBackground(Color.WHITE);
+        gCodeEditor.setSelectedTextColor(Color.GRAY);
+        gCodeEditor.setSelectionColor(Color.GRAY);
+        gCodeEditor.setCurrentLineHighlightColor(Color.LIGHT_GRAY);
         gCodeEditor.setCodeFoldingEnabled(true);
         RTextScrollPane scrollPane = new RTextScrollPane(gCodeEditor);
         editorPanel.add(scrollPane, BorderLayout.CENTER);
@@ -88,6 +88,8 @@ public class SimEditorView implements SimEditor {
 
         this.intersectionLength.setValue(simProgramInfo.saved().intersection());
 
+        this.gCodeEditor.setText(String.join("\n", simProgramInfo.saved().gcode().source));
+
         //TODO init values with simModeInfo
     }
 
@@ -97,8 +99,10 @@ public class SimEditorView implements SimEditor {
 
     @Override
     public SimValues getSimValues() {
-        String[] source = gCodeEditor.getText().split(System.lineSeparator());
-        GCode gCode = new GCode(Arrays.stream(source).toList());
+        String[] source = gCodeEditor.getText()
+                .replaceAll("/\\*(?:[^*]|\\*+[^*/])*\\*+/|//.*","").split("\n");
+
+        GCode gCode = new GCode(source);
 
         return new SimValues(
                 new SimPoint(getValue(middlePointX), getValue(middlePointY)),
@@ -109,14 +113,20 @@ public class SimEditorView implements SimEditor {
                 getValue(mainPoleLength),
                 getValue(supportPoleLength),
                 getValue(intersectionLength),
-                gCode,
-                baseSteps);
+                gCode);
     }
 
     public SimProgramInfo getNewSimProgramInfo() {
-        String[] source = gCodeEditor.getText().split(System.lineSeparator());
-        GCode gCode = new GCode(Arrays.stream(source).toList());
+        String[] raw_source = gCodeEditor.getText().split(System.lineSeparator());
+        String[] source = new String[raw_source.length];
 
+        for (int i = 0; i < raw_source.length; i++) {
+            source[i] = raw_source[i].replaceAll("\\(.*?\\) ?", "");
+        }
+
+        Arrays.stream(source).forEach(System.out::println);
+
+        GCode gCode = new GCode(source);
 
         return new SimProgramInfo(
                 new SimRawValues(

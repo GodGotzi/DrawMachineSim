@@ -1,4 +1,4 @@
 package net.gotzi.drawmachine.api.sim;
 
-public record SimCompletedInfo() {
+public record SimCompletedInfo(long calculationTime, double travelDistance) {
 }

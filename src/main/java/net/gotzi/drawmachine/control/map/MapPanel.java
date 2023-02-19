@@ -1,5 +1,7 @@
 package net.gotzi.drawmachine.control.map;
 
+import net.gotzi.drawmachine.api.sim.SimRenderState;
+import net.gotzi.drawmachine.api.sim.SimState;
 import net.gotzi.drawmachine.sim.SimRenderer;
 import net.gotzi.drawmachine.sim.Canvas;
 import net.gotzi.drawmachine.sim.Simulation;
@@ -22,7 +24,7 @@ public class MapPanel extends JPanel {
         
         Canvas paper = new Canvas(dimension.width, dimension.height, Color.BLACK);
 
-        this.simRenderer = new SimRenderer(paper, this::update);
+        this.simRenderer = new SimRenderer(paper, this::updateState);
         this.mapLayout = new MapLayout(this, paper, maxScrollSize, minScrollSize, startScroll);
         this.simulation = simulation;
         build();
@@ -40,9 +42,9 @@ public class MapPanel extends JPanel {
         addMouseWheelListener((MouseWheelListener) mapLayout);
     }
 
-    private void update(Integer step) {
+    private void updateState(SimRenderState state) {
         mapLayout.repaint();
-        this.simulation.updateSteps(step);
+        this.simulation.updateState(state);
     }
 
     public SimRenderer getSimRenderer() {

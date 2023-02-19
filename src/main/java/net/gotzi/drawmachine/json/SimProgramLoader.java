@@ -3,13 +3,14 @@ package net.gotzi.drawmachine.json;
 import net.gotzi.drawmachine.api.sim.SimPoint;
 import net.gotzi.drawmachine.api.sim.SimProgramInfo;
 import net.gotzi.drawmachine.api.sim.SimRawValues;
-import net.gotzi.drawmachine.sim.editor.GCode;
+import net.gotzi.drawmachine.sim.gcode.GCode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 
-import java.util.List;
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SimProgramLoader {
 
@@ -67,7 +68,11 @@ public class SimProgramLoader {
                 .key("gCode")
                 .array();
 
-        for (String line : simProgramInfo.saved().gcode())
+
+
+
+
+        for (String line : simProgramInfo.saved().gcode().getSource())
             jsonWriter.value(line);
 
         jsonWriter
@@ -112,8 +117,10 @@ public class SimProgramLoader {
 
         JSONArray array = jsonObject.getJSONArray("gCode");
 
-        List<String> lines = array.toList().stream().map(Object::toString).toList();
+        String[] lines = array.toList().stream().map(Object::toString).toList().toArray(new String[0]);
         GCode gCode = new GCode(lines);
+
+        System.out.println(Arrays.toString(gCode.getSource()));
 
         return new SimProgramInfo(new SimRawValues(
                 middlePoint,
@@ -143,14 +150,16 @@ public class SimProgramLoader {
      */
 
     public SimProgramInfo getDefault() {
-        GCode gCode = new GCode();
-        gCode.add("G0S T10000");
-        gCode.add("G0 A4320 T10000");
-        gCode.add("G0 B4320 T10000");
-        gCode.add("G0 M4320 T10000");
-        gCode.add("G0E");
-        gCode.add("G1 A4320 M4320 S5 P20 T10000");
-        gCode.add("G2 B4320 M4320 S5 P20 E5000 T10000");
+        String[] source = new String[]{
+                "G0S T10000",
+                "G0 A4320 T10000",
+                "G0 B4320 T10000",
+                "G0E",
+                "G1 A4320 M4320 S5 P20 T10000",
+                "G2 B4320 M4320 S5 P20 E5000 T10000"
+        };
+
+        GCode gCode = new GCode(source);
 
         return new SimProgramInfo(new SimRawValues(
                 new SimPoint(1050, 1050),

@@ -1,5 +1,6 @@
 package net.gotzi.drawmachine.sim;
 
+import net.gotzi.drawmachine.api.sim.SimRenderState;
 import net.gotzi.drawmachine.control.layout.HorizontalSplitLayout;
 import net.gotzi.drawmachine.sim.editor.SimEditor;
 import net.gotzi.drawmachine.sim.monitor.SimMonitorView;
@@ -14,7 +15,7 @@ public class SimView extends JPanel implements Simulation {
     private final SimEditor simEditor;
     private boolean running = false;
 
-    private int currentSteps = 0;
+    private int timestamp = 0;
 
     public SimView(SimEditor simEditor) {
         this.simEditor = simEditor;
@@ -55,18 +56,18 @@ public class SimView extends JPanel implements Simulation {
     public void stop() {
         this.running = false;
         this.simMainView.getRenderer().stop();
-        this.simMonitor.updateSteps(0);
+        this.simMonitor.updateState(new SimRenderState(0, 0));
     }
 
     /**
      * This function updates the number of steps in the simulation
      *
-     * @param steps The number of steps that have been completed.
+     * @param state The number of steps that have been completed.
      */
     @Override
-    public void updateSteps(int steps) {
-        this.simMonitor.updateSteps(steps);
-        this.currentSteps = steps;
+    public void updateState(SimRenderState state) {
+        this.simMonitor.updateState(state);
+        this.timestamp = state.timestamp();
     }
 
     @Override
@@ -80,8 +81,8 @@ public class SimView extends JPanel implements Simulation {
     }
 
     @Override
-    public int getCurrentSteps() {
-        return this.currentSteps;
+    public int getTimestamp() {
+        return this.timestamp;
     }
 
     @Override

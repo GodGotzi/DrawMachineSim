@@ -2,36 +2,32 @@ package net.gotzi.drawmachine.sim.algorithm.logic;
 
 import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.api.Action;
+import net.gotzi.drawmachine.api.sim.SimCompletedInfo;
+import net.gotzi.drawmachine.api.sim.SimRenderState;
 import net.gotzi.drawmachine.error.PencilOutOfCanvas;
 import net.gotzi.drawmachine.error.ThreadInterrupt;
 import net.gotzi.drawmachine.sim.SimInfo;
 import net.gotzi.drawmachine.api.sim.SimPoint;
 import net.gotzi.drawmachine.sim.Canvas;
-import net.gotzi.drawmachine.sim.SimRenderer;
 import net.gotzi.drawmachine.sim.algorithm.SimGCodeLoader;
+import net.gotzi.drawmachine.utils.BenchmarkTimer;
 
-public class SimLogic implements Logic {
+public class SimLogic extends Logic {
 
     private final SimInfo simInfo;
-    private final SimRenderer simRenderer;
     private final Canvas paper;
-    private final Action<Integer> update;
+    private final Action<SimRenderState> update;
     private final MathLogic mathLogic;
-    private SimPoint lastPoint = null;
     private final SimGCodeLoader simGCodeLoader;
+    private SimCompletedInfo simCompletedInfo;
     private double travelDistance = 0;
     
-    public SimLogic(SimInfo simInfo, Action<Integer> update, Canvas paper, SimRenderer simRenderer) {
-        this.paper = paper;
+    public SimLogic(SimInfo simInfo, Action<SimRenderState> update, Canvas paper) {
         this.simInfo = simInfo;
-        this.simRenderer = simRenderer;
         this.update = update;
+        this.paper = paper;
         this.mathLogic = new MathLogic(this.simInfo);
         this.simGCodeLoader = new SimGCodeLoader(simInfo.getSimValues().gCode());
-    }
-
-    public double getTravelDistance() {
-        return travelDistance;
     }
 
     private void awaitForSpeed() {
@@ -52,14 +48,24 @@ public class SimLogic implements Logic {
     @Override
     public void run() {
         double stepFactor = this.simInfo.getStepFactor();
-        int stepAmount = (int) (simGCodeLoader.calculateTime()/stepFactor);
+        long nativeTime = simGCodeLoader.getFullTime();
+        double time = (double)nativeTime * stepFactor;
 
-        for (int timestamp = 1; timestamp <= stepAmount; timestamp++) {
-            this.runStep(timestamp);
-            this.update.run(timestamp);
+        SimPoint lastPoint = null;
+
+        BenchmarkTimer timer = new BenchmarkTimer();
+        timer.start();
+
+        System.out.println("start " + time + " " + stepFactor + " " + nativeTime);
+        for (int timestamp = 1; timestamp <= time; timestamp++) {
+
+            lastPoint = this.runStep(((double)timestamp/ stepFactor), lastPoint);
+            this.update.run(new SimRenderState((int) (timestamp/stepFactor), (int) nativeTime));
 
             awaitForSpeed();
         }
+
+        this.simCompletedInfo = new SimCompletedInfo(timer.stop(), travelDistance);
     }
 
     /**
@@ -70,17 +76,20 @@ public class SimLogic implements Logic {
      *
      * @param timestamp the current step of the simulation
      */
-    private void runStep(int timestamp) {
+    private SimPoint runStep(double timestamp, SimPoint lastPoint) {
         SimPoint simPoint = this.mathLogic.calculatePencilPoint(timestamp, simGCodeLoader);
 
         if (lastPoint != null)
             travelDistance += Math.sqrt(Math.pow(lastPoint.x() - simPoint.x(), 2) + Math.pow(lastPoint.y() - simPoint.y(), 2));
-        lastPoint = simPoint;
-
-        //System.out.println(simPoint);
 
         try {
             this.paper.setPoint((int) simPoint.x(), (int) simPoint.y());
         } catch (PencilOutOfCanvas ignored) {}
+
+        return simPoint;
+    }
+
+    public SimCompletedInfo getSimCompletedInfo() {
+        return simCompletedInfo;
     }
 }

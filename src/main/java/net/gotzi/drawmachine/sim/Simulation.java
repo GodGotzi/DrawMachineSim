@@ -1,5 +1,7 @@
 package net.gotzi.drawmachine.sim;
 
+import net.gotzi.drawmachine.api.sim.SimRenderState;
+
 public interface Simulation {
 
     void run();
@@ -10,11 +12,11 @@ public interface Simulation {
 
     void resetCanvas();
 
-    int getCurrentSteps();
+    int getTimestamp();
 
     boolean isRunning();
 
-    void updateSteps(int step);
+    void updateState(SimRenderState state);
 
     boolean isFastMode();
 

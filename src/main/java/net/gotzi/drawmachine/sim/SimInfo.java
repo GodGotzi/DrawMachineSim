@@ -9,7 +9,7 @@ public class SimInfo {
 
     private final SimValues simValues;
 
-    private final int stepAmount;
+    private final double stepFactor;
 
     private final AtomicInteger speed;
 
@@ -17,7 +17,7 @@ public class SimInfo {
 
     public SimInfo(SimValues simValues, SimMonitor simMonitor) {
         this.simValues = simValues;
-        this.stepAmount = simMonitor.getSimulationSteps().get();
+        this.stepFactor = (double)simMonitor.getSimulationSteps().get()/100.0;
         this.speed = simMonitor.getSimulationSpeed();
         this.fastMode = simMonitor.isFastMode();
     }
@@ -27,7 +27,7 @@ public class SimInfo {
     }
 
     public double getStepFactor() {
-        return stepAmount;
+        return stepFactor;
     }
 
     public int getSpeed() {

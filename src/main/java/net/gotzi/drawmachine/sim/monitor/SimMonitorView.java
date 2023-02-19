@@ -1,6 +1,7 @@
 package net.gotzi.drawmachine.sim.monitor;
 
 import net.gotzi.drawmachine.DrawMachineSim;
+import net.gotzi.drawmachine.api.sim.SimRenderState;
 import net.gotzi.drawmachine.handler.MouseCursorHandler;
 import net.gotzi.drawmachine.error.UnsupportedValue;
 import net.gotzi.drawmachine.sim.Simulation;
@@ -28,25 +29,25 @@ public class SimMonitorView implements SimMonitor {
     private JButton runButton;
     private JLabel speedLabel;
     private JLabel stepLabel;
-    private JSpinner simStepSpinner;
+    private JSpinner simAccuracySpinner;
     private JLabel stepProgress;
     private JButton resetCanvasButton;
     private JButton resetViewButton;
     private JCheckBox fastMode;
     private final AtomicInteger atomicSimSpeed;
-    private final AtomicInteger atomicSimSteps;
+    private final AtomicInteger atomicAccuracyFactor;
 
     public SimMonitorView(Simulation simulation) {
         this.simulation = simulation;
         this.atomicSimSpeed = new AtomicInteger();
-        this.atomicSimSteps = new AtomicInteger();
+        this.atomicAccuracyFactor = new AtomicInteger();
 
         runButton.setText("Run");
         stopButton.setText("Stop");
         resetViewButton.setText("Reset View");
         resetCanvasButton.setText("Reset Canvas");
         speedLabel.setText("Simulation Speed");
-        stepLabel.setText("Simulation Steps");
+        stepLabel.setText("Simulation Accuracy Factor [1% - 100%] ");
         stepProgress.setText(String.format("%0" + maxAllowedStepsStr.length() + "d/%" +
                 maxAllowedStepsStr.length() + "d", 0, 10000));
         simSpeedValueLabel.setText(String.format("%.2f x", 10 * Math.pow(10, -1)));
@@ -62,8 +63,8 @@ public class SimMonitorView implements SimMonitor {
         simSpeedSlider.setMaximum(1000);
         atomicSimSpeed.set(10);
 
-        simStepSpinner.setValue(10000);
-        atomicSimSteps.set(10000);
+        simAccuracySpinner.setValue(100);
+        atomicAccuracyFactor.set(100);
 
         progressBar.setMinimum(0);
         progressBar.setValue(0);
@@ -91,7 +92,7 @@ public class SimMonitorView implements SimMonitor {
 
         fastMode.addMouseListener(new MouseCursorHandler(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)));
 
-        simStepSpinner.addChangeListener(this::updateSimSteps);
+        simAccuracySpinner.addChangeListener(this::updateSimSteps);
     }
 
     @Override
@@ -100,10 +101,9 @@ public class SimMonitorView implements SimMonitor {
     }
 
     @Override
-    public void updateSteps(int steps) {
-        int progress = (int) ((float)steps/(float) atomicSimSteps.get() * 100);
-        stepProgress.setText(String.format("%0" + maxAllowedStepsStr.length() + "d/%" +
-                maxAllowedStepsStr.length() + "d", steps, getSimulationSteps().get()));
+    public void updateState(SimRenderState state) {
+        int progress = (int) ((float)state.timestamp()/(float) state.time() * 100);
+        stepProgress.setText(String.format("%d/%d", state.timestamp(), state.time()));
         updateProgress(progress);
     }
 
@@ -114,7 +114,7 @@ public class SimMonitorView implements SimMonitor {
 
     @Override
     public AtomicInteger getSimulationSteps() {
-        return atomicSimSteps;
+        return atomicAccuracyFactor;
     }
 
     @Override
@@ -124,14 +124,17 @@ public class SimMonitorView implements SimMonitor {
 
     private void updateSimSteps(ChangeEvent ignored) {
         NumberFormat nf = DecimalFormat.getInstance(new Locale("en", "US"));
-        int maxAllowed = Integer.parseInt(this.maxAllowedStepsStr);
         int value;
 
         try {
-            value = Integer.parseInt(simStepSpinner.getValue().toString());
-            if (maxAllowed < value) {
-                simStepSpinner.setValue(maxAllowed);
-                new UnsupportedValue(DrawMachineSim.getInstance().getWindow(), "Value is too high Max: " + nf.format(maxAllowed));
+            value = Integer.parseInt(simAccuracySpinner.getValue().toString());
+            if (1000000 < value) {
+                simAccuracySpinner.setValue(100);
+                new UnsupportedValue(DrawMachineSim.getInstance().getWindow(), "Value is too high Max: " + nf.format(100));
+                return;
+            } else if (value < 1) {
+                simAccuracySpinner.setValue(1);
+                new UnsupportedValue(DrawMachineSim.getInstance().getWindow(), "Value is too high Max: " + nf.format(1));
                 return;
             }
         } catch (Exception e) {
@@ -139,8 +142,8 @@ public class SimMonitorView implements SimMonitor {
         }
 
         stepProgress.setText(String.format("%0" + maxAllowedStepsStr.length() + "d/%" +
-                maxAllowedStepsStr.length() + "d", simulation.getCurrentSteps(), value));
-        atomicSimSteps.set(value);
+                maxAllowedStepsStr.length() + "d", simulation.getTimestamp(), value));
+        atomicAccuracyFactor.set(value);
     }
 
     private void updateSimSpeed(ChangeEvent changeEvent) {

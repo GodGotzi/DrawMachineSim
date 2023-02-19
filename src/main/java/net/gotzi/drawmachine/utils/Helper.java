@@ -49,7 +49,7 @@ public class Helper {
         return String.valueOf(num).toCharArray().length;
     }
 
-    private static int processorAmount() {
+    public static int processorAmount() {
         return Runtime.getRuntime().availableProcessors();
     }
 }
