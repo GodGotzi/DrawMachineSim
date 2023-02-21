@@ -3,22 +3,13 @@ package net.gotzi.drawmachine.sim.editor;
 import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.api.sim.SimProgramInfo;
 import net.gotzi.drawmachine.api.sim.SimPoint;
-import net.gotzi.drawmachine.api.sim.SimRawValues;
-import net.gotzi.drawmachine.api.sim.SimValues;
+import net.gotzi.drawmachine.api.sim.SimEditorValues;
 import net.gotzi.drawmachine.control.UnderLayPanel;
-import net.gotzi.drawmachine.handler.design.DesignColor;
-import net.gotzi.drawmachine.handler.design.DesignHandler;
-import net.gotzi.drawmachine.sim.gcode.GCode;
 import net.gotzi.drawmachine.utils.NumberUtils;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.Arrays;
 
-public class SimEditorView implements SimEditor {
+public class SimEditorView implements SimEditor, SimInfoParameters {
 
     private final int baseSteps;
 
@@ -35,40 +26,32 @@ public class SimEditorView implements SimEditor {
     private JSpinner mainPoleLength;
     private JSpinner supportPoleLength;
     private JSpinner intersectionLength;
-    private JPanel editorPanel;
-
-    private RSyntaxTextArea gCodeEditor;
+    private JTextArea simInfoArea;
 
     public SimEditorView(SimProgramInfo simProgramInfo) {
         this.baseSteps = Integer.parseInt(DrawMachineSim.getInstance().getConfig().get("base_steps"));
 
-        load(simProgramInfo);
+        middlePointX.setModel(new SpinnerNumberModel(0.0, -10000.0,10000.0,0.1));
+        m1PointX.setModel(new SpinnerNumberModel(0.0, -10000.0,10000.0,0.1));
+        m2PointX.setModel(new SpinnerNumberModel(0.0, -10000.0,10000.0,0.1));
+        middlePointY.setModel(new SpinnerNumberModel(0.0, -10000.0,10000.0,0.1));
+        m1PointY.setModel(new SpinnerNumberModel(0.0, -10000.0,10000.0,0.1));
+        m2PointY.setModel(new SpinnerNumberModel(0.0, -10000.0,10000.0,0.1));
+        m1HornLength.setModel(new SpinnerNumberModel(0.0, -10000.0,10000.0,0.1));
+        m2HornLength.setModel(new SpinnerNumberModel(0.0, -10000.0,10000.0,0.1));
+        mainPoleLength.setModel(new SpinnerNumberModel(0.0, -10000.0,10000.0,0.1));
+        supportPoleLength.setModel(new SpinnerNumberModel(0.0, -10000.0,10000.0,0.1));
+        intersectionLength.setModel(new SpinnerNumberModel(0.0, -10000.0,10000.0,0.1));
+
+        setup(simProgramInfo);
     }
-    private void load(SimProgramInfo simProgramInfo) {
+
+    private void setup(SimProgramInfo simProgramInfo) {
         this.view = new UnderLayPanel(panel);
         this.view.setSouthBorderThickness(5);
         this.view.setNorthBorderThickness(5);
         this.view.setWestBorderThickness(15);
         this.view.setEastBorderThickness(15);
-
-        editorPanel.setLayout(new BorderLayout());
-        this.gCodeEditor = new RSyntaxTextArea(20, 60);
-
-        gCodeEditor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_ACTIONSCRIPT);
-        gCodeEditor.setBackground(Color.WHITE);
-        gCodeEditor.setSelectedTextColor(Color.GRAY);
-        gCodeEditor.setSelectionColor(Color.GRAY);
-        gCodeEditor.setCurrentLineHighlightColor(Color.LIGHT_GRAY);
-        gCodeEditor.setCodeFoldingEnabled(true);
-        RTextScrollPane scrollPane = new RTextScrollPane(gCodeEditor);
-        editorPanel.add(scrollPane, BorderLayout.CENTER);
-
-        JLabel label = new JLabel("GCode Editor", JLabel.CENTER);
-
-        DesignHandler.getInstance().getDesignColorChanges(DesignColor.SECONDARY)
-                        .registerPossibleChange(label::setBackground);
-
-        editorPanel.add(label, BorderLayout.NORTH);
 
         this.middlePointX.setValue(simProgramInfo.saved().middlePoint().x());
         this.middlePointY.setValue(simProgramInfo.saved().middlePoint().y());
@@ -88,58 +71,19 @@ public class SimEditorView implements SimEditor {
 
         this.intersectionLength.setValue(simProgramInfo.saved().intersection());
 
-        this.gCodeEditor.setText(String.join("\n", simProgramInfo.saved().gcode().source));
-
         //TODO init values with simModeInfo
     }
 
-    public JPanel getView() {
-        return view;
-    }
-
     @Override
-    public SimValues getSimValues() {
-        String[] source = gCodeEditor.getText()
-                .replaceAll("/\\*(?:[^*]|\\*+[^*/])*\\*+/|//.*","").split("\n");
-
-        GCode gCode = new GCode(source);
-
-        return new SimValues(
-                new SimPoint(getValue(middlePointX), getValue(middlePointY)),
-                new SimPoint(getValue(m1PointX), getValue(m1PointY)),
-                new SimPoint(getValue(m2PointX), getValue(m2PointY)),
-                getValue(m1HornLength),
-                getValue(m2HornLength),
-                getValue(mainPoleLength),
-                getValue(supportPoleLength),
-                getValue(intersectionLength),
-                gCode);
-    }
-
-    public SimProgramInfo getNewSimProgramInfo() {
-        String[] raw_source = gCodeEditor.getText().split(System.lineSeparator());
-        String[] source = new String[raw_source.length];
-
-        for (int i = 0; i < raw_source.length; i++) {
-            source[i] = raw_source[i].replaceAll("\\(.*?\\) ?", "");
-        }
-
-        Arrays.stream(source).forEach(System.out::println);
-
-        GCode gCode = new GCode(source);
-
-        return new SimProgramInfo(
-                new SimRawValues(
-                        new SimPoint(getValue(middlePointX), getValue(middlePointY)),
+    public SimEditorValues getSimEditorValues() {
+        return new SimEditorValues(new SimPoint(getValue(middlePointX), getValue(middlePointY)),
                         new SimPoint(getValue(m1PointX), getValue(m1PointY)),
                         new SimPoint(getValue(m2PointX), getValue(m2PointY)),
                         getValue(m1HornLength),
                         getValue(m2HornLength),
                         getValue(mainPoleLength),
                         getValue(supportPoleLength),
-                        getValue(intersectionLength),
-                        gCode
-                )
+                        getValue(intersectionLength)
         );
     }
 
@@ -150,7 +94,26 @@ public class SimEditorView implements SimEditor {
         return 0;
     }
 
+    public JPanel getView() {
+        return view;
+    }
+
     public int getBaseSteps() {
         return baseSteps;
+    }
+
+    @Override
+    public void clear() {
+        simInfoArea.setText("");
+    }
+
+    @Override
+    public void print(String str) {
+        simInfoArea.append(str);
+    }
+
+    @Override
+    public void println(String str) {
+        simInfoArea.append(str + "\n");
     }
 }

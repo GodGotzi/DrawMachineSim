@@ -3,6 +3,7 @@ package net.gotzi.drawmachine.sim;
 import net.gotzi.drawmachine.api.sim.SimRenderState;
 import net.gotzi.drawmachine.control.layout.HorizontalSplitLayout;
 import net.gotzi.drawmachine.sim.editor.SimEditor;
+import net.gotzi.drawmachine.sim.editor.SimInfoParameters;
 import net.gotzi.drawmachine.sim.monitor.SimMonitorView;
 import net.gotzi.drawmachine.sim.main.SimMainView;
 
@@ -12,18 +13,21 @@ public class SimView extends JPanel implements Simulation {
 
     private final SimMainView simMainView;
     private final SimMonitorView simMonitor;
-    private final SimEditor simEditor;
+    private final SimInfoParameters simInfoParameters;
+    private final SimDataCollector dataCollector;
     private boolean running = false;
-
     private int timestamp = 0;
 
-    public SimView(SimEditor simEditor) {
-        this.simEditor = simEditor;
+    public SimView(SimInfoParameters simInfoParameters, SimDataCollector dataCollector) {
+        this.dataCollector = dataCollector;
+        this.simInfoParameters = simInfoParameters;
+
         this.simMonitor = new SimMonitorView(this);
         this.simMainView = new SimMainView(this);
 
         add(simMainView.getView());
         add(simMonitor.getView());
+
         buildLayout();
     }
 
@@ -44,8 +48,10 @@ public class SimView extends JPanel implements Simulation {
     @Override
     public void run() {
         this.running = true;
+
         this.simMainView.getRenderer().render(
-                new SimInfo(this.simEditor.getSimValues(), this.simMonitor)
+                new SimInfo(this.dataCollector.collectValues(), this.simMonitor),
+                this.simInfoParameters
         );
     }
 
@@ -78,6 +84,7 @@ public class SimView extends JPanel implements Simulation {
     @Override
     public void resetCanvas() {
         this.simMainView.getMapPanel().getSimRenderer().resetCanvas();
+        this.simMainView.getMapPanel().repaint();
     }
 
     @Override

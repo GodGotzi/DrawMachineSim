@@ -3,6 +3,7 @@ package net.gotzi.drawmachine;
 import net.gotzi.drawmachine.builder.HotKeyBuilder;
 import net.gotzi.drawmachine.control.DimensionConstants;
 import net.gotzi.drawmachine.data.ConfigLoader;
+import net.gotzi.drawmachine.handler.design.ChangeManualDesign;
 import net.gotzi.drawmachine.handler.design.DesignColor;
 import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.handler.hotkey.HotKeyHandler;
@@ -39,23 +40,28 @@ public class DrawMachineSim implements Application {
             UIManager.put("nimbusBase", new Color(18, 30, 49));
 
 
-            UIManager.put("nimbusAlertYellow", new Color(248, 187, 0));
+            UIManager.put("nimbusAlertYellow", new Color(255, 255, 255));
             UIManager.put("nimbusDisabledText", new Color(128, 128, 128));
             UIManager.put("nimbusFocus", new Color(115, 164, 209));
             UIManager.put("nimbusGreen", new Color(176, 179, 50));
             UIManager.put("nimbusInfoBlue", new Color(66, 139, 221));
 
-            UIManager.put("nimbusLightBackground", new Color(18, 30, 49));
+            UIManager.put("nimbusLightBackground", new Color(227, 227, 227));
 
-            UIManager.put("nimbusOrange", new Color(191, 98, 4));
+            UIManager.put("nimbusOrange", new Color(183, 183, 183));
             UIManager.put("nimbusRed", new Color(169, 46, 34));
             UIManager.put("nimbusSelectedText", new Color(255, 255, 255));
             UIManager.put("nimbusSelectionBackground", new Color(104, 93, 156));
-            UIManager.put("text", new Color(230, 230, 230));
+            UIManager.put("text", new Color(0, 0, 0));
             SwingUtilities.updateComponentTreeUI(window);
         } catch (UnsupportedLookAndFeelException exc) {
             System.err.println("Nimbus: Unsupported Look and feel!");
         }
+
+        designHandler.registerManualChange(JSpinner.class, component -> {
+            component.setBackground(Color.WHITE);
+            component.setForeground(Color.BLACK);
+        });
     }
 
     private final Image logo;

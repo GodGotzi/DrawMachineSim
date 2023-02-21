@@ -57,12 +57,12 @@ public class WorkspaceView extends JPanel implements Workspace {
         this.setMinimumSize(DimensionConstants.getConstantDimension("workspace.view.min"));
 
         this.title.setText("Workspace");
+        this.title.setFont(this.title.getFont().deriveFont(Font.BOLD));
+        this.title.setForeground(Color.WHITE);
         this.title.setHorizontalAlignment(JLabel.CENTER);
 
         this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
                 .registerPossibleChange(this::setBackground);
-
-        this.workspaceTree.setBackground(Color.DARK_GRAY);
 
         add(this.title);
         add(this.scrollPane);

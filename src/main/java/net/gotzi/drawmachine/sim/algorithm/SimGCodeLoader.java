@@ -35,6 +35,7 @@ public class SimGCodeLoader {
 
         for (int i = 0; i < gCode.source.length; i++) {
             line = gCode.source[i];
+
             String[] commands = line.split(" ");
 
             if (line.contains("G54")) {
@@ -54,7 +55,7 @@ public class SimGCodeLoader {
 
                 GCodeSequence sequence = new GCodeSequence(lineList.toArray(new GCodeLine[0]), line);
                 gCodeSnippets.add(sequence);
-            } else {
+            } else if (!line.equals("")) {
                 GCodeLine gCodeLine = computeGCommand(commands[0], line, false);
 
                 gCodeSnippets.add(gCodeLine);
@@ -148,6 +149,8 @@ public class SimGCodeLoader {
                     degree += line.getDegree();
                 }
             }
+
+            degree %= 360;
         }
 
         return degree;
@@ -191,7 +194,7 @@ public class SimGCodeLoader {
 
     private GCodeLine computeGCommand(String g, String str, boolean inSequence) throws GCodeConstructError {
         return switch (Integer.parseInt(g.substring(1))) {
-            case 0 -> new GCodeLineLinear(str, inSequence);
+            case 0 -> new GCodeLineDefault(str, inSequence);
             case 1 -> new GCodeLineExpo(str, inSequence);
 
             default -> {

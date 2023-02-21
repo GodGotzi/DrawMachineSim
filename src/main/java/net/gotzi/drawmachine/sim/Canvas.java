@@ -41,7 +41,7 @@ public class Canvas extends BufferedImage {
             //System.out.println("X: " + (getWidth() - x) + " Y:" + (getHeight() - y));
             setPixelPoint(getWidth() - x,getHeight() - y, color);
         } catch (ArrayIndexOutOfBoundsException ignored) {
-            throw new PencilOutOfCanvas(DrawMachineSim.getInstance().getWindow(), "X: " + (getWidth() - x) + " Y: " + (getHeight() - y));
+            //throw new PencilOutOfCanvas(DrawMachineSim.getInstance().getWindow(), "X: " + (getWidth() - x) + " Y: " + (getHeight() - y));
         }
     }
   

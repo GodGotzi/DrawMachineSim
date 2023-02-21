@@ -104,8 +104,9 @@ public class MenuBar extends JMenuBar {
             Color initialColor = this.designHandler
                     .getDesignColorChanges(DesignColor.SECONDARY).getDefaultColor();
             Color color = JColorChooser.showDialog(this,"Select a color", initialColor);
-            this.designHandler.getDesignColorChanges(DesignColor.SECONDARY)
-                    .redesignAll(color);
+
+            designHandler.getDesignColorChanges(DesignColor.SECONDARY)
+                            .redesignAll(color);
         });
 
         menu04.add(menu);
@@ -122,4 +123,5 @@ public class MenuBar extends JMenuBar {
         //menu04.add(ItemDivider.getDefaultItemDivider());
         this.add(menu04);
     }
+
 }

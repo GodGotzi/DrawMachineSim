@@ -9,6 +9,6 @@ public record SimValues(SimPoint middlePoint, //DC gear Punkt ausgehend Canvas
                         double m2Horn, //Stepper 2 Arm länge
                         double mainPole, //Länge a Hauptlänge
                         double supportPole, //Länge b
-                        double intersection, //Schnittpunkt von mainPole und supportPole Länge a
+                        double intersection,
                         GCode gCode) {
 }

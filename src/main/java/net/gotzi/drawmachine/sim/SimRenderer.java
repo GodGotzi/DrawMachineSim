@@ -7,6 +7,7 @@ import net.gotzi.drawmachine.sim.algorithm.Renderer;
 import net.gotzi.drawmachine.sim.algorithm.logic.FastLogic;
 import net.gotzi.drawmachine.sim.algorithm.logic.Logic;
 import net.gotzi.drawmachine.sim.algorithm.logic.SimLogic;
+import net.gotzi.drawmachine.sim.editor.SimInfoParameters;
 import net.gotzi.drawmachine.utils.BenchmarkTimer;
 
 public class SimRenderer implements Renderer {
@@ -28,12 +29,12 @@ public class SimRenderer implements Renderer {
      * @param simInfo The information about the simulation.
      */
     @Override
-    public void render(SimInfo simInfo) {
+    public void render(SimInfo simInfo, SimInfoParameters simInfoParameters) {
         if (!isRunning()) {
             setRunning(true);
 
             if (!simInfo.isFastMode()) {
-                SimLogic logic = new SimLogic(simInfo, update, this.paper);
+                SimLogic logic = new SimLogic(simInfo, this, update, this.paper);
 
                 Thread thread = new Thread(() -> {
                     logic.run();
@@ -41,8 +42,9 @@ public class SimRenderer implements Renderer {
 
                     SimCompletedInfo simCompletedInfo = logic.getSimCompletedInfo();
 
-                    System.out.println("Timer ms: " + simCompletedInfo.calculationTime());
-                    System.out.println("Travel: " + (simCompletedInfo.travelDistance() / 100.0));
+                    simInfoParameters.clear();
+                    simInfoParameters.println("Timer ms: " + simCompletedInfo.calculationTime());
+                    simInfoParameters.println("Travel: " + (simCompletedInfo.travelDistance() / 100.0));
                 });
 
                 thread.start();
@@ -50,8 +52,9 @@ public class SimRenderer implements Renderer {
                 FastLogic fastLogic = new FastLogic(simInfo, update, this.paper, simCompletedInfo -> {
                     setRunning(false);
 
-                    System.out.println("Timer ms: " + simCompletedInfo.calculationTime());
-                    System.out.println("Travel: " + (simCompletedInfo.travelDistance() / 100.0));
+                    simInfoParameters.clear();
+                    simInfoParameters.println("Timer ms: " + simCompletedInfo.calculationTime());
+                    simInfoParameters.println("Travel: " + (simCompletedInfo.travelDistance() / 100.0));
                 });
 
                 Thread thread = new Thread(fastLogic::run);

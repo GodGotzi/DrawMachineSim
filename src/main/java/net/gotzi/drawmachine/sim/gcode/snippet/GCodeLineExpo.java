@@ -21,6 +21,6 @@ public class GCodeLineExpo extends GCodeLine {
 
     @Override
     public double calculateDegree(double timestamp) {
-        return acceleration * Math.pow(timestamp/accelerationDist, 2) / 2.0 + this.degree;
+        return acceleration * Math.pow(timestamp/accelerationDist, 2) / 2.0;
     }
 }

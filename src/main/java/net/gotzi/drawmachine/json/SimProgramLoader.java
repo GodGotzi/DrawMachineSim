@@ -2,15 +2,13 @@ package net.gotzi.drawmachine.json;
 
 import net.gotzi.drawmachine.api.sim.SimPoint;
 import net.gotzi.drawmachine.api.sim.SimProgramInfo;
-import net.gotzi.drawmachine.api.sim.SimRawValues;
+import net.gotzi.drawmachine.api.sim.SimEditorValues;
 import net.gotzi.drawmachine.sim.gcode.GCode;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONWriter;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SimProgramLoader {
 
@@ -72,7 +70,7 @@ public class SimProgramLoader {
 
 
 
-        for (String line : simProgramInfo.saved().gcode().getSource())
+        for (String line : simProgramInfo.gcode().getSource())
             jsonWriter.value(line);
 
         jsonWriter
@@ -120,9 +118,7 @@ public class SimProgramLoader {
         String[] lines = array.toList().stream().map(Object::toString).toList().toArray(new String[0]);
         GCode gCode = new GCode(lines);
 
-        System.out.println(Arrays.toString(gCode.getSource()));
-
-        return new SimProgramInfo(new SimRawValues(
+        return new SimProgramInfo(new SimEditorValues(
                 middlePoint,
                 m1Point,
                 m2Point,
@@ -130,9 +126,9 @@ public class SimProgramLoader {
                 m2Horn,
                 mainPole,
                 supportPole,
-                intersection,
+                intersection),
                 gCode
-        ));
+        );
     }
 
     /*
@@ -161,7 +157,7 @@ public class SimProgramLoader {
 
         GCode gCode = new GCode(source);
 
-        return new SimProgramInfo(new SimRawValues(
+        return new SimProgramInfo(new SimEditorValues(
                 new SimPoint(1050, 1050),
                 new SimPoint(1050-700, 1050-2400),
                 new SimPoint(1050+700, 1050-2400),
@@ -169,8 +165,7 @@ public class SimProgramLoader {
                 200,
                 2200,
                 1400,
-                1100,
-                gCode
-        ));
+                1100),
+                gCode);
     }
 }

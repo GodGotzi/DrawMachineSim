@@ -8,7 +8,7 @@ public enum HotKey {
     RESET_SIM_VIEW("reset_sim_view", drawMachineSim -> {
         SimProgramFileView simProgramFileView = (SimProgramFileView) drawMachineSim
                 .getView().getFileHub().getSelectedComponent();
-        if (simProgramFileView != null) simProgramFileView.getSimView().resetView();
+        if (simProgramFileView != null) simProgramFileView.getSimulationTab().getSimView().resetView();
     }),
 
     SAVE_SIM_PROGRAM("save_sim_program", drawMachineSim -> {

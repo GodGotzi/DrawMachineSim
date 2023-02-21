@@ -9,6 +9,7 @@ import net.gotzi.drawmachine.error.ThreadInterrupt;
 import net.gotzi.drawmachine.sim.SimInfo;
 import net.gotzi.drawmachine.api.sim.SimPoint;
 import net.gotzi.drawmachine.sim.Canvas;
+import net.gotzi.drawmachine.sim.SimRenderer;
 import net.gotzi.drawmachine.sim.algorithm.SimGCodeLoader;
 import net.gotzi.drawmachine.utils.BenchmarkTimer;
 
@@ -20,12 +21,14 @@ public class SimLogic extends Logic {
     private final MathLogic mathLogic;
     private final SimGCodeLoader simGCodeLoader;
     private SimCompletedInfo simCompletedInfo;
+    private SimRenderer simRenderer;
     private double travelDistance = 0;
     
-    public SimLogic(SimInfo simInfo, Action<SimRenderState> update, Canvas paper) {
+    public SimLogic(SimInfo simInfo, SimRenderer simRenderer, Action<SimRenderState> update, Canvas paper) {
         this.simInfo = simInfo;
         this.update = update;
         this.paper = paper;
+        this.simRenderer = simRenderer;
         this.mathLogic = new MathLogic(this.simInfo);
         this.simGCodeLoader = new SimGCodeLoader(simInfo.getSimValues().gCode());
     }
@@ -57,7 +60,7 @@ public class SimLogic extends Logic {
         timer.start();
 
         System.out.println("start " + time + " " + stepFactor + " " + nativeTime);
-        for (int timestamp = 1; timestamp <= time; timestamp++) {
+        for (int timestamp = 1; timestamp <= time && simRenderer.isRunning(); timestamp++) {
 
             lastPoint = this.runStep(((double)timestamp/ stepFactor), lastPoint);
             this.update.run(new SimRenderState((int) (timestamp/stepFactor), (int) nativeTime));

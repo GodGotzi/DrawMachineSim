@@ -19,6 +19,7 @@ public class SimMainView {
         Dimension paperDimension = DimensionConstants.getConstantDimension("simulation.view.canvas");
 
         this.view = new JPanel();
+
         this.mapPanel = new MapPanel(paperDimension, simulation, 3000, 100, 1000);
         this.renderer = mapPanel.getSimRenderer();
 

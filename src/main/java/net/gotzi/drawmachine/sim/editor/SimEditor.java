@@ -1,13 +1,10 @@
 package net.gotzi.drawmachine.sim.editor;
 
-import net.gotzi.drawmachine.api.sim.SimProgramInfo;
-import net.gotzi.drawmachine.api.sim.SimValues;
+import net.gotzi.drawmachine.api.sim.SimEditorValues;
 
 public interface SimEditor {
 
-    SimValues getSimValues();
-
-    SimProgramInfo getNewSimProgramInfo();
+    SimEditorValues getSimEditorValues();
 
     int getBaseSteps();
 

@@ -4,6 +4,7 @@ import net.gotzi.drawmachine.DrawMachineSim;
 import net.gotzi.drawmachine.api.sim.SimRenderState;
 import net.gotzi.drawmachine.handler.MouseCursorHandler;
 import net.gotzi.drawmachine.error.UnsupportedValue;
+import net.gotzi.drawmachine.handler.design.DesignHandler;
 import net.gotzi.drawmachine.sim.Simulation;
 
 import javax.swing.*;
@@ -30,7 +31,6 @@ public class SimMonitorView implements SimMonitor {
     private JLabel speedLabel;
     private JLabel stepLabel;
     private JSpinner simAccuracySpinner;
-    private JLabel stepProgress;
     private JButton resetCanvasButton;
     private JButton resetViewButton;
     private JCheckBox fastMode;
@@ -47,16 +47,11 @@ public class SimMonitorView implements SimMonitor {
         resetViewButton.setText("Reset View");
         resetCanvasButton.setText("Reset Canvas");
         speedLabel.setText("Simulation Speed");
-        stepLabel.setText("Simulation Accuracy Factor [1% - 100%] ");
-        stepProgress.setText(String.format("%0" + maxAllowedStepsStr.length() + "d/%" +
-                maxAllowedStepsStr.length() + "d", 0, 10000));
+        stepLabel.setText("Simulation Accuracy");
         simSpeedValueLabel.setText(String.format("%.2f x", 10 * Math.pow(10, -1)));
 
         simSpeedValueLabel.setHorizontalAlignment(JLabel.CENTER);
         simSpeedValueLabel.setVerticalAlignment(JLabel.CENTER);
-
-        stepProgress.setHorizontalAlignment(JLabel.CENTER);
-        stepProgress.setVerticalAlignment(JLabel.CENTER);
 
         simSpeedSlider.setMinimum(10);
         simSpeedSlider.setValue(10);
@@ -64,14 +59,16 @@ public class SimMonitorView implements SimMonitor {
         atomicSimSpeed.set(10);
 
         simAccuracySpinner.setValue(100);
+
         atomicAccuracyFactor.set(100);
 
         progressBar.setMinimum(0);
         progressBar.setValue(0);
         progressBar.setMaximum(100);
 
-
         addListeners();
+
+        DesignHandler.getInstance().manualColorChange(this);
     }
 
     private void addListeners() {
@@ -103,7 +100,6 @@ public class SimMonitorView implements SimMonitor {
     @Override
     public void updateState(SimRenderState state) {
         int progress = (int) ((float)state.timestamp()/(float) state.time() * 100);
-        stepProgress.setText(String.format("%d/%d", state.timestamp(), state.time()));
         updateProgress(progress);
     }
 
@@ -141,8 +137,6 @@ public class SimMonitorView implements SimMonitor {
             return;
         }
 
-        stepProgress.setText(String.format("%0" + maxAllowedStepsStr.length() + "d/%" +
-                maxAllowedStepsStr.length() + "d", simulation.getTimestamp(), value));
         atomicAccuracyFactor.set(value);
     }
 

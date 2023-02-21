@@ -1,50 +1,54 @@
 package net.gotzi.drawmachine.view.hub.sim;
 
 import net.gotzi.drawmachine.api.sim.SimProgramInfo;
-import net.gotzi.drawmachine.control.layout.VerticalSplitLayout;
-import net.gotzi.drawmachine.sim.editor.SimEditorView;
-import net.gotzi.drawmachine.sim.SimView;
+import net.gotzi.drawmachine.sim.SimDataCollector;
 import net.gotzi.drawmachine.view.hub.FileView;
+import net.gotzi.drawmachine.api.components.VerticalTabbedPane;
 
+import java.awt.*;
 import java.io.File;
 
 public class SimProgramFileView extends FileView<SimProgramInfo> {
 
-    private final SimEditorView simEditorView;
-    private final SimView simView;
+    private final SimSimulationTab simulationTab;
+    private final SimGCodeTab simGCodeTab;
+    private final SimDataCollector simDataCollector;
+    private final VerticalTabbedPane tabbedPane;
 
     public SimProgramFileView(SimProgramInfo simProgramInfo, String name, File file) {
         super(name, "dmsp", file);
-        this.simEditorView = new SimEditorView(simProgramInfo);
-        this.simView = new SimView(simEditorView);
 
-        add(simEditorView.getView());
-        add(simView);
+        this.simDataCollector = new SimDataCollector();
+        this.simGCodeTab = new SimGCodeTab(simProgramInfo);
+        this.simulationTab = new SimSimulationTab(simProgramInfo, simDataCollector);
 
-        this.buildLayout();
+        this.simDataCollector.setSimGCodeTab(this.simGCodeTab);
+        this.simDataCollector.setSimulationTab(this.simulationTab);
+
+        this.tabbedPane = new VerticalTabbedPane();
+
+        this.tabbedPane.addTab("Simulation", this.simulationTab);
+        this.tabbedPane.addTab("GCode", this.simGCodeTab);
+
+        this.setLayout(new BorderLayout());
+
+        add(this.tabbedPane, BorderLayout.CENTER);
     }
 
-    /**
-     * This function creates a vertical split layout, and sets the size of the first component to 325 pixels.
-     */
-    private void buildLayout() {
-        VerticalSplitLayout verticalSplitLayout = new VerticalSplitLayout(
-                this.simEditorView.getView(),
-                this.simView);
-        verticalSplitLayout.setComponent1Size(325);
-        setLayout(verticalSplitLayout);
+    public VerticalTabbedPane getTabbedPane() {
+        return tabbedPane;
     }
 
-    public SimEditorView getEditorPanel() {
-        return simEditorView;
+    public SimGCodeTab getSimGCodeTab() {
+        return simGCodeTab;
     }
 
-    public SimView getSimView() {
-        return simView;
+    public SimSimulationTab getSimulationTab() {
+        return simulationTab;
     }
 
     @Override
     public SimProgramInfo getObjectToSave() {
-        return this.simEditorView.getNewSimProgramInfo();
+        return this.simDataCollector.collectProgram();
     }
 }

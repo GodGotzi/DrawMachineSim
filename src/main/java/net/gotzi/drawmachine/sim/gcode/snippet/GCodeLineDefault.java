@@ -2,15 +2,14 @@ package net.gotzi.drawmachine.sim.gcode.snippet;
 
 import net.gotzi.drawmachine.sim.gcode.GCodeConstructError;
 
-public class GCodeLineLinear extends GCodeLine {
+public class GCodeLineDefault extends GCodeLine {
 
-    public GCodeLineLinear(String str, boolean inSequence) throws GCodeConstructError {
+    public GCodeLineDefault(String str, boolean inSequence) throws GCodeConstructError {
         super(str, inSequence);
     }
 
-    @Override
     public double calculateDegree(double timestamp) {
-        return 0;
+        return this.degree/(double)this.duration * timestamp;
     }
 
     @Override
