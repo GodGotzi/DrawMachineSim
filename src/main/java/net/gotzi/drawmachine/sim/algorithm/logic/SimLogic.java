@@ -1,3 +1,8 @@
+/*
+	Author: Elias (Gotzi) Gottsbacher
+	Copyright (c) 2023 Elias Gottsbacher
+*/
+
 package net.gotzi.drawmachine.sim.algorithm.logic;
 
 import net.gotzi.drawmachine.DrawMachineSim;
@@ -20,8 +25,8 @@ public class SimLogic extends Logic {
     private final Action<SimRenderState> update;
     private final MathLogic mathLogic;
     private final SimGCodeLoader simGCodeLoader;
+    private final SimRenderer simRenderer;
     private SimCompletedInfo simCompletedInfo;
-    private SimRenderer simRenderer;
     private double travelDistance = 0;
     
     public SimLogic(SimInfo simInfo, SimRenderer simRenderer, Action<SimRenderState> update, Canvas paper) {

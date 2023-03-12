@@ -1,3 +1,8 @@
+/*
+	Author: Elias (Gotzi) Gottsbacher
+	Copyright (c) 2023 Elias Gottsbacher
+*/
+
 package net.gotzi.drawmachine.sim.algorithm.logic;
 
 import net.gotzi.drawmachine.sim.SimInfo;
@@ -65,8 +70,8 @@ public class MathLogic {
 
         HelperPoint pencil = new HelperPoint(C.x + pencilXOffset, C.y + pencilYOffset);
 
-        double absX = pencil.x - simInfo.getSimValues().middlePoint().x();
-        double absY = pencil.y - simInfo.getSimValues().middlePoint().y();
+        double absX = Math.abs(pencil.x - simInfo.getSimValues().middlePoint().x());
+        double absY = Math.abs(pencil.y - simInfo.getSimValues().middlePoint().y());
 
         double abs = Math.sqrt(absX * absX + absY * absY);
         double radiantOffset1 = Math.atan(absY/absX);

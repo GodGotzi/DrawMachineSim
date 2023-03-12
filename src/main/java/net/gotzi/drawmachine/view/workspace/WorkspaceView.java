@@ -1,3 +1,8 @@
+/*
+	Author: Elias (Gotzi) Gottsbacher
+	Copyright (c) 2023 Elias Gottsbacher
+*/
+
 package net.gotzi.drawmachine.view.workspace;
 
 import net.gotzi.drawmachine.api.FileUpdateScheduler;

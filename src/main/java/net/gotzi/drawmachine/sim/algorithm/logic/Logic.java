@@ -1,3 +1,8 @@
+/*
+	Author: Elias (Gotzi) Gottsbacher
+	Copyright (c) 2023 Elias Gottsbacher
+*/
+
 package net.gotzi.drawmachine.sim.algorithm.logic;
 
 import net.gotzi.drawmachine.api.sim.SimPoint;

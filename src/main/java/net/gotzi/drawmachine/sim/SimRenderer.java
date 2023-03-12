@@ -1,3 +1,8 @@
+/*
+	Author: Elias (Gotzi) Gottsbacher
+	Copyright (c) 2023 Elias Gottsbacher
+*/
+
 package net.gotzi.drawmachine.sim;
 
 import net.gotzi.drawmachine.api.Action;
@@ -44,7 +49,7 @@ public class SimRenderer implements Renderer {
 
                     simInfoParameters.clear();
                     simInfoParameters.println("Timer ms: " + simCompletedInfo.calculationTime());
-                    simInfoParameters.println("Travel: " + (simCompletedInfo.travelDistance() / 100.0));
+                    simInfoParameters.println("Travel: " + (simCompletedInfo.travelDistance() / 10));
                 });
 
                 thread.start();
@@ -54,7 +59,7 @@ public class SimRenderer implements Renderer {
 
                     simInfoParameters.clear();
                     simInfoParameters.println("Timer ms: " + simCompletedInfo.calculationTime());
-                    simInfoParameters.println("Travel: " + (simCompletedInfo.travelDistance() / 100.0));
+                    simInfoParameters.println("Travel: " + (simCompletedInfo.travelDistance() / 10));
                 });
 
                 Thread thread = new Thread(fastLogic::run);

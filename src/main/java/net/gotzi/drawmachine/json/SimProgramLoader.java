@@ -1,3 +1,8 @@
+/*
+	Author: Elias (Gotzi) Gottsbacher
+	Copyright (c) 2023 Elias Gottsbacher
+*/
+
 package net.gotzi.drawmachine.json;
 
 import net.gotzi.drawmachine.api.sim.SimPoint;
@@ -141,18 +146,16 @@ public class SimProgramLoader {
 
     G0 -> (Argument (endless) motors degree, Argument T -> die Zeit in der der Befehl ausgeführt werden muss)
 
-
-
      */
 
     public SimProgramInfo getDefault() {
         String[] source = new String[]{
-                "G0S T10000",
-                "G0 A4320 T10000",
-                "G0 B4320 T10000",
-                "G0E",
-                "G1 A4320 M4320 S5 P20 T10000",
-                "G2 B4320 M4320 S5 P20 E5000 T10000"
+                "G54 A0 B0 M0",
+                "G8",
+                "G0 A-99000 D100000",
+                "G0 B100000 D100000",
+                "G0 M360 D100000",
+                "G9"
         };
 
         GCode gCode = new GCode(source);
